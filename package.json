@@ -1,0 +1,23 @@
+{
+  "author": "Spark",
+  "name": "sparkjs",
+  "description": "Official Spark API library.",
+  "version": "0.1.0",
+  "homepage": "http://spark.io",
+  "bugs": "https://github.com/spark/sparkjs/issues",
+
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/spark/sparkjs"
+  },
+
+  "engines": {
+    "node": ">=0.10.26"
+  }
+
+  "main": "./lib/spark-api",
+
+  "dependencies": {},
+
+  "devDependencies": {},
+}
