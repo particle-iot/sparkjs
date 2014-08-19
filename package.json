@@ -13,11 +13,11 @@
 
   "engines": {
     "node": ">=0.10.26"
-  }
+  },
 
   "main": "./lib/spark-api",
 
   "dependencies": {},
 
-  "devDependencies": {},
+  "devDependencies": {}
 }
