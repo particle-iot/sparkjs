@@ -22,5 +22,10 @@
     "when": ">= 3.4.4"
   },
 
-  "devDependencies": {}
+  "devDependencies": {
+    "mocha": "1.21.x",
+    "chai": "1.9.x",
+    "sinon-chai": "2.5.x",
+    "sinon": "1.10.x"
+  }
 }
