@@ -17,7 +17,10 @@
 
   "main": "./lib/spark-api",
 
-  "dependencies": {},
+  "dependencies": {
+    "request": ">= 2.40.0",
+    "when": ">= 3.4.4"
+  },
 
   "devDependencies": {}
 }
