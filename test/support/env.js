@@ -22,8 +22,11 @@ global.AssertionError = chai.AssertionError;
 
 global.spy = sinon.spy;
 global.stub = sinon.stub;
+global.shared = require('./shared');
 
 // convenience function to require modules in lib directory
 global.source = function(module) {
   return require(path.normalize('./../../lib/' + module));
 };
+
+global.Spark = source('spark-api');
