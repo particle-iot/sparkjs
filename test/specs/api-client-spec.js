@@ -9,10 +9,10 @@ describe("Spark", function() {
 
     describe("with wrong credentials", function() {
 
+      var body = { error: 'invalid_client' };
+
       beforeEach(function() {
-        sinon.stub(Spark, 'request').yields(null, null, {
-          error: 'invalid_client'
-        });
+        sinon.stub(Spark, 'request').yields(null, null, body);
       });
 
       it("returns body error", function() {
@@ -22,7 +22,7 @@ describe("Spark", function() {
         return expect(login_promise).to.be.rejectedWith(error);
       });
 
-      it("calls callback with error", function(done) {
+      it("executes callback with error", function(done) {
         var error;
         var callback = function(err, body) {
           error = err;
@@ -34,14 +34,24 @@ describe("Spark", function() {
         expect(error).to.eq('invalid_client');
       });
 
+      it("emits login event with error", function(done) {
+        var spy = sinon.spy(done());
+
+        Spark.on('login', spy);
+        Spark.login('user', 'pass');
+        Spark.removeListener('login', spy);
+
+        expect(spy.withArgs('invalid_client', body)).to.be.calledOnce;
+      });
+
     });
 
     describe("with correct credentials", function() {
 
+      var body = { access_token: 'access_token' };
+
       beforeEach(function() {
-        sinon.stub(Spark, 'request').yields(null, null, {
-          access_token: 'access_token'
-        });
+        sinon.stub(Spark, 'request').yields(null, null, body);
       });
 
       it("is fulfilled", function() {
@@ -64,6 +74,16 @@ describe("Spark", function() {
         Spark.login('spark', 'spark', callback);
 
         expect(access_token).to.eq('access_token');
+      });
+
+      it("emits login event", function(done) {
+        var spy = sinon.spy(done());
+
+        Spark.on('login', spy);
+        Spark.login('spark', 'spark');
+        Spark.removeListener('login', spy);
+
+        expect(spy.withArgs(null, body)).to.be.calledOnce;
       });
 
     });
