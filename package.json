@@ -26,6 +26,7 @@
     "mocha": "1.21.x",
     "chai": "1.9.x",
     "sinon-chai": "2.5.x",
-    "sinon": "1.10.x"
+    "sinon": "1.10.x",
+    "chai-as-promised": "4.1.x"
   }
 }

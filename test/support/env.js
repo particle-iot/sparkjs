@@ -6,9 +6,11 @@ var path = require('path');
 
 var chai = require('chai'),
 sinon = require('sinon'),
-sinonChai = require('sinon-chai');
+sinonChai = require('sinon-chai'),
+chaiAsPromised = require('chai-as-promised')
 
 chai.use(sinonChai);
+chai.use(chaiAsPromised);
 
 global.chai = chai;
 global.sinon = sinon;
