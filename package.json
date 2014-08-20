@@ -5,24 +5,20 @@
   "version": "0.1.0",
   "homepage": "http://spark.io",
   "bugs": "https://github.com/spark/sparkjs/issues",
-
   "repository": {
     "type": "git",
     "url": "https://github.com/spark/sparkjs"
   },
-
   "engines": {
     "node": ">=0.10.26"
   },
-
   "main": "./lib/spark-api",
-
   "dependencies": {
     "request": ">= 2.40.0",
     "when": ">= 3.4.4"
   },
-
   "devDependencies": {
+    "jshint":     ">= 2.5.4",
     "mocha": "1.21.x",
     "chai": "1.9.x",
     "sinon-chai": "2.5.x",
