@@ -22,6 +22,18 @@ describe("Spark", function() {
         return expect(login_promise).to.be.rejectedWith(error);
       });
 
+      it("calls callback with error", function(done) {
+        var error;
+        var callback = function(err, body) {
+          error = err;
+          done();
+        }.bind(done);
+
+        Spark.login('user', 'pass', callback);
+
+        expect(error).to.eq('invalid_client');
+      });
+
     });
 
     describe("with correct credentials", function() {
@@ -41,6 +53,19 @@ describe("Spark", function() {
         login_promise = Spark.login('spark', 'spark');
         return expect(login_promise).to.eventually.equal('access_token');
       });
+
+      it("calls callback with access token", function(done) {
+        var access_token;
+        var callback = function(err, token) {
+          access_token = token;
+          done();
+        }.bind(done);
+
+        Spark.login('spark', 'spark', callback);
+
+        expect(access_token).to.eq('access_token');
+      });
+
     });
 
   });
