@@ -1,52 +1,44 @@
-exports.handlesWrongCredentials = function(){
+exports.stubRequest = function (body){
+  beforeEach(function() {
+    sinon.stub(Spark, 'request').yields(null, null, body);
+  });
 
-  describe("with wrong credentials", function() {
+  afterEach(function() {
+    Spark.request.restore();
+  });
+};
 
-    var body = { error: 'invalid_grant' };
+exports.behavesLikeInvalidGrant = function(subject, eventName) {
+  describe("with invalid grant", function() {
+    shared.stubRequest({error:'invalid_grant'});
 
-    beforeEach(function() {
-      sinon.stub(Spark, 'request').yields(null, null, body);
-    });
+    shared.behavesLikeError(eventName, subject, 'invalid_grant');
+  });
+};
 
-    afterEach(function() {
-      Spark.request.restore();
-    });
+exports.behavesLikeError = function(eventName, subject, error){
+  describe("error", function() {
 
     it("returns body error", function() {
-      login_promise = Spark.login('user', 'pass');
-      error = 'invalid_grant';
-
-      return expect(login_promise).to.be.rejectedWith(error);
+      return expect(subject()).to.be.rejectedWith(error);
     });
 
     it("executes callback with error", function(done) {
-      callback = shared.verifiedCallback('invalid_grant', null, done);
+      callback = shared.verifiedCallback(error, null, done);
 
-      Spark.login('user', 'pass', callback);
+      subject(callback);
     });
 
-    it("emits login event with error", function(done) {
-      subject = function () {
-        Spark.login('user', 'pass');
-      };
-
-      shared.validateEvent('login', subject, new Error('invalid_grant'), null, done);
+    it("emits event with error", function(done) {
+      shared.validateEvent(eventName, subject, new Error(error), null, done);
     });
 
   });
 };
 
-exports.behavesLikeApi = function (eventName, subject, body, result) {
+exports.behavesLikeSuccess = function (eventName, subject, body, result) {
   describe("with correct credentials", function() {
     var promise;
-
-    beforeEach(function() {
-      sinon.stub(Spark, 'request').yields(null, null, body);
-    });
-
-    afterEach(function() {
-      Spark.request.restore();
-    });
 
     it("handles fulfilled promises", function() {
       promise = subject();
