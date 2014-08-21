@@ -5,7 +5,7 @@ describe("Spark", function() {
     result = 'access_token',
     subject = function(callback) {
       Spark.login('spark', 'spark', callback);
-    }
+    };
 
     shared.handlesWrongCredentials();
     shared.behavesLikeApi('login', subject, body, 'access_token');
@@ -17,7 +17,7 @@ describe("Spark", function() {
     result = body,
     subject = function(callback) {
       Spark.listDevices(callback);
-    }
+    };
 
     shared.handlesWrongCredentials();
     //shared.behavesLikeApi(eventName, subject, body, result);
@@ -29,7 +29,7 @@ describe("Spark", function() {
     result = body,
     subject = function(callback) {
       Spark.listDevices(callback);
-    }
+    };
 
     shared.handlesWrongCredentials();
     //shared.behavesLikeApi(eventName, subject, body, result);

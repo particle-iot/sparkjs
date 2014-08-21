@@ -24,6 +24,7 @@ exports.handlesWrongCredentials = function(){
 
       Spark.login('user', 'pass', callback);
     });
+
     it("emits login event with error", function(done) {
       subject = function () {
         Spark.login('user', 'pass');
