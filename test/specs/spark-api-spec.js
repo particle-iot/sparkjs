@@ -1,8 +1,9 @@
 describe("Spark", function() {
   describe("login", function() {
-
-    var body = { access_token: 'access_token' };
-    var subject = function(callback) {
+    var eventName = 'login',
+    body = { access_token: 'access_token' },
+    result = 'access_token',
+    subject = function(callback) {
       Spark.login('spark', 'spark', callback);
     }
 
@@ -11,7 +12,27 @@ describe("Spark", function() {
   });
 
   describe("listDevices", function() {
+    var eventName = 'listDevices',
+    body = { devices: [{name: 'sparky'}] },
+    result = body,
+    subject = function(callback) {
+      Spark.listDevices(callback);
+    }
+
     shared.handlesWrongCredentials();
+    //shared.behavesLikeApi(eventName, subject, body, result);
+  });
+
+  describe("createUser", function() {
+    var eventName = 'createUser',
+    body = { ok: true },
+    result = body,
+    subject = function(callback) {
+      Spark.listDevices(callback);
+    }
+
+    shared.handlesWrongCredentials();
+    //shared.behavesLikeApi(eventName, subject, body, result);
   });
 });
 

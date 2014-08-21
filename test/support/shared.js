@@ -20,23 +20,22 @@ exports.handlesWrongCredentials = function(){
     });
 
     it("executes callback with error", function(done) {
-      callback = shared.verifiedCallback('invalid_grant', undefined, done);
+      callback = shared.verifiedCallback('invalid_grant', null, done);
 
       Spark.login('user', 'pass', callback);
     });
-
     it("emits login event with error", function(done) {
-      trigger = function () {
+      subject = function () {
         Spark.login('user', 'pass');
       };
 
-      shared.validateEvent('login', trigger, 'invalid_grant', body, done);
+      shared.validateEvent('login', subject, new Error('invalid_grant'), null, done);
     });
 
   });
 };
 
-exports.behavesLikeApi = function (eventName, trigger, body, result) {
+exports.behavesLikeApi = function (eventName, subject, body, result) {
   describe("with correct credentials", function() {
     var promise;
 
@@ -49,7 +48,7 @@ exports.behavesLikeApi = function (eventName, trigger, body, result) {
     });
 
     it("handles fulfilled promises", function() {
-      promise = trigger();
+      promise = subject();
 
       it("is fulfilled", function() {
         return expect(promise).to.be.fulfilled;
@@ -60,14 +59,14 @@ exports.behavesLikeApi = function (eventName, trigger, body, result) {
       });
     });
 
-    it("executes callback with access token", function(done) {
+    it("executes callback with result", function(done) {
       callback = shared.verifiedCallback(null, result, done);
 
-      trigger(callback);
+      subject(callback);
     });
 
     it("emits event", function(done) {
-      shared.validateEvent(eventName, trigger, null, body, done);
+      shared.validateEvent(eventName, subject, null, result, done);
     });
   });
 };
@@ -75,18 +74,20 @@ exports.behavesLikeApi = function (eventName, trigger, body, result) {
 exports.verifiedCallback = function(e, b, done) {
   return function(err, body) {
     expect(body).to.eq(b);
-    expect(err).to.eq(e);
+    if (err) {
+      expect(err.message).to.eq(e);
+    }
     done();
   }.bind(done);
 };
 
-exports.validateEvent = function(eventName, trigger, err, body, done) {
+exports.validateEvent = function(eventName, subject, err, result, done) {
   var spy = sinon.spy(done());
 
   Spark.on(eventName, spy);
-  trigger();
+  subject();
   Spark.removeListener(eventName, spy);
 
-  expect(spy.withArgs(err, body)).to.be.calledOnce;
+  expect(spy.withArgs(err, result)).to.be.calledOnce;
 };
 
