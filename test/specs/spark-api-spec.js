@@ -8,8 +8,7 @@ describe("Spark", function() {
     shared.behavesLikeInvalidGrant(subject, 'login');
 
     describe("with correct params", function() {
-      var eventName = 'login',
-      data = { access_token: 'access_token' };
+      var data = {access_token:'access_token'};
 
       shared.stubRequest(data);
       shared.behavesLikeSuccess('login', subject, data);
@@ -29,11 +28,10 @@ describe("Spark", function() {
     };
 
     describe("with correct params", function() {
-      var eventName = 'listDevices',
-      data = [{name: 'sparky'}];
+      var data = [{name: 'sparky'}];
 
       shared.stubRequest(data);
-      shared.behavesLikeSuccess(eventName, subject, data);
+      shared.behavesLikeSuccess('listDevices', subject, data);
     });
 
     shared.behavesLikeInvalidGrant(subject, 'listDevices');
@@ -52,11 +50,10 @@ describe("Spark", function() {
     };
 
     describe("with correct params", function() {
-      var eventName = 'createUser',
-      data = {ok: true};
+      var data = {ok: true};
 
       shared.stubRequest(data);
-      shared.behavesLikeSuccess(eventName, subject, data);
+      shared.behavesLikeSuccess('createUser', subject, data);
     });
 
     shared.behavesLikeInvalidGrant(subject, 'createUser');
@@ -79,11 +76,10 @@ describe("Spark", function() {
     };
 
     describe("with correct params", function() {
-      var eventName = 'removeAccessToken',
-      data = {ok: true};
+      var data = {ok: true};
 
       shared.stubRequest(data);
-      shared.behavesLikeSuccess(eventName, subject, data);
+      shared.behavesLikeSuccess('removeAccessToken', subject, data);
     });
   });
 
@@ -94,14 +90,16 @@ describe("Spark", function() {
     };
 
     describe("with correct params", function() {
-      var eventName = 'claimCore',
-      data = { access_token: 'access_token',
+      var data = { access_token: 'access_token',
         token_type: 'bearer',
         expires_in: 7776000 };
 
 
       shared.stubRequest(data);
-      shared.behavesLikeSuccess(eventName, subject, data);
+      shared.behavesLikeSuccess('claimCore', subject, data);
+    });
+  });
+
   describe("removeCore", function() {
 
     var subject = function(callback) {
