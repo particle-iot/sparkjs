@@ -102,6 +102,17 @@ describe("Spark", function() {
 
       shared.stubRequest(data);
       shared.behavesLikeSuccess(eventName, subject, data);
+  describe("removeCore", function() {
+
+    var subject = function(callback) {
+      return Spark.removeCore('core_id', callback);
+    };
+
+    describe("with correct params", function() {
+      var data = {ok: true};
+
+      shared.stubRequest(data);
+      shared.behavesLikeSuccess('removeCore', subject, data);
     });
   });
 });
