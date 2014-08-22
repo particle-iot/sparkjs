@@ -14,6 +14,12 @@ describe("Spark", function() {
       shared.stubRequest(data);
       shared.behavesLikeSuccess('login', subject, data);
     });
+
+    it("sets accessToken correctly", function(){
+      subject(function() {
+        expect(Spark.accessToken).to.eq('access_token');
+      });
+    });
   });
 
   describe("listDevices", function() {
@@ -31,6 +37,12 @@ describe("Spark", function() {
     });
 
     shared.behavesLikeInvalidGrant(subject, 'listDevices');
+
+    it("sets devices correctly", function(){
+      subject(function() {
+        expect(Spark.devices).to.eq([{name: 'sparky'}]);
+      });
+    });
   });
 
   describe("createUser", function() {
