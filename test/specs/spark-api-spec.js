@@ -1,6 +1,5 @@
 describe("Spark", function() {
   describe("login", function() {
-
     var subject = function(callback) {
       return Spark.login('spark', 'spark', callback);
     };
@@ -22,7 +21,6 @@ describe("Spark", function() {
   });
 
   describe("listDevices", function() {
-
     var subject = function(callback) {
       return Spark.listDevices(callback);
     };
@@ -44,7 +42,6 @@ describe("Spark", function() {
   });
 
   describe("createUser", function() {
-
     var subject = function(callback) {
       return Spark.createUser('user@gmail.com', 'pass', callback);
     };
@@ -70,10 +67,11 @@ describe("Spark", function() {
   });
 
   describe("removeAccessToken", function() {
-
     var subject = function(callback) {
       return Spark.removeAccessToken('user@gmail.com', 'pass', 'access_token', callback);
     };
+
+    shared.behavesLikeInvalidGrant(subject, 'removeAccessToken');
 
     describe("with correct params", function() {
       var data = {ok: true};
@@ -81,13 +79,15 @@ describe("Spark", function() {
       shared.stubRequest(data);
       shared.behavesLikeSuccess('removeAccessToken', subject, data);
     });
+
   });
 
   describe("claimCore", function() {
-
     var subject = function(callback) {
       return Spark.claimCore('core_id', callback);
     };
+
+    shared.behavesLikeInvalidGrant(subject, 'claimCore');
 
     describe("with correct params", function() {
       var data = { access_token: 'access_token',
@@ -101,10 +101,11 @@ describe("Spark", function() {
   });
 
   describe("removeCore", function() {
-
     var subject = function(callback) {
       return Spark.removeCore('core_id', callback);
     };
+
+    shared.behavesLikeInvalidGrant(subject, 'removeCore');
 
     describe("with correct params", function() {
       var data = {ok: true};
@@ -113,6 +114,19 @@ describe("Spark", function() {
       shared.behavesLikeSuccess('removeCore', subject, data);
     });
   });
+
+  describe("renameCore", function() {
+    var subject = function(callback) {
+      return Spark.renameCore('core_id', 'new_name', callback);
+    };
+
+    shared.behavesLikeInvalidGrant(subject, 'renameCore');
+
+    describe("with correct params", function() {
+      var data = {ok: true};
+
+      shared.stubRequest(data);
+      shared.behavesLikeSuccess('renameCore', subject, data);
+    });
+  });
 });
-
-
