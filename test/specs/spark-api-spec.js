@@ -3,15 +3,10 @@ describe("Spark", function() {
     var subject = function(callback) {
       return Spark.login('spark', 'spark', callback);
     };
+    var data = {access_token:'access_token'};
 
     shared.behavesLikeInvalidGrant(subject, 'login');
-
-    describe("with correct params", function() {
-      var data = {access_token:'access_token'};
-
-      shared.stubRequest(data);
-      shared.behavesLikeSuccess('login', subject, data);
-    });
+    shared.behavesLikeSuccess('login', subject, data);
 
     it("sets accessToken correctly", function(){
       subject(function() {
@@ -24,14 +19,9 @@ describe("Spark", function() {
     var subject = function(callback) {
       return Spark.listDevices(callback);
     };
+    var data = [{name: 'sparky'}];
 
-    describe("with correct params", function() {
-      var data = [{name: 'sparky'}];
-
-      shared.stubRequest(data);
-      shared.behavesLikeSuccess('listDevices', subject, data);
-    });
-
+    shared.behavesLikeSuccess('listDevices', subject, data);
     shared.behavesLikeInvalidGrant(subject, 'listDevices');
 
     it("sets devices correctly", function(){
@@ -45,14 +35,9 @@ describe("Spark", function() {
     var subject = function(callback) {
       return Spark.createUser('user@gmail.com', 'pass', callback);
     };
+    var data = {ok: true};
 
-    describe("with correct params", function() {
-      var data = {ok: true};
-
-      shared.stubRequest(data);
-      shared.behavesLikeSuccess('createUser', subject, data);
-    });
-
+    shared.behavesLikeSuccess('createUser', subject, data);
     shared.behavesLikeInvalidGrant(subject, 'createUser');
 
     describe('with invalid username', function() {
@@ -70,63 +55,53 @@ describe("Spark", function() {
     var subject = function(callback) {
       return Spark.removeAccessToken('user@gmail.com', 'pass', 'access_token', callback);
     };
+    var data = {ok: true};
 
+    shared.behavesLikeSuccess('removeAccessToken', subject, data);
     shared.behavesLikeInvalidGrant(subject, 'removeAccessToken');
-
-    describe("with correct params", function() {
-      var data = {ok: true};
-
-      shared.stubRequest(data);
-      shared.behavesLikeSuccess('removeAccessToken', subject, data);
-    });
-
   });
 
   describe("claimCore", function() {
     var subject = function(callback) {
       return Spark.claimCore('core_id', callback);
     };
+    var data = { access_token: 'access_token',
+      token_type: 'bearer',
+      expires_in: 7776000 };
 
+    shared.behavesLikeSuccess('claimCore', subject, data);
     shared.behavesLikeInvalidGrant(subject, 'claimCore');
-
-    describe("with correct params", function() {
-      var data = { access_token: 'access_token',
-        token_type: 'bearer',
-        expires_in: 7776000 };
-
-
-      shared.stubRequest(data);
-      shared.behavesLikeSuccess('claimCore', subject, data);
-    });
   });
 
   describe("removeCore", function() {
     var subject = function(callback) {
       return Spark.removeCore('core_id', callback);
     };
+    var data = {ok: true};
 
+    shared.behavesLikeSuccess('removeCore', subject, data);
     shared.behavesLikeInvalidGrant(subject, 'removeCore');
-
-    describe("with correct params", function() {
-      var data = {ok: true};
-
-      shared.stubRequest(data);
-      shared.behavesLikeSuccess('removeCore', subject, data);
-    });
   });
 
   describe("renameCore", function() {
     var subject = function(callback) {
       return Spark.renameCore('core_id', 'new_name', callback);
     };
+    var data = {ok: true};
 
+    shared.behavesLikeSuccess('renameCore', subject, data);
     shared.behavesLikeInvalidGrant(subject, 'renameCore');
+  });
 
-    describe("with correct params", function() {
-      var data = {ok: true};
+  describe("getAttributes", function() {
+    var subject = function(callback) {
+      return Spark.getAttributes('core_id', callback);
+    };
+    var data = { id: 'core_id', name: 'name', connected: false,
+      variables: null, functions: null, cc3000_patch_version: '1.24',
+      requires_deep_update: true };
 
-      shared.stubRequest(data);
-      shared.behavesLikeSuccess('renameCore', subject, data);
-    });
+    shared.behavesLikeSuccess('getAttributes', subject, data);
+    shared.behavesLikeInvalidGrant(subject, 'getAttributes');
   });
 });

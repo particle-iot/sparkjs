@@ -37,8 +37,10 @@ exports.behavesLikeError = function(eventName, subject, error){
 };
 
 exports.behavesLikeSuccess = function (eventName, subject, data) {
-  describe("with correct credentials", function() {
+  describe("success", function() {
     var promise;
+
+    shared.stubRequest(data);
 
     it("handles fulfilled promises", function() {
       promise = subject();
