@@ -5,8 +5,8 @@ describe("Spark", function() {
     };
     var data = {access_token:'access_token'};
 
-    shared.behavesLikeInvalidGrant(subject, 'login');
     shared.behavesLikeSuccess('login', subject, data);
+    shared.behavesLikeError('login', subject, 'invalid_grant');
 
     it("sets accessToken correctly", function(){
       subject(function() {
@@ -22,7 +22,7 @@ describe("Spark", function() {
     var data = [{name: 'sparky'}];
 
     shared.behavesLikeSuccess('listDevices', subject, data);
-    shared.behavesLikeInvalidGrant(subject, 'listDevices');
+    shared.behavesLikeError('listDevices', subject, 'invalid_grant');
 
     it("sets devices correctly", function(){
       subject(function() {
@@ -38,7 +38,7 @@ describe("Spark", function() {
     var data = {ok: true};
 
     shared.behavesLikeSuccess('createUser', subject, data);
-    shared.behavesLikeInvalidGrant(subject, 'createUser');
+    shared.behavesLikeError('createUser', subject, 'invalid_grant');
 
     describe('with invalid username', function() {
       it('returns correct error message', function() {
@@ -58,7 +58,7 @@ describe("Spark", function() {
     var data = {ok: true};
 
     shared.behavesLikeSuccess('removeAccessToken', subject, data);
-    shared.behavesLikeInvalidGrant(subject, 'removeAccessToken');
+    shared.behavesLikeError('removeAccessToken', subject, 'invalid_grant');
   });
 
   describe("claimCore", function() {
@@ -70,7 +70,7 @@ describe("Spark", function() {
       expires_in: 7776000 };
 
     shared.behavesLikeSuccess('claimCore', subject, data);
-    shared.behavesLikeInvalidGrant(subject, 'claimCore');
+    shared.behavesLikeError('claimCore', subject, 'invalid_grant');
   });
 
   describe("removeCore", function() {
@@ -80,7 +80,7 @@ describe("Spark", function() {
     var data = {ok: true};
 
     shared.behavesLikeSuccess('removeCore', subject, data);
-    shared.behavesLikeInvalidGrant(subject, 'removeCore');
+    shared.behavesLikeError('removeCore', subject, 'invalid_grant');
   });
 
   describe("renameCore", function() {
@@ -90,7 +90,7 @@ describe("Spark", function() {
     var data = {ok: true};
 
     shared.behavesLikeSuccess('renameCore', subject, data);
-    shared.behavesLikeInvalidGrant(subject, 'renameCore');
+    shared.behavesLikeError('renameCore', subject, 'invalid_grant');
   });
 
   describe("getAttributes", function() {
@@ -102,6 +102,6 @@ describe("Spark", function() {
       requires_deep_update: true };
 
     shared.behavesLikeSuccess('getAttributes', subject, data);
-    shared.behavesLikeInvalidGrant(subject, 'getAttributes');
+    shared.behavesLikeError('getAttributes', subject, 'invalid_grant');
   });
 });

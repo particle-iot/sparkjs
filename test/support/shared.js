@@ -8,16 +8,10 @@ exports.stubRequest = function (data){
   });
 };
 
-exports.behavesLikeInvalidGrant = function(subject, eventName) {
-  describe("with invalid grant", function() {
-    shared.stubRequest({error:'invalid_grant'});
-
-    shared.behavesLikeError(eventName, subject, 'invalid_grant');
-  });
-};
-
 exports.behavesLikeError = function(eventName, subject, error){
   describe("error", function() {
+
+    shared.stubRequest({error: error});
 
     it("promise rejected with error", function() {
       return expect(subject()).to.be.rejectedWith(error);
