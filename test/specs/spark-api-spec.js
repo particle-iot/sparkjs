@@ -9,11 +9,10 @@ describe("Spark", function() {
 
     describe("with correct params", function() {
       var eventName = 'login',
-      body = { access_token: 'access_token' },
-      result = 'access_token';
+      data = { access_token: 'access_token' };
 
-      shared.stubRequest(body);
-      shared.behavesLikeSuccess('login', subject, body, 'access_token');
+      shared.stubRequest(data);
+      shared.behavesLikeSuccess('login', subject, data);
     });
   });
 
@@ -25,11 +24,10 @@ describe("Spark", function() {
 
     describe("with correct params", function() {
       var eventName = 'listDevices',
-      body = [{name: 'sparky'}],
-      result = body;
+      data = [{name: 'sparky'}];
 
-      shared.stubRequest(body);
-      shared.behavesLikeSuccess(eventName, subject, body, result);
+      shared.stubRequest(data);
+      shared.behavesLikeSuccess(eventName, subject, data);
     });
 
     shared.behavesLikeInvalidGrant(subject, 'listDevices');
@@ -43,11 +41,10 @@ describe("Spark", function() {
 
     describe("with correct params", function() {
       var eventName = 'createUser',
-      body = {ok: true},
-      result = body;
+      data = {ok: true};
 
-      shared.stubRequest(body);
-      shared.behavesLikeSuccess(eventName, subject, body, result);
+      shared.stubRequest(data);
+      shared.behavesLikeSuccess(eventName, subject, data);
     });
 
     shared.behavesLikeInvalidGrant(subject, 'createUser');
