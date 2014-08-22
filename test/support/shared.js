@@ -1,6 +1,6 @@
-exports.stubRequest = function (body){
+exports.stubRequest = function (data){
   beforeEach(function() {
-    sinon.stub(Spark, 'request').yields(null, null, body);
+    sinon.stub(Spark, 'request').yields(null, null, data);
   });
 
   afterEach(function() {
@@ -19,7 +19,7 @@ exports.behavesLikeInvalidGrant = function(subject, eventName) {
 exports.behavesLikeError = function(eventName, subject, error){
   describe("error", function() {
 
-    it("returns body error", function() {
+    it("promise rejected with error", function() {
       return expect(subject()).to.be.rejectedWith(error);
     });
 
@@ -36,7 +36,7 @@ exports.behavesLikeError = function(eventName, subject, error){
   });
 };
 
-exports.behavesLikeSuccess = function (eventName, subject, body, result) {
+exports.behavesLikeSuccess = function (eventName, subject, data) {
   describe("with correct credentials", function() {
     var promise;
 
@@ -47,26 +47,26 @@ exports.behavesLikeSuccess = function (eventName, subject, body, result) {
         return expect(promise).to.be.fulfilled;
       });
 
-      it("returns expected result", function() {
-        return expect(promise).to.eventually.equal(result);
+      it("returns expected data", function() {
+        return expect(promise).to.eventually.equal(data);
       });
     });
 
-    it("executes callback with result", function(done) {
-      callback = shared.verifiedCallback(null, result, done);
+    it("executes callback with data", function(done) {
+      callback = shared.verifiedCallback(null, data, done);
 
       subject(callback);
     });
 
     it("emits event", function(done) {
-      shared.validateEvent(eventName, subject, null, result, done);
+      shared.validateEvent(eventName, subject, null, data, done);
     });
   });
 };
 
-exports.verifiedCallback = function(e, b, done) {
-  return function(err, body) {
-    expect(body).to.eq(b);
+exports.verifiedCallback = function(e, d, done) {
+  return function(err, data) {
+    expect(data).to.eq(d);
     if (err) {
       expect(err.message).to.eq(e);
     }
@@ -74,13 +74,13 @@ exports.verifiedCallback = function(e, b, done) {
   }.bind(done);
 };
 
-exports.validateEvent = function(eventName, subject, err, result, done) {
+exports.validateEvent = function(eventName, subject, err, data, done) {
   var spy = sinon.spy(done());
 
   Spark.on(eventName, spy);
   subject();
   Spark.removeListener(eventName, spy);
 
-  expect(spy.withArgs(err, result)).to.be.calledOnce;
+  expect(spy.withArgs(err, data)).to.be.calledOnce;
 };
 
