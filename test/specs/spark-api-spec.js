@@ -71,5 +71,39 @@ describe("Spark", function() {
       });
     });
   });
+
+  describe("removeAccessToken", function() {
+
+    var subject = function(callback) {
+      return Spark.removeAccessToken('user@gmail.com', 'pass', 'access_token', callback);
+    };
+
+    describe("with correct params", function() {
+      var eventName = 'removeAccessToken',
+      data = {ok: true};
+
+      shared.stubRequest(data);
+      shared.behavesLikeSuccess(eventName, subject, data);
+    });
+  });
+
+  describe("claimCore", function() {
+
+    var subject = function(callback) {
+      return Spark.claimCore('core_id', callback);
+    };
+
+    describe("with correct params", function() {
+      var eventName = 'claimCore',
+      data = { access_token: 'access_token',
+        token_type: 'bearer',
+        expires_in: 7776000 };
+
+
+      shared.stubRequest(data);
+      shared.behavesLikeSuccess(eventName, subject, data);
+    });
+  });
 });
+
 
