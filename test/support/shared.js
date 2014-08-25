@@ -1,6 +1,9 @@
 exports.stubRequest = function (data){
   beforeEach(function() {
-    sinon.stub(Spark, 'request').yields(null, null, data);
+    form = {form: function() {}};
+
+    sinon.stub(Spark, 'request').yields(null, null, data).
+      returns(form);
   });
 
   afterEach(function() {
@@ -8,16 +11,10 @@ exports.stubRequest = function (data){
   });
 };
 
-exports.behavesLikeInvalidGrant = function(subject, eventName) {
-  describe("with invalid grant", function() {
-    shared.stubRequest({error:'invalid_grant'});
-
-    shared.behavesLikeError(eventName, subject, 'invalid_grant');
-  });
-};
-
 exports.behavesLikeError = function(eventName, subject, error){
   describe("error", function() {
+
+    shared.stubRequest({error: error});
 
     it("promise rejected with error", function() {
       return expect(subject()).to.be.rejectedWith(error);
@@ -37,8 +34,10 @@ exports.behavesLikeError = function(eventName, subject, error){
 };
 
 exports.behavesLikeSuccess = function (eventName, subject, data) {
-  describe("with correct credentials", function() {
+  describe("success", function() {
     var promise;
+
+    shared.stubRequest(data);
 
     it("handles fulfilled promises", function() {
       promise = subject();
