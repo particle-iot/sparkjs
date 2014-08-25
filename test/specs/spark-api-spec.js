@@ -97,11 +97,166 @@ describe("Spark", function() {
     var subject = function(callback) {
       return Spark.getAttributes('core_id', callback);
     };
-    var data = { id: 'core_id', name: 'name', connected: false,
-      variables: null, functions: null, cc3000_patch_version: '1.24',
-      requires_deep_update: true };
+    var data = {
+      id: 'core_id',
+      name: 'name',
+      connected: false,
+      variables: null,
+      functions: null,
+      cc3000_patch_version: '1.24',
+      requires_deep_update: true
+    };
 
     shared.behavesLikeSuccess('getAttributes', subject, data);
     shared.behavesLikeError('getAttributes', subject, 'invalid_grant');
+  });
+
+  describe("getVariable", function() {
+    var subject = function(callback) {
+      return Spark.getVariable('core_id', 'var', callback);
+    };
+    var data = {
+      "cmd": "VarReturn",
+      "name": "var",
+      "result": 10,
+      "coreInfo": {
+        "last_app": "",
+        "last_heard": "2014-08-25T16:18:42.534Z",
+        "connected": true,
+        "deviceID": "core_id"
+      }
+    };
+
+    shared.behavesLikeSuccess('getVariable', subject, data);
+    shared.behavesLikeError('getVariable', subject, 'invalid_grant');
+  });
+
+  describe("signalCore", function() {
+    var subject = function(callback) {
+      return Spark.signalCore('core_id', true, callback);
+    };
+    var data = {
+      id: 'core_id',
+      connected: true,
+      signaling: true
+    };
+
+    shared.behavesLikeSuccess('signalCore', subject, data);
+    shared.behavesLikeError('signalCore', subject, 'invalid_grant');
+  });
+
+  describe("flashCore", function() {
+    var subject = function(callback) {
+      return Spark.flashCore('core_id', [], callback);
+    };
+    var data = {
+      id: 'core_id',
+      status: "Update started"
+    };
+
+    shared.behavesLikeSuccess('flashCore', subject, data);
+    shared.behavesLikeError('flashCore', subject, 'invalid_grant');
+    //TODO: Files appended correctly
+  });
+
+  describe("compileCode", function() {
+    var subject = function(callback) {
+      return Spark.compileCode([], callback);
+    };
+    var data = {
+      ok: true
+    };
+
+    shared.behavesLikeSuccess('compileCode', subject, data);
+    shared.behavesLikeError('compileCode', subject, 'invalid_grant');
+   //TODO: Files appended correctly
+  });
+
+  describe("downloadBinary", function() {
+    var subject = function(callback) {
+      return Spark.downloadBinary('http://bin.io', 'file', callback);
+    };
+    var data = {
+      ok: true
+    };
+
+    shared.behavesLikeSuccess('downloadBinary', subject, data);
+    shared.behavesLikeError('downloadBinary', subject, 'invalid_grant');
+    //TODO: File is written correctly
+  });
+
+  describe("sendPublicKey", function() {
+    var subject = function(callback) {
+      return Spark.sendPublicKey('core_id', 'buffer', callback);
+    };
+    var data = {
+      ok: true
+    };
+
+    shared.behavesLikeSuccess('sendPublicKey', subject, data);
+    shared.behavesLikeError('sendPublicKey', subject, 'invalid_grant');
+    //TODO: File is written correctly
+  });
+
+  describe("callFunction", function() {
+    var subject = function(callback) {
+      return Spark.callFunction('core_id', 'function', 'arg', callback);
+    };
+    var data = {
+      id: 'core_id',
+      name: 'core_name',
+      last_app: 'last_app',
+      connected: true,
+      return_value: 42
+    };
+
+    shared.behavesLikeSuccess('callFunction', subject, data);
+    shared.behavesLikeError('callFunction', subject, 'invalid_grant');
+  });
+
+  describe("publishEvent", function() {
+    var subject = function(callback) {
+      return Spark.publishEvent('event_name', 'data', callback);
+    };
+    var data = {
+      ok: true,
+    };
+
+    shared.behavesLikeSuccess('publishEvent', subject, data);
+    shared.behavesLikeError('publishEvent', subject, 'invalid_grant');
+  });
+
+  describe("createWebhook", function() {
+    var subject = function(callback) {
+      return Spark.createWebhook('event_name', 'url', 'core_id', callback);
+    };
+    var data = {
+      ok: true,
+    };
+
+    shared.behavesLikeSuccess('createWebhook', subject, data);
+    shared.behavesLikeError('createWebhook', subject, 'invalid_grant');
+  });
+
+  describe("deleteWebhook", function() {
+    var subject = function(callback) {
+      return Spark.deleteWebhook('hook_id', callback);
+    };
+    var data = {
+      ok: true,
+    };
+
+    shared.behavesLikeSuccess('deleteWebhook', subject, data);
+    shared.behavesLikeError('deleteWebhook', subject, 'invalid_grant');
+  });
+
+  describe("listWebhooks", function() {
+    var subject = function(callback) {
+      return Spark.listWebhooks(callback);
+    };
+    var data = [];
+
+    shared.behavesLikeSuccess('listWebhooks', subject, data);
+    shared.behavesLikeError('listWebhooks', subject, 'invalid_grant');
   });
 });

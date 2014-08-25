@@ -1,6 +1,9 @@
 exports.stubRequest = function (data){
   beforeEach(function() {
-    sinon.stub(Spark, 'request').yields(null, null, data);
+    form = {form: function() {}};
+
+    sinon.stub(Spark, 'request').yields(null, null, data).
+      returns(form);
   });
 
   afterEach(function() {
