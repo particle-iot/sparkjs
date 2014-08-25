@@ -11,6 +11,7 @@ pids
 lib-cov
 
 # Coverage directory used by tools like istanbul
+file
 coverage
 
 # Grunt intermediate storage (http://gruntjs.com/creating-plugins#storing-task-files)

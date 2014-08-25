@@ -9,7 +9,7 @@ test:
 	@$(BIN)/mocha --colors $(TEST_FILES)
 
 cover:
-	@$(BIN)/istanbul cover $(BIN)/_mocha $(TEST_FILES) --report lcovonly -- -R spec
+	@$(BIN)/istanbul cover $(BIN)/_mocha $(TEST_FILES) -- -R spec
 
 lint:
 	@$(BIN)/jshint ./lib
