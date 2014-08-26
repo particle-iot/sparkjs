@@ -1,44 +1,79 @@
-describe("Spark", function() {
-  describe("login", function() {
+describe('Spark', function() {
+
+  it('is not ready before login', function(){
+    expect(Spark.ready()).to.eq(false);
+  });
+
+  describe('login', function() {
     var subject = function(callback) {
       return Spark.login('spark', 'spark', callback);
     };
     var data = {access_token:'access_token'};
+    var args = {
+      uri: 'https://api.spark.io/oauth/token',
+      method: 'POST',
+      json: true,
+      form: {
+        username: 'spark',
+        password: 'spark',
+        grant_type: 'password',
+        client_id: 'CLIENT_ID',
+        client_secret: 'CLIENT_SECRET'
+      }
+    };
 
-    shared.behavesLikeSuccess('login', subject, data);
-    shared.behavesLikeError('login', subject, 'invalid_grant');
+    shared.behavesLikeAPI('login', subject, data, args);
 
-    it("sets accessToken correctly", function(){
+    it('sets accessToken correctly', function() {
       subject(function() {
         expect(Spark.accessToken).to.eq('access_token');
       });
     });
+
+    it('is ready', function() {
+      subject(function() {
+        expect(Spark.ready()).to.eq(true);
+      });
+    });
   });
 
-  describe("listDevices", function() {
+  describe('listDevices', function() {
     var subject = function(callback) {
+      Spark.accessToken = 'token';
       return Spark.listDevices(callback);
     };
     var data = [{name: 'sparky'}];
+    var args = {
+      uri: 'https://api.spark.io/v1/devices?access_token=token',
+      method: 'GET',
+      json: true
+    };
 
-    shared.behavesLikeSuccess('listDevices', subject, data);
-    shared.behavesLikeError('listDevices', subject, 'invalid_grant');
+    shared.behavesLikeAPI('listDevices', subject, data, args);
 
-    it("sets devices correctly", function(){
+    it('sets devices correctly', function(){
       subject(function() {
         expect(Spark.devices).to.eq([{name: 'sparky'}]);
       });
     });
   });
 
-  describe("createUser", function() {
+  describe('createUser', function() {
     var subject = function(callback) {
-      return Spark.createUser('user@gmail.com', 'pass', callback);
-    };
-    var data = {ok: true};
+        return Spark.createUser('user@gmail.com', 'pass', callback);
+      };
+      var data = {ok: true};
+      var args = {
+        uri: 'https://api.spark.io/v1/users',
+        method: 'POST',
+        form: {
+          username: 'user@gmail.com',
+          password: 'pass'
+        },
+        json: true
+      };
 
-    shared.behavesLikeSuccess('createUser', subject, data);
-    shared.behavesLikeError('createUser', subject, 'invalid_grant');
+      shared.behavesLikeAPI('createUser', subject, data, args);
 
     describe('with invalid username', function() {
       it('returns correct error message', function() {
@@ -51,50 +86,89 @@ describe("Spark", function() {
     });
   });
 
-  describe("removeAccessToken", function() {
+  describe('removeAccessToken', function() {
     var subject = function(callback) {
       return Spark.removeAccessToken('user@gmail.com', 'pass', 'access_token', callback);
     };
     var data = {ok: true};
+    var args = {
+      uri: 'https://api.spark.io/v1/access_tokens/access_token',
+      method: 'DELETE',
+      auth: {
+        username: 'user@gmail.com',
+        password: 'pass'
+      },
+      form: {
+        access_token: 'access_token'
+      },
+      json: true
+    };
 
-    shared.behavesLikeSuccess('removeAccessToken', subject, data);
-    shared.behavesLikeError('removeAccessToken', subject, 'invalid_grant');
+    shared.behavesLikeAPI('removeAccessToken', subject, data, args);
   });
 
-  describe("claimCore", function() {
+  describe('claimCore', function() {
     var subject = function(callback) {
+      Spark.accessToken = 'token';
       return Spark.claimCore('core_id', callback);
     };
     var data = { access_token: 'access_token',
       token_type: 'bearer',
       expires_in: 7776000 };
+    var args = {
+      uri: 'https://api.spark.io/v1/devices',
+      method: 'POST',
+      form: {
+        id: 'core_id',
+        access_token: 'token'
+      },
+      json: true
+    };
 
-    shared.behavesLikeSuccess('claimCore', subject, data);
-    shared.behavesLikeError('claimCore', subject, 'invalid_grant');
+    shared.behavesLikeAPI('claimCore', subject, data, args);
   });
 
-  describe("removeCore", function() {
+  describe('removeCore', function() {
     var subject = function(callback) {
+      Spark.accessToken = 'token';
       return Spark.removeCore('core_id', callback);
     };
     var data = {ok: true};
+    var args = {
+      uri: 'https://api.spark.io/v1/devices/core_id',
+      method: 'DELETE',
+      form: {
+        id: 'core_id',
+        access_token: 'token'
+      },
+      json: true
+    };
 
-    shared.behavesLikeSuccess('removeCore', subject, data);
-    shared.behavesLikeError('removeCore', subject, 'invalid_grant');
+    shared.behavesLikeAPI('removeCore', subject, data, args);
   });
 
-  describe("renameCore", function() {
+  describe('renameCore', function() {
     var subject = function(callback) {
+      Spark.accessToken = 'token';
       return Spark.renameCore('core_id', 'new_name', callback);
     };
     var data = {ok: true};
+    var args = {
+      uri: 'https://api.spark.io/v1/devices/core_id',
+      method: 'PUT',
+      form: {
+        name: 'new_name',
+        access_token: 'token'
+      },
+      json: true
+    };
 
-    shared.behavesLikeSuccess('renameCore', subject, data);
-    shared.behavesLikeError('renameCore', subject, 'invalid_grant');
+    shared.behavesLikeAPI('renameCore', subject, data, args);
   });
 
-  describe("getAttributes", function() {
+  describe('getAttributes', function() {
     var subject = function(callback) {
+      Spark.accessToken = 'token';
       return Spark.getAttributes('core_id', callback);
     };
     var data = {
@@ -106,33 +180,43 @@ describe("Spark", function() {
       cc3000_patch_version: '1.24',
       requires_deep_update: true
     };
+    var args = {
+      uri: 'https://api.spark.io/v1/devices/core_id?access_token=token',
+      method: 'GET',
+      json: true
+    };
 
-    shared.behavesLikeSuccess('getAttributes', subject, data);
-    shared.behavesLikeError('getAttributes', subject, 'invalid_grant');
+    shared.behavesLikeAPI('getAttributes', subject, data, args);
   });
 
-  describe("getVariable", function() {
+  describe('getVariable', function() {
     var subject = function(callback) {
+      Spark.accessToken = 'token';
       return Spark.getVariable('core_id', 'var', callback);
     };
     var data = {
-      "cmd": "VarReturn",
-      "name": "var",
-      "result": 10,
-      "coreInfo": {
-        "last_app": "",
-        "last_heard": "2014-08-25T16:18:42.534Z",
-        "connected": true,
-        "deviceID": "core_id"
+      'cmd': 'VarReturn',
+      'name': 'var',
+      'result': 10,
+      'coreInfo': {
+        'last_app': '',
+        'last_heard': '2014-08-25T16:18:42.534Z',
+        'connected': true,
+        'deviceID': 'core_id'
       }
     };
+    var args = {
+      uri: 'https://api.spark.io/v1/devices/core_id/var?access_token=token',
+      method: 'GET',
+      json: true
+    };
 
-    shared.behavesLikeSuccess('getVariable', subject, data);
-    shared.behavesLikeError('getVariable', subject, 'invalid_grant');
+    shared.behavesLikeAPI('getVariable', subject, data, args);
   });
 
-  describe("signalCore", function() {
+  describe('signalCore', function() {
     var subject = function(callback) {
+      Spark.accessToken = 'token';
       return Spark.signalCore('core_id', true, callback);
     };
     var data = {
@@ -140,66 +224,101 @@ describe("Spark", function() {
       connected: true,
       signaling: true
     };
+    var args = {
+      uri: 'https://api.spark.io/v1/devices/core_id',
+      method: 'PUT',
+      form: {
+        signal: 1,
+        access_token: 'token'
+      },
+      json: true
+    };
 
-    shared.behavesLikeSuccess('signalCore', subject, data);
-    shared.behavesLikeError('signalCore', subject, 'invalid_grant');
+    shared.behavesLikeAPI('signalCore', subject, data, args);
   });
 
-  describe("flashCore", function() {
+  describe('flashCore', function() {
     var subject = function(callback) {
+      Spark.accessToken = 'token';
       return Spark.flashCore('core_id', [], callback);
     };
     var data = {
       id: 'core_id',
-      status: "Update started"
+      status: 'Update started'
+    };
+    var args ={
+      uri: 'https://api.spark.io/v1/devices/core_id?access_token=token',
+      method: 'PUT',
+      json: true
     };
 
-    shared.behavesLikeSuccess('flashCore', subject, data);
-    shared.behavesLikeError('flashCore', subject, 'invalid_grant');
+    shared.behavesLikeAPI('flashCore', subject, data, args);
     //TODO: Files appended correctly
   });
 
-  describe("compileCode", function() {
+  describe('compileCode', function() {
     var subject = function(callback) {
+      Spark.accessToken = 'token';
       return Spark.compileCode([], callback);
     };
     var data = {
       ok: true
     };
+    var args ={
+      uri: 'https://api.spark.io/v1/binaries?access_token=token',
+      method: 'POST',
+      json: true
+    };
 
-    shared.behavesLikeSuccess('compileCode', subject, data);
-    shared.behavesLikeError('compileCode', subject, 'invalid_grant');
+    shared.behavesLikeAPI('compileCode', subject, data, args);
    //TODO: Files appended correctly
   });
 
-  describe("downloadBinary", function() {
+  describe('downloadBinary', function() {
     var subject = function(callback) {
+      Spark.accessToken = 'token';
       return Spark.downloadBinary('http://bin.io', 'file', callback);
     };
     var data = {
       ok: true
     };
+    var args = {
+      uri: 'https://api.spark.io/http://bin.io?access_token=token',
+      method: 'GET'
+    };
 
-    shared.behavesLikeSuccess('downloadBinary', subject, data);
-    shared.behavesLikeError('downloadBinary', subject, 'invalid_grant');
+    shared.behavesLikeAPI('downloadBinary', subject, data, args);
     //TODO: File is written correctly
   });
 
-  describe("sendPublicKey", function() {
+  describe('sendPublicKey', function() {
     var subject = function(callback) {
+      Spark.accessToken = 'token';
       return Spark.sendPublicKey('core_id', 'buffer', callback);
     };
     var data = {
       ok: true
     };
+    var args = {
+      uri: 'https://api.spark.io/v1/provisioning/core_id',
+      method: 'POST',
+      form: {
+        deviceID: 'core_id',
+        publicKey: 'buffer',
+        order: 'manual_0',
+        filename: 'cli',
+        access_token: 'token'
+      },
+      json: true
+    };
 
-    shared.behavesLikeSuccess('sendPublicKey', subject, data);
-    shared.behavesLikeError('sendPublicKey', subject, 'invalid_grant');
+    shared.behavesLikeAPI('sendPublicKey', subject, data, args);
     //TODO: File is written correctly
   });
 
-  describe("callFunction", function() {
+  describe('callFunction', function() {
     var subject = function(callback) {
+      Spark.accessToken = 'token';
       return Spark.callFunction('core_id', 'function', 'arg', callback);
     };
     var data = {
@@ -209,54 +328,93 @@ describe("Spark", function() {
       connected: true,
       return_value: 42
     };
+    var args = {
+      uri: 'https://api.spark.io/v1/devices/core_id/function',
+      method: 'POST',
+      form: {
+        arg: 'arg',
+        access_token: 'token'
+      },
+      json: true
+    };
 
-    shared.behavesLikeSuccess('callFunction', subject, data);
-    shared.behavesLikeError('callFunction', subject, 'invalid_grant');
+    shared.behavesLikeAPI('callFunction', subject, data, args);
   });
 
-  describe("publishEvent", function() {
+  describe('publishEvent', function() {
     var subject = function(callback) {
+      Spark.accessToken = 'token';
       return Spark.publishEvent('event_name', 'data', callback);
     };
     var data = {
       ok: true,
     };
+    var args = {
+      uri: 'https://api.spark.io/v1/devices/events',
+      method: 'POST',
+      form: {
+        name: 'event_name',
+        data: 'data',
+        access_token: 'token'
+      },
+      json: true
+    };
 
-    shared.behavesLikeSuccess('publishEvent', subject, data);
-    shared.behavesLikeError('publishEvent', subject, 'invalid_grant');
+    shared.behavesLikeAPI('publishEvent', subject, data, args);
   });
 
-  describe("createWebhook", function() {
+  describe('createWebhook', function() {
     var subject = function(callback) {
+      Spark.accessToken = 'token';
       return Spark.createWebhook('event_name', 'url', 'core_id', callback);
     };
     var data = {
       ok: true,
     };
+    var args = {
+      uri: 'https://api.spark.io/v1/webhooks',
+      method: 'POST',
+      form: {
+        event: 'event_name',
+        url: 'url',
+        deviceid: 'core_id',
+        access_token: 'token'
+      },
+      json: true
+    };
 
-    shared.behavesLikeSuccess('createWebhook', subject, data);
-    shared.behavesLikeError('createWebhook', subject, 'invalid_grant');
+    shared.behavesLikeAPI('createWebhook', subject, data, args);
   });
 
-  describe("deleteWebhook", function() {
+  describe('deleteWebhook', function() {
     var subject = function(callback) {
+      Spark.accessToken = 'token';
       return Spark.deleteWebhook('hook_id', callback);
     };
     var data = {
       ok: true,
     };
+    var args = {
+      uri: 'https://api.spark.io/v1/webhooks/hook_id?access_token=token',
+      method: 'DELETE',
+      json: true
+    };
 
-    shared.behavesLikeSuccess('deleteWebhook', subject, data);
-    shared.behavesLikeError('deleteWebhook', subject, 'invalid_grant');
+    shared.behavesLikeAPI('deleteWebhook', subject, data, args);
   });
 
-  describe("listWebhooks", function() {
+  describe('listWebhooks', function() {
     var subject = function(callback) {
+      Spark.accessToken = 'token';
       return Spark.listWebhooks(callback);
     };
     var data = [];
+    var args = {
+      uri: 'https://api.spark.io/v1/webhooks/?access_token=token',
+      method: 'GET',
+      json: true
+    };
 
-    shared.behavesLikeSuccess('listWebhooks', subject, data);
-    shared.behavesLikeError('listWebhooks', subject, 'invalid_grant');
+    shared.behavesLikeAPI('listWebhooks', subject, data, args);
   });
 });

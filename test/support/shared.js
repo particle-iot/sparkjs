@@ -1,63 +1,94 @@
-exports.stubRequest = function (data){
+exports.stubRequest = function(err, data, args) {
+  var request, clock;
   beforeEach(function() {
-    form = {form: function() {}};
+    request = sinon.stub(Spark, 'request')
+    clock = sinon.useFakeTimers(0, 'Date');
 
-    sinon.stub(Spark, 'request').yields(null, null, data).
-      returns(form);
+    request.yields(err, null, data).returns({form: function() {}});
   });
 
   afterEach(function() {
+    if (!!args) {
+      expect(request.withArgs(args)).to.be.calledOnce;
+    }
+    clock.restore();
     Spark.request.restore();
   });
 };
 
-exports.behavesLikeError = function(eventName, subject, error){
-  describe("error", function() {
+exports.behavesLikeAPI = function(eventName, subject, data, args) {
+  shared.behavesLikeSuccess(eventName, subject, data, args);
+  shared.behavesLikeError(eventName, subject, 'invalid_grant');
+  shared.behavesLikeRequestError(eventName, subject);
+};
 
-    shared.stubRequest({error: error});
+exports.behavesLikeError = function(eventName, subject, error) {
+  describe('data error', function() {
 
-    it("promise rejected with error", function() {
+    shared.stubRequest(null, {error: error});
+
+    it('promise rejected with error', function() {
       return expect(subject()).to.be.rejectedWith(error);
     });
 
-    it("executes callback with error", function(done) {
+    it('executes callback with error', function(done) {
       callback = shared.verifiedCallback(error, null, done);
 
       subject(callback);
     });
 
-    it("emits event with error", function(done) {
+    it('emits event with error', function(done) {
       shared.validateEvent(eventName, subject, new Error(error), null, done);
     });
-
   });
 };
 
-exports.behavesLikeSuccess = function (eventName, subject, data) {
-  describe("success", function() {
+exports.behavesLikeRequestError = function(eventName, subject) {
+  describe('request error', function() {
+
+    shared.stubRequest(new Error('err'), null);
+
+    it('promise rejected with error', function() {
+      return expect(subject()).to.be.rejectedWith('err');
+    });
+
+    it('executes callback with error', function(done) {
+      callback = shared.verifiedCallback('err', null, done);
+
+      subject(callback);
+    });
+
+    it('emits event with error', function(done) {
+      shared.validateEvent(eventName, subject, new Error('err'), null, done);
+    });
+  });
+};
+
+exports.behavesLikeSuccess = function (eventName, subject, data, args) {
+  describe('success', function() {
     var promise;
 
-    shared.stubRequest(data);
+    shared.stubRequest(null, data, args);
 
-    it("handles fulfilled promises", function() {
+    it('handles fulfilled promises', function() {
       promise = subject();
 
-      it("is fulfilled", function() {
+      it('is fulfilled', function() {
         return expect(promise).to.be.fulfilled;
       });
 
-      it("returns expected data", function() {
+      it('returns expected data', function() {
         return expect(promise).to.eventually.equal(data);
       });
     });
 
-    it("executes callback with data", function(done) {
+    it('executes callback with data', function(done) {
       callback = shared.verifiedCallback(null, data, done);
 
       subject(callback);
     });
 
-    it("emits event", function(done) {
+    it('emits event', function(done) {
       shared.validateEvent(eventName, subject, null, data, done);
     });
   });
@@ -82,4 +113,3 @@ exports.validateEvent = function(eventName, subject, err, data, done) {
 
   expect(spy.withArgs(err, data)).to.be.calledOnce;
 };
-

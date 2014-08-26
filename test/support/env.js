@@ -7,8 +7,10 @@ var path = require('path');
 var chai = require('chai'),
 sinon = require('sinon'),
 sinonChai = require('sinon-chai'),
-chaiAsPromised = require('chai-as-promised')
+chaiAsPromised = require('chai-as-promised'),
+when = require('when');
 
+when.Promise.onPotentiallyUnhandledRejection = function() {};
 chai.use(sinonChai);
 chai.use(chaiAsPromised);
 
