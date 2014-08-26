@@ -14,15 +14,15 @@ Sparkjs.on('login', function() {
       console.log('API call List Devices: ', devices);
 
       // callback to be executed by each cored we try to remove
-      var renameCb = function(err, data) {
+      var attrsCb = function(err, data) {
         if (err) {
-          console.log('An error occurred while renaming core:', err);
+          console.log('An error occurred while getting core attrs:', err);
         } else {
-          console.log('Core renamed successfully:', data);
+          console.log('Core attrs retrieved successfully:', data);
         }
       };
 
-      Sparkjs.renameCore(devices[0].id, 'new-name', renameCb);
+      Sparkjs.getAttributes(devices[0].id, attrsCb);
     },
     function(err) {
       console.log('API call failed: ', err);
