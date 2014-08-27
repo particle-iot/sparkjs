@@ -1,35 +1,39 @@
 describe('Device', function() {
   var device, api,
       callback = function() {},
-      attributes = when.defer(),
+      newAttributes = when.defer(),
       api = {
         claimCore: sinon.spy(),
         removeCore: sinon.spy(),
         renameCore: sinon.spy(),
-        getAttributes: function() { return attributes.promise }
+        signalCore: sinon.spy(),
+        flashCore: sinon.spy(),
+        sendPublicKey: sinon.spy(),
+        callFunction: sinon.spy(),
+        getEventStream: sinon.spy(),
+        createWebhook: sinon.spy(),
+        getAttributes: function() { return newAttributes.promise }
       };
 
   beforeEach(function() {
-    device = new Device('id', api);
-    attributes.resolve({
+    var attributes = {
       name: 'name',
       connected: true,
       variables: {var: 'string'},
       functions: ['fn'],
-      cc3000_patch_version: '1.0',
-      requires_deep_update: true
-    });
+      version: '1.0',
+      requiresUpdate: true
+    };
+    device = new Device('id', attributes, api);
   });
 
   it('has expected attributes', function() {
-    setTimeout(function(){
-      expect(device.name).to.eq('name');
-      expect(device.connected).to.eq(true);
-      expect(device.variables.var).to.eq('string');
-      expect(device.functions).to.include('fn');
-      expect(device.version).to.eq('1.0');
-      expect(device.requiresUpdate).to.eq(true);
-    }, 0);
+    expect(device.name).to.eq('name');
+    expect(device.connected).to.eq(true);
+    expect(device.variables.var).to.eq('string');
+    expect(device.functions).to.include('fn');
+    expect(device.version).to.eq('1.0');
+    expect(device.requiresUpdate).to.eq(true);
   });
 
   it('can be claimed', function() {
@@ -45,5 +49,57 @@ describe('Device', function() {
   it('can be renamed', function() {
     device.rename('new_name', callback);
     expect(api.renameCore.withArgs('id', 'new_name', callback)).to.be.calledOnce;
+  });
+
+  it('can be signaled', function() {
+    device.emitSignals(callback);
+    expect(api.signalCore.withArgs('id', true, callback)).to.be.calledOnce;
+  });
+
+  it('can stop signals', function() {
+    device.stopSignals(callback);
+    expect(api.signalCore.withArgs('id', false, callback)).to.be.calledOnce;
+  });
+
+  it('can be flashed', function() {
+    device.flash([], callback);
+    expect(api.flashCore.withArgs('id', [], callback)).to.be.calledOnce;
+  });
+
+  it('can receive public key', function() {
+    device.sendPublicKey('', callback);
+    expect(api.sendPublicKey.withArgs('id', '', callback)).to.be.calledOnce;
+  });
+
+  it('can call a function', function() {
+    device.call('setTemp', '10', callback);
+    expect(api.callFunction.withArgs('id', 'setTemp', '10', callback)).to.be.calledOnce;
+  });
+
+  it('can get event stream', function() {
+    device.event('change', callback);
+    expect(api.getEventStream.withArgs('change', 'id', callback)).to.be.calledOnce;
+  });
+
+  it('can create webhook', function() {
+    device.createWebhook('change', 'url', callback);
+    expect(api.createWebhook.withArgs('change', 'url', 'id', callback)).to.be.calledOnce;
+  });
+
+  it('updates attributes successfuly', function() {
+    device.update();
+
+    newAttributes.resolve({
+      name: 'name',
+      connected: false,
+      cc3000_patch_version: '2.1',
+      requires_deep_update: false
+    });
+
+    setTimeout(function() {
+       expect(device.connected).to.eq(false);
+       expect(device.requiresUpdate).to.eq(false);
+       expect(device.version).to.eq('2.1')
+    }, 0);
   });
 });
