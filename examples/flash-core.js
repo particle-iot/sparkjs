@@ -13,16 +13,16 @@ Sparkjs.on('login', function() {
     function(devices){
       console.log('API call List Devices: ', devices);
 
-      // callback to be executed by each cored we try to remove
-      var renameCb = function(err, data) {
+      // callback to be executed by each core
+      var signalCb = function(err, data) {
         if (err) {
-          console.log('An error occurred while renaming core:', err);
+          console.log('An error occurred while flashing the core:', err);
         } else {
-          console.log('Core renamed successfully:', data);
+          console.log('Core flashing started successfully:', data);
         }
       };
 
-      Sparkjs.renameCore(devices[0].id, 'new-name', renameCb);
+      Sparkjs.flashCore(devices[0].id, ['./path/to/your/file1', './path/to/your/file2'], signalCb);
     },
     function(err) {
       console.log('API call failed: ', err);

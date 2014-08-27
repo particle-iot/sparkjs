@@ -13,16 +13,18 @@ Sparkjs.on('login', function() {
     function(devices){
       console.log('API call List Devices: ', devices);
 
-      // callback to be executed by each cored we try to remove
-      var renameCb = function(err, data) {
+      // callback to be executed by each core
+      var attrsCb = function(err, data) {
         if (err) {
-          console.log('An error occurred while renaming core:', err);
+          console.log('An error occurred while getting core attrs:', err);
         } else {
-          console.log('Core renamed successfully:', data);
+          console.log('Core attr retrieved successfully:', data);
         }
       };
 
-      Sparkjs.renameCore(devices[0].id, 'new-name', renameCb);
+      // The variable needs to be defined  in the code running in
+      // the Spark core.
+      Sparkjs.getVariable(devices[0].id, 'temp', attrsCb);
     },
     function(err) {
       console.log('API call failed: ', err);

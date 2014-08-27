@@ -13,16 +13,19 @@ Sparkjs.on('login', function() {
     function(devices){
       console.log('API call List Devices: ', devices);
 
-      // callback to be executed by each cored we try to remove
-      var renameCb = function(err, data) {
+      // callback to be executed by each core
+      var signalCb = function(err, data) {
         if (err) {
-          console.log('An error occurred while renaming core:', err);
+          console.log('An error occurred while sending a signal to the core:', err);
         } else {
-          console.log('Core renamed successfully:', data);
+          console.log('Core signal sent successfully:', data);
         }
       };
 
-      Sparkjs.renameCore(devices[0].id, 'new-name', renameCb);
+      // Send a signal to the core to start playing rainbow
+      // in the LED.
+      // Send a 0 if you want the rainbow animation to stop.
+      Sparkjs.signalCore(devices[0].id, 1, signalCb);
     },
     function(err) {
       console.log('API call failed: ', err);

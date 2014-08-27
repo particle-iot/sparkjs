@@ -5,24 +5,22 @@ var Sparkjs =require('sparkjs');
 
 Sparkjs.on('login', function() {
   // If login is successful we get and accessToken,
-  // we'll use that to call Spark API ListDevices
-  var devicesPr = Sparkjs.listDevices();
+  // we'll use it to retrieve attrs for all cores
+  var devicesPr = Sparkjs.getAttributesForAll();
 
   devicesPr.then(
     // We get an array with devices back and we list them
     function(devices){
       console.log('API call List Devices: ', devices);
 
-      // callback to be executed by each cored we try to remove
-      var renameCb = function(err, data) {
+      // callback to be executed by each core
+      var callback = function(err, data) {
         if (err) {
-          console.log('An error occurred while renaming core:', err);
+          console.log('An error occurred while getting core attrs:', err);
         } else {
-          console.log('Core renamed successfully:', data);
+          console.log('Core attrs retrieved successfully:', data);
         }
       };
-
-      Sparkjs.renameCore(devices[0].id, 'new-name', renameCb);
     },
     function(err) {
       console.log('API call failed: ', err);

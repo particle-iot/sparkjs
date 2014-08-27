@@ -277,13 +277,13 @@ describe('Spark', function() {
   describe('downloadBinary', function() {
     var subject = function(callback) {
       Spark.accessToken = 'token';
-      return Spark.downloadBinary('http://bin.io', 'file', callback);
+      return Spark.downloadBinary('/v1/algo/123456789', 'file', callback);
     };
     var data = {
       ok: true
     };
     var args = {
-      uri: 'https://api.spark.io/http://bin.io?access_token=token',
+      uri: 'https://api.spark.io/v1/algo/123456789?access_token=token',
       method: 'GET'
     };
 

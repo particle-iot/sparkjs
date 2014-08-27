@@ -13,16 +13,19 @@ Sparkjs.on('login', function() {
     function(devices){
       console.log('API call List Devices: ', devices);
 
-      // callback to be executed by each cored we try to remove
-      var renameCb = function(err, data) {
+      // callback to be executed by each core
+      var callback = function(err, data) {
         if (err) {
-          console.log('An error occurred while renaming core:', err);
+          console.log('An error occurred while getting core attrs:', err);
         } else {
-          console.log('Core renamed successfully:', data);
+          console.log('Core attr retrieved successfully:', data);
         }
       };
 
-      Sparkjs.renameCore(devices[0].id, 'new-name', renameCb);
+      // The function needs to be defined  in the firmware uploaded to the
+      // the Spark core and registered to the Spark cloud, same thing we do
+      // with variables. You pass along the name of the function and the params.
+      Sparkjs.callFunction(devices[0].id, 'brew', 'D0:HIGH', callback);
     },
     function(err) {
       console.log('API call failed: ', err);
