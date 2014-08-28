@@ -34,4 +34,4 @@ Sparkjs.on('login', function() {
 });
 
 // Login as usual
-Sparkjs.login('email@example.com', 'password');
+Sparkjs.login({ username: 'email@example.com', password: 'password' });

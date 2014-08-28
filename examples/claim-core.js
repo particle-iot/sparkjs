@@ -4,7 +4,7 @@
 var Sparkjs =require('sparkjs');
 
 // Login as usual
-var promise = Sparkjs.login('email@example.com', 'password');
+var promise = Sparkjs.login({ username: 'email@example.com', password: 'password' });
 
 promise.then(
   function(token){
