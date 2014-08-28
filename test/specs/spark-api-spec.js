@@ -6,9 +6,9 @@ describe('Spark', function() {
 
   describe('login', function() {
     var subject = function(callback) {
-      return Spark.login('spark', 'spark', callback);
+      return Spark.login({username: 'spark', password: 'spark'}, callback);
     };
-    var data = {access_token:'access_token'};
+    var data = {accessToken: 'access_token'};
     var args = {
       uri: 'https://api.spark.io/oauth/token',
       method: 'POST',
@@ -17,8 +17,8 @@ describe('Spark', function() {
         username: 'spark',
         password: 'spark',
         grant_type: 'password',
-        client_id: 'CLIENT_ID',
-        client_secret: 'CLIENT_SECRET'
+        client_id: 'Spark',
+        client_secret: 'Spark'
       }
     };
 
@@ -48,20 +48,20 @@ describe('Spark', function() {
 
   describe('createUser', function() {
     var subject = function(callback) {
-        return Spark.createUser('user@gmail.com', 'pass', callback);
-      };
-      var data = {ok: true};
-      var args = {
-        uri: 'https://api.spark.io/v1/users',
-        method: 'POST',
-        form: {
-          username: 'user@gmail.com',
-          password: 'pass'
-        },
-        json: true
-      };
+      return Spark.createUser('user@gmail.com', 'pass', callback);
+    };
+    var data = {ok: true};
+    var args = {
+      uri: 'https://api.spark.io/v1/users',
+      method: 'POST',
+      form: {
+        username: 'user@gmail.com',
+        password: 'pass'
+      },
+      json: true
+    };
 
-      shared.behavesLikeAPI('createUser', subject, data, args);
+    shared.behavesLikeAPI('createUser', subject, data, args);
 
     describe('with invalid username', function() {
       it('returns correct error message', function() {
@@ -100,9 +100,11 @@ describe('Spark', function() {
       Spark.accessToken = 'token';
       return Spark.claimCore('core_id', callback);
     };
-    var data = { access_token: 'access_token',
+    var data = {
+      access_token: 'access_token',
       token_type: 'bearer',
-      expires_in: 7776000 };
+      expires_in: 7776000
+    };
     var args = {
       uri: 'https://api.spark.io/v1/devices',
       method: 'POST',
