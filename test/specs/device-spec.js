@@ -17,6 +17,7 @@ describe('Device', function() {
 
   beforeEach(function() {
     var attributes = {
+      id: 'id',
       name: 'name',
       connected: true,
       variables: {var: 'string'},
@@ -24,7 +25,7 @@ describe('Device', function() {
       version: '1.0',
       requiresUpdate: true
     };
-    device = new Device('id', attributes, api);
+    device = new Device(attributes, api);
   });
 
   it('has expected attributes', function() {
