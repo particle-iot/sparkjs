@@ -4,7 +4,10 @@ exports.stubRequest = function(err, data, args) {
     request = sinon.stub(Spark, 'request')
     clock = sinon.useFakeTimers(0, 'Date');
 
-    request.yields(err, null, data).returns({form: function() {}});
+    request.yields(err, null, data).returns({
+      form: function() {},
+      pipe: function() {}
+    });
   });
 
   afterEach(function() {

@@ -16,6 +16,7 @@ chai.use(chaiAsPromised);
 
 global.chai = chai;
 global.sinon = sinon;
+global.when = when;
 
 global.should = chai.should();
 global.expect = chai.expect;
