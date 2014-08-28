@@ -4,6 +4,7 @@
 var Sparkjs = require('sparkjs');
 
 Sparkjs.on('login', function() {
+  //This feature is in a limited beta, and is not yet generally available
   var publishEventPr = Sparkjs.publishEvent('test', {});
 
   publishEventPr.then(
