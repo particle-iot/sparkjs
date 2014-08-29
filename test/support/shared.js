@@ -69,19 +69,15 @@ exports.behavesLikeRequestError = function(eventName, subject) {
 
 exports.behavesLikeSuccess = function (eventName, subject, data, args) {
   describe('success', function() {
-    var promise;
-
     shared.stubRequest(null, data, args);
 
-    it('handles fulfilled promises', function() {
-      promise = subject();
-
+    describe('handles fulfilled promises', function() {
       it('is fulfilled', function() {
-        return expect(promise).to.be.fulfilled;
+        return expect(subject()).to.be.fulfilled;
       });
 
       it('returns expected data', function() {
-        return expect(promise).to.eventually.equal(data);
+        return expect(subject()).to.eventually.equal(data);
       });
     });
 

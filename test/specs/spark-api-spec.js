@@ -1,32 +1,46 @@
 describe('Spark', function() {
 
-  it('is not ready before login', function(){
-    expect(Spark.ready()).to.eq(false);
-  });
-
   describe('login', function() {
-    var subject = function(callback) {
-      return Spark.login({username: 'spark', password: 'spark'}, callback);
-    };
-    var data = {accessToken: 'access_token'};
-    var args = {
-      uri: 'https://api.spark.io/oauth/token',
-      method: 'POST',
-      json: true,
-      form: {
-        username: 'spark',
-        password: 'spark',
-        grant_type: 'password',
-        client_id: 'Spark',
-        client_secret: 'Spark'
-      }
-    };
 
-    shared.behavesLikeAPI('login', subject, data, args);
+    describe('with access token', function() {
+      it('callback', function() {
+        Spark.login({accessToken: 'access_token'}, function(err, token) {
+          expect(err).to.eq(null);
+          expect(token).to.eq('access_token');
+          expect(Spark.ready()).to.eq(true);
+        });
+      });
 
-    it('sets accessToken correctly');
+      it('promise', function() {
+        promise = Spark.login({accessToken: 'access_token'});
+        return expect(promise).to.be.fulfilled;
+      });
+    });
 
-    it('is ready');
+    describe('with username/password', function() {
+      var subject = function(callback) {
+        return Spark.login({username: 'spark', password: 'spark'}, callback);
+      };
+      var data = {accessToken: 'access_token'};
+      var args = {
+        uri: 'https://api.spark.io/oauth/token',
+        method: 'POST',
+        json: true,
+        form: {
+          username: 'spark',
+          password: 'spark',
+          grant_type: 'password',
+          client_id: 'Spark',
+          client_secret: 'Spark'
+        }
+      };
+
+      shared.behavesLikeAPI('login', subject, data, args);
+
+      it('sets accessToken correctly');
+
+      it('is ready');
+    });
   });
 
   describe('listDevices', function() {
@@ -330,6 +344,77 @@ describe('Spark', function() {
     };
 
     shared.behavesLikeAPI('callFunction', subject, data, args);
+  });
+
+  describe('getEventStream', function() {
+    var request;
+
+    afterEach(function() {
+      request.restore();
+    });
+
+    it('retrieves all events url', function() {
+      request = sinon.stub(Spark, 'request')
+      var args = {
+        uri: 'https://api.spark.io/v1/events?access_token=token',
+        method: 'GET'
+      };
+
+      Spark.getEventStream(false);
+      return expect(request.withArgs(args)).to.be.calledOnce;
+    });
+
+    it('retrieves event url', function() {
+      request = sinon.stub(Spark, 'request')
+      var args = {
+        uri: 'https://api.spark.io/v1/events/event_name?access_token=token',
+        method: 'GET'
+      };
+
+      Spark.getEventStream('event_name');
+      return expect(request.withArgs(args)).to.be.calledOnce;
+    });
+
+    it('retrieves mine events url', function() {
+      request = sinon.stub(Spark, 'request')
+      var args = {
+        uri: 'https://api.spark.io/v1/devices/events?access_token=token',
+        method: 'GET'
+      };
+
+      Spark.getEventStream(false, 'mine');
+      return expect(request.withArgs(args)).to.be.calledOnce;
+    });
+
+    it('retrieves coreId events url', function() {
+      request = sinon.stub(Spark, 'request')
+      var args = {
+        uri: 'https://api.spark.io/v1/devices/coreId/events?access_token=token',
+        method: 'GET'
+      };
+
+      Spark.getEventStream(false, 'coreId');
+      return expect(request.withArgs(args)).to.be.calledOnce;
+    });
+  });
+
+  describe('getAttributesForAll', function() {
+
+    var data = [ {id: '1', name: 'sparki'} ];
+    var args = {
+      uri: 'https://api.spark.io/v1/devices?access_token=token',
+      method: 'GET',
+      json: true
+    };
+
+    shared.stubRequest(null, data, args);
+
+    it('returns devices attributes', function() {
+      subject = function() {
+       return Spark.getAttributesForAll();
+      }
+      return expect(subject()).to.eventually.include({id: '1', name: 'sparki'});
+    });
   });
 
   describe('publishEvent', function() {
