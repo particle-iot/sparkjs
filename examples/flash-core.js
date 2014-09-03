@@ -1,12 +1,12 @@
 /*jslint node: true */
 "use strict";
 
-var Sparkjs =require('sparkjs');
+var Spark =require('spark');
 
-Sparkjs.on('login', function() {
+Spark.on('login', function() {
   // If login is successful we get and accessToken,
   // we'll use that to call Spark API ListDevices
-  var devicesPr = Sparkjs.listDevices();
+  var devicesPr = Spark.listDevices();
 
   devicesPr.then(
     // We get an array with devices back and we list them
@@ -22,7 +22,9 @@ Sparkjs.on('login', function() {
         }
       };
 
-      Sparkjs.flashCore(devices[0].id, ['./path/to/your/file1', './path/to/your/file2'], signalCb);
+      // We pass the firmware.ino file we want to flash to the core, we'll use the first
+      // core retrieved in devices array.
+      Spark.flashCore(devices[0].id, ['./path/to/your/file1', './path/to/your/file2'], signalCb);
     },
     function(err) {
       console.log('API call failed: ', err);
@@ -31,4 +33,4 @@ Sparkjs.on('login', function() {
 });
 
 // Login as usual
-Sparkjs.login({ username: 'email@example.com', password: 'password' });
+Spark.login({ username: 'email@example.com', password: 'password' });

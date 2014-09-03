@@ -1,19 +1,19 @@
 /*jslint node: true */
 "use strict";
 
-var Sparkjs =require('sparkjs');
+var Spark =require('spark');
 
-Sparkjs.on('login', function() {
+Spark.on('login', function() {
   // If login is successful we get and accessToken,
   // we'll use that to call Spark API ListDevices
-  var devicesPr = Sparkjs.listDevices();
+  var devicesPr = Spark.listDevices();
 
   devicesPr.then(
     // We get an array with devices back and we list them
     function(devices){
       console.log('API call List Devices: ', devices);
 
-      // callback to be executed by each cored we try to remove
+      // callback to be executed by each cored we want to retrieve attrs for
       var attrsCb = function(err, data) {
         if (err) {
           console.log('An error occurred while getting core attrs:', err);
@@ -22,7 +22,7 @@ Sparkjs.on('login', function() {
         }
       };
 
-      Sparkjs.getAttributes(devices[0].id, attrsCb);
+      Spark.getAttributes(devices[0].id, attrsCb);
     },
     function(err) {
       console.log('API call failed: ', err);
@@ -31,4 +31,4 @@ Sparkjs.on('login', function() {
 });
 
 // Login as usual
-Sparkjs.login({ username: 'email@example.com', password: 'password' });
+Spark.login({ username: 'email@example.com', password: 'password' });

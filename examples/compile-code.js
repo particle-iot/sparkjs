@@ -1,9 +1,9 @@
 /*jslint node: true */
 "use strict";
 
-var Sparkjs =require('sparkjs');
+var Spark =require('spark');
 
-Sparkjs.on('login', function() {
+Spark.on('login', function() {
   // If login is successful we get and accessToken,
   // we'll use that to call Spark API
 
@@ -15,8 +15,9 @@ Sparkjs.on('login', function() {
     }
   };
 
-  Sparkjs.compileCode(['./path/to/your/file1', './path/to/your/file2'], callback);
+  // we pass an array of files to be compiled
+  Spark.compileCode(['./path/to/your/file1', './path/to/your/file2'], callback);
 });
 
 // Login as usual
-Sparkjs.login({ username: 'email@example.com', password: 'password' });
+Spark.login({ username: 'email@example.com', password: 'password' });

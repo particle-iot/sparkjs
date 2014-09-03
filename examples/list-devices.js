@@ -1,16 +1,16 @@
 /*jslint node: true */
 "use strict";
 
-var Sparkjs =require('sparkjs');
+var Spark =require('spark');
 
 // Login as usual
-var promise = Sparkjs.login({ username: 'email@example.com', password: 'password' });
+var promise = Spark.login({ username: 'email@example.com', password: 'password' });
 
 promise.then(
   function(token){
     // If login is successful we get and accessToken,
     // we'll use that to call Spark API ListDevices
-    var devicesPr = Sparkjs.listDevices();
+    var devicesPr = Spark.listDevices();
 
     devicesPr.then(
       // We get an array with devices back and we list them

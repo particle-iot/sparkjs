@@ -1,22 +1,22 @@
 /*jslint node: true */
 "use strict";
 
-var Sparkjs =require('sparkjs');
+var Spark =require('spark');
 
-Sparkjs.on('login', function() {
+Spark.on('login', function() {
 
   //Get all events
-  Sparkjs.getEventStream(false, false, function(data) {
+  Spark.getEventStream(false, false, function(data) {
     console.log("Event: " + data);
   });
 
   //Get your devices events
-  Sparkjs.getEventStream(false, 'mine', function(data) {
+  Spark.getEventStream(false, 'mine', function(data) {
     console.log("Event: " + data);
   });
 
   //Get test event for specific core
-  Sparkjs.getEventStream('test', 'CORE_ID', function(data) {
+  Spark.getEventStream('test', 'CORE_ID', function(data) {
     console.log("Event: " + data);
   });
 
@@ -24,4 +24,4 @@ Sparkjs.on('login', function() {
 });
 
 // Login as usual
-Sparkjs.login('email@example.com', 'password');
+Spark.login('email@example.com', 'password');
