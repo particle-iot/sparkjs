@@ -1,12 +1,12 @@
 /*jslint node: true */
 "use strict";
 
-var Spark =require('spark');
+var spark =require('spark');
 
-Spark.on('login', function() {
+spark.on('login', function() {
   // If login is successful we get and accessToken,
   // we'll use that to call Spark API ListDevices
-  var devicesPr = Spark.listDevices();
+  var devicesPr = spark.listDevices();
 
   devicesPr.then(
     // We get an array with devices back and we list them
@@ -24,7 +24,7 @@ Spark.on('login', function() {
 
       // The variable needs to be defined  in the code running in
       // the Spark core.
-      Spark.getVariable(devices[0].id, 'temp', attrsCb);
+      spark.getVariable(devices[0].id, 'temp', attrsCb);
     },
     function(err) {
       console.log('API call failed: ', err);
@@ -33,4 +33,4 @@ Spark.on('login', function() {
 });
 
 // Login as usual
-Spark.login({ username: 'email@example.com', password: 'password' });
+spark.login({ username: 'email@example.com', password: 'password' });

@@ -3,7 +3,7 @@
 
 // We start by requiring Spark as usual
 // this will give you back an instance of the SparkApi library
-var Spark =require('spark');
+var spark =require('spark');
 
 // Spark API login
 // You can interact with the api using callbacks, events or promises
@@ -17,6 +17,6 @@ var Spark =require('spark');
 // });
 
 // The callback will be executed upon completion and returns err and data.
-Spark.login({ username: 'email@example.com', password: 'password' }, function(err, body) {
+spark.login({ username: 'email@example.com', password: 'password' }, function(err, body) {
   console.log('API call login completed on callback:', body);
 });

@@ -1,12 +1,12 @@
 /*jslint node: true */
 "use strict";
 
-var Spark =require('spark');
+var spark =require('spark');
 
-Spark.on('login', function() {
+spark.on('login', function() {
   // If login is successful we get and accessToken,
   // we'll use that to call Spark API ListDevices
-  var devicesPr = Spark.listDevices();
+  var devicesPr = spark.listDevices();
 
   devicesPr.then(
     // We get an array with devices back and we list them
@@ -25,7 +25,7 @@ Spark.on('login', function() {
       // The function needs to be defined  in the firmware uploaded to the
       // the Spark core and registered to the Spark cloud, same thing we do
       // with variables. You pass along the name of the function and the params.
-      Spark.callFunction(devices[0].id, 'brew', 'D0:HIGH', callback);
+      spark.callFunction(devices[0].id, 'brew', 'D0:HIGH', callback);
     },
     function(err) {
       console.log('API call failed: ', err);
@@ -34,4 +34,4 @@ Spark.on('login', function() {
 });
 
 // Login as usual
-Spark.login({ username: 'email@example.com', password: 'password' });
+spark.login({ username: 'email@example.com', password: 'password' });

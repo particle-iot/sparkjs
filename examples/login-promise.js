@@ -3,7 +3,7 @@
 
 // We start by requiring sparkjs as usual
 // this will give you back an instance of the SparkApi library
-var Spark =require('spark');
+var spark =require('spark');
 
 // Spark API login
 // You can interact with the api using callbacks, events or promises
@@ -13,7 +13,7 @@ var Spark =require('spark');
 // Storing the promise returned by the the spark.login() fn.
 // Have in mind that if callback is provided or event listener
 // registered the returned value will be null instead of a Promise.
-var promise = Spark.login({ username: 'email@example.com', password: 'password' });
+var promise = spark.login({ username: 'email@example.com', password: 'password' });
 
 // Registering functions for promise resolve and reject.
 promise.then(

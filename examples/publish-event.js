@@ -1,11 +1,11 @@
 /*jslint node: true */
 "use strict";
 
-var Spark = require('spark');
+var spark = require('spark');
 
-Spark.on('login', function() {
+spark.on('login', function() {
   //This feature is in a limited beta, and is not yet generally available
-  var publishEventPr = Spark.publishEvent('test', {});
+  var publishEventPr = spark.publishEvent('test', {});
 
   publishEventPr.then(
     function(data) {
@@ -18,4 +18,4 @@ Spark.on('login', function() {
 });
 
 // Login as usual
-Spark.login('email@example.com', 'password');
+spark.login('email@example.com', 'password');
