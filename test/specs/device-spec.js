@@ -12,6 +12,7 @@ describe('Device', function() {
         callFunction: sinon.spy(),
         getEventStream: sinon.spy(),
         createWebhook: sinon.spy(),
+        getVariable: sinon.spy(),
         getAttributes: function() { return newAttributes.promise }
       };
 
@@ -85,6 +86,11 @@ describe('Device', function() {
   it('can create webhook', function() {
     device.createWebhook('change', 'url', callback);
     expect(api.createWebhook.withArgs('change', 'url', 'id', callback)).to.be.calledOnce;
+  });
+
+  it('can get a variable', function() {
+    device.getVariable('name', callback);
+    expect(api.getVariable.withArgs('id', 'name', callback)).to.be.calledOnce;
   });
 
   it('updates attributes successfuly', function() {
