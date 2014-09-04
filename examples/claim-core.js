@@ -1,19 +1,20 @@
 /*jslint node: true */
 "use strict";
 
-var Sparkjs =require('sparkjs');
+var spark =require('spark');
 
 // Login as usual
-var promise = Sparkjs.login('email@example.com', 'password');
+var promise = spark.login({ username: 'email@example.com', password: 'password' });
 
 promise.then(
   function(token){
     // If login is successful we get an accessToken
-    // that is stored in the Sparkjs lib for future use.
+    // that is stored in the Spark lib for future use.
 
-    Sparkjs.claimCore('theCoreId', function(err, data) {
-      console.log('Sparkjs.claimCore err:', err);
-      console.log('Sparkjs.claimCore data:', data);
+    // We use the coreId to claim the core
+    spark.claimCore('theCoreId', function(err, data) {
+      console.log('Spark.claimCore err:', err);
+      console.log('Spark.claimCore data:', data);
     });
   },
   function(err) {

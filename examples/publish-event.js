@@ -1,21 +1,21 @@
 /*jslint node: true */
 "use strict";
 
-var Sparkjs = require('sparkjs');
+var spark = require('spark');
 
-Sparkjs.on('login', function() {
+spark.on('login', function() {
   //This feature is in a limited beta, and is not yet generally available
-  var publishEventPr = Sparkjs.publishEvent('test', {});
+  var publishEventPr = spark.publishEvent('test', {});
 
   publishEventPr.then(
     function(data) {
-      if (data.ok) { console.log("Event published succesfully") }
+      if (data.ok) { console.log("Event published succesfully"); }
     },
     function(err) {
-      console.log("Failed to publish event: " + err)
+      console.log("Failed to publish event: " + err);
     }
   );
 });
 
 // Login as usual
-Sparkjs.login('email@example.com', 'password');
+spark.login('email@example.com', 'password');

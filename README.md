@@ -73,14 +73,14 @@ And you can call the following commands on it:
 
 * call
 * claim
-* emitSignals
 * flash
-* event
+* subscribe
 * getVariable
 * remove
 * rename
 * sendPublicKey
-* stopSignals
+* signal
+* stopSignal
 * update
 
 ## Setup your dev environment

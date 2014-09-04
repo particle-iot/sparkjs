@@ -1,16 +1,16 @@
 /*jslint node: true */
 "use strict";
 
-var Sparkjs =require('sparkjs');
+var spark =require('spark');
 
 // Login as usual
-var promise = Sparkjs.login('email@example.com', 'password');
+var promise = spark.login({ username: 'email@example.com', password: 'password' });
 
 promise.then(
   function(token){
     // If login is successful we get and accessToken,
     // we'll use that to call Spark API ListDevices
-    var devicesPr = Sparkjs.listDevices();
+    var devicesPr = spark.listDevices();
 
     devicesPr.then(
       // We get an array with devices back and we list them
@@ -31,7 +31,7 @@ promise.then(
         // promises, events or callbacks, in this case we passed
         // a callback to be executed.
         for (var i in devices) {
-          Sparkjs.removeCore(devices[i].id, rmCb);
+          spark.removeCore(devices[i].id, rmCb);
         }
       },
       function(err) {

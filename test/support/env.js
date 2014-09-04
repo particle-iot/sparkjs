@@ -32,4 +32,4 @@ global.source = function(module) {
   return require(path.normalize('./../../lib/' + module));
 };
 
-global.Spark = source('spark-api');
+global.Spark = source('spark');

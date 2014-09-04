@@ -1,12 +1,11 @@
 describe('Spark', function() {
-
   describe('login', function() {
 
     describe('with access token', function() {
       it('callback', function() {
-        Spark.login({accessToken: 'access_token'}, function(err, token) {
+        Spark.login({accessToken: 'access_token'}, function(err, data) {
           expect(err).to.eq(null);
-          expect(token).to.eq('access_token');
+          expect(data.accessToken).to.eq('access_token');
           expect(Spark.ready()).to.eq(true);
         });
       });
@@ -74,6 +73,11 @@ describe('Spark', function() {
       },
       json: true
     };
+
+    it('promise', function() {
+      promise = Spark.login({accessToken: 'access_token'});
+      return expect(promise).to.be.fulfilled;
+    });
 
     shared.behavesLikeAPI('createUser', subject, data, args);
 
@@ -354,7 +358,7 @@ describe('Spark', function() {
     });
 
     it('retrieves all events url', function() {
-      request = sinon.stub(Spark, 'request')
+      request = sinon.stub(Spark.api, 'request')
       var args = {
         uri: 'https://api.spark.io/v1/events?access_token=token',
         method: 'GET'
@@ -365,7 +369,7 @@ describe('Spark', function() {
     });
 
     it('retrieves event url', function() {
-      request = sinon.stub(Spark, 'request')
+      request = sinon.stub(Spark.api, 'request')
       var args = {
         uri: 'https://api.spark.io/v1/events/event_name?access_token=token',
         method: 'GET'
@@ -376,7 +380,7 @@ describe('Spark', function() {
     });
 
     it('retrieves mine events url', function() {
-      request = sinon.stub(Spark, 'request')
+      request = sinon.stub(Spark.api, 'request')
       var args = {
         uri: 'https://api.spark.io/v1/devices/events?access_token=token',
         method: 'GET'
@@ -387,7 +391,7 @@ describe('Spark', function() {
     });
 
     it('retrieves coreId events url', function() {
-      request = sinon.stub(Spark, 'request')
+      request = sinon.stub(Spark.api, 'request')
       var args = {
         uri: 'https://api.spark.io/v1/devices/coreId/events?access_token=token',
         method: 'GET'

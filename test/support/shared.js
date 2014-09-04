@@ -1,7 +1,7 @@
 exports.stubRequest = function(err, data, args) {
   var request, clock;
   beforeEach(function() {
-    request = sinon.stub(Spark, 'request')
+    request = sinon.stub(Spark.api, 'request')
     clock = sinon.useFakeTimers(0, 'Date');
 
     request.yields(err, null, data).returns({
@@ -15,7 +15,7 @@ exports.stubRequest = function(err, data, args) {
       expect(request.withArgs(args)).to.be.calledOnce;
     }
     clock.restore();
-    Spark.request.restore();
+    Spark.api.request.restore();
   });
 };
 

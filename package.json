@@ -1,6 +1,6 @@
 {
   "author": "Spark",
-  "name": "sparkjs",
+  "name": "spark",
   "description": "Official Spark API library.",
   "version": "0.1.0",
   "homepage": "http://spark.io",
@@ -12,7 +12,7 @@
   "engines": {
     "node": ">=0.10.26"
   },
-  "main": "./lib/spark-api",
+  "main": "./lib/spark",
   "dependencies": {
     "request": ">= 2.40.0",
     "when": ">= 3.4.4"

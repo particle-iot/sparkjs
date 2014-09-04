@@ -12,6 +12,7 @@ describe('Device', function() {
         callFunction: sinon.spy(),
         getEventStream: sinon.spy(),
         createWebhook: sinon.spy(),
+        getVariable: sinon.spy(),
         getAttributes: function() { return newAttributes.promise }
       };
 
@@ -53,12 +54,12 @@ describe('Device', function() {
   });
 
   it('can be signaled', function() {
-    device.emitSignals(callback);
+    device.signal(callback);
     expect(api.signalCore.withArgs('id', true, callback)).to.be.calledOnce;
   });
 
-  it('can stop signals', function() {
-    device.stopSignals(callback);
+  it('can stop signal', function() {
+    device.stopSignal(callback);
     expect(api.signalCore.withArgs('id', false, callback)).to.be.calledOnce;
   });
 
@@ -78,13 +79,18 @@ describe('Device', function() {
   });
 
   it('can get event stream', function() {
-    device.event('change', callback);
+    device.subscribe('change', callback);
     expect(api.getEventStream.withArgs('change', 'id', callback)).to.be.calledOnce;
   });
 
   it('can create webhook', function() {
     device.createWebhook('change', 'url', callback);
     expect(api.createWebhook.withArgs('change', 'url', 'id', callback)).to.be.calledOnce;
+  });
+
+  it('can get a variable', function() {
+    device.getVariable('name', callback);
+    expect(api.getVariable.withArgs('id', 'name', callback)).to.be.calledOnce;
   });
 
   it('updates attributes successfuly', function() {

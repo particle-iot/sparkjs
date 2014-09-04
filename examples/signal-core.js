@@ -1,12 +1,12 @@
 /*jslint node: true */
 "use strict";
 
-var Sparkjs =require('sparkjs');
+var spark =require('spark');
 
-Sparkjs.on('login', function() {
+spark.on('login', function() {
   // If login is successful we get and accessToken,
-  // we'll use that to call Spark API ListDevices
-  var devicesPr = Sparkjs.listDevices();
+  // we'll use that to call spark API ListDevices
+  var devicesPr = spark.listDevices();
 
   devicesPr.then(
     // We get an array with devices back and we list them
@@ -22,10 +22,9 @@ Sparkjs.on('login', function() {
         }
       };
 
-      // Send a signal to the core to start playing rainbow
-      // in the LED.
+      // Send a signal to the core to start playing rainbow in the LED.
       // Send a 0 if you want the rainbow animation to stop.
-      Sparkjs.signalCore(devices[0].id, 1, signalCb);
+      spark.signalCore(devices[0].id, 1, signalCb);
     },
     function(err) {
       console.log('API call failed: ', err);
@@ -34,4 +33,4 @@ Sparkjs.on('login', function() {
 });
 
 // Login as usual
-Sparkjs.login('email@example.com', 'password');
+spark.login({ username: 'email@example.com', password: 'password' });
