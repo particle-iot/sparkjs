@@ -53,12 +53,12 @@ describe('Device', function() {
   });
 
   it('can be signaled', function() {
-    device.emitSignals(callback);
+    device.signal(callback);
     expect(api.signalCore.withArgs('id', true, callback)).to.be.calledOnce;
   });
 
-  it('can stop signals', function() {
-    device.stopSignals(callback);
+  it('can stop signal', function() {
+    device.stopSignal(callback);
     expect(api.signalCore.withArgs('id', false, callback)).to.be.calledOnce;
   });
 
@@ -78,7 +78,7 @@ describe('Device', function() {
   });
 
   it('can get event stream', function() {
-    device.event('change', callback);
+    device.subscribe('change', callback);
     expect(api.getEventStream.withArgs('change', 'id', callback)).to.be.calledOnce;
   });
 
