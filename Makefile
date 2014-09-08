@@ -13,3 +13,6 @@ cover:
 
 lint:
 	@$(BIN)/jshint ./lib
+
+bundle:
+	@$(BIN)/browserify lib/spark-browser.js -o dist/spark-browser-bundle.js
