@@ -31,6 +31,8 @@ Sparkjs.login({ username: 'email@example.com', password: 'password' }, function(
 
 For further examples visit /examples directory: https://github.com/spark/sparkjs/tree/master/examples
 
+**Complete documentation can be found in [Spark Docs](http://docs.spark.io/javascript/)**
+
 ## Getting Started
 
 It's important that you login before executing any command.
@@ -38,8 +40,7 @@ It's important that you login before executing any command.
 Every function returns a [promise](http://promisesaplus.com/) for you to handle the async result, or you can pass a callback function.
 (Please note that if a callback function is passed, the function will return null instead of a promise)
 
-* Complete documentation can be found in [Spark Docs](http://docs.spark.io/javascript/)
-* More examples on how to use promises/callbacks visit: https://github.com/spark/sparkjs/tree/master/examples
+**Complete documentation can be found in [Spark Docs](http://docs.spark.io/javascript/)**
 
 ## Setup your dev environment
 
