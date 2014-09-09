@@ -15,4 +15,4 @@ lint:
 	@$(BIN)/jshint ./lib
 
 bundle:
-	@$(BIN)/browserify lib/spark-browser.js -o dist/spark-browser-bundle.js
+	@$(BIN)/browserify lib/spark-browser.js -t cssify -o dist/spark-browser-bundle.js
