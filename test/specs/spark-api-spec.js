@@ -341,7 +341,7 @@ describe('Spark', function() {
       uri: 'https://api.spark.io/v1/devices/core_id/function',
       method: 'POST',
       form: {
-        arg: 'arg',
+        args: 'arg',
         access_token: 'token'
       },
       json: true
@@ -405,6 +405,7 @@ describe('Spark', function() {
   describe('getAttributesForAll', function() {
 
     var data = [ {id: '1', name: 'sparki'} ];
+    var device = new Device(data[0], Spark);
     var args = {
       uri: 'https://api.spark.io/v1/devices?access_token=token',
       method: 'GET',
@@ -417,7 +418,7 @@ describe('Spark', function() {
       subject = function() {
        return Spark.getAttributesForAll();
       }
-      return expect(subject()).to.eventually.include({id: '1', name: 'sparki'});
+      return expect(subject()).to.eventually.become([device]);
     });
   });
 
