@@ -26,7 +26,9 @@
     "chai-as-promised": "4.1.x",
     "istanbul": "0.3.x",
     "browserify": "5.11.x",
-    "browser-request": "0.3.x"
+    "browser-request": "0.3.x",
+    "jquery": "^2.1.1",
+    "cssify": "0.6.x"
   },
   "browser": {
     "request": "browser-request"
