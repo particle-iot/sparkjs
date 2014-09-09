@@ -1,11 +1,16 @@
 <html>
-
   <head>
     <title>Spark Login Example</title>
   </head>
 
   <body>
+    <input id="login" type="button" value="Login to Spark" onclick="sparkModal();" />
+
     <script src="../../dist/spark-browser-bundle.js"></script>
-    <input id="login" type="button" value="Login to Spark" onclick="sparkLogin(function(err, data) { console.log(data) });" />
+    <script>
+      sparkLogin(function(data) {
+        console.log(data);
+      });
+    </script>
   </body>
 </html>
