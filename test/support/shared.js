@@ -77,25 +77,37 @@ exports.behavesLikeSuccess = function (eventName, subject, data, args) {
       });
 
       it('returns expected data', function() {
-        return expect(subject()).to.eventually.equal(data);
+        if (eventName === 'listDevices') {
+          return expect(subject()).to.eventually.become([new Device(data[0], Spark)]);
+        } else {
+          return expect(subject()).to.eventually.equal(data);
+        }
       });
     });
 
     it('executes callback with data', function(done) {
-      callback = shared.verifiedCallback(null, data, done);
+      if (eventName === 'listDevices') {
+        callback = shared.verifiedCallback(null, [new Device(data[0], Spark)], done);
+      } else {
+        callback = shared.verifiedCallback(null, data, done);
+      }
 
       subject(callback);
     });
 
     it('emits event', function(done) {
-      shared.validateEvent(eventName, subject, null, data, done);
+      if (eventName === 'listDevices' ) {
+        shared.validateEvent(eventName, subject, null, [new Device(data[0], Spark)], done);
+      } else {
+        shared.validateEvent(eventName, subject, null, data, done);
+      }
     });
   });
 };
 
 exports.verifiedCallback = function(e, d, done) {
   return function(err, data) {
-    expect(data).to.eq(d);
+    expect(data).to.deep.equal(d);
     if (err) {
       expect(err.message).to.eq(e);
     }

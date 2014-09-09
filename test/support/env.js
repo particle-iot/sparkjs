@@ -33,3 +33,4 @@ global.source = function(module) {
 };
 
 global.Spark = source('spark');
+global.Device = source('device');

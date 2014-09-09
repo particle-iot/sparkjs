@@ -107,6 +107,6 @@ describe('Device', function() {
        expect(device.connected).to.eq(false);
        expect(device.requiresUpdate).to.eq(false);
        expect(device.version).to.eq('2.1')
-    }, 0);
+    }, 100);
   });
 });
