@@ -550,60 +550,110 @@ SparkApi.prototype.listWebhooks = function (accessToken, callback) {
 module.exports = SparkApi;
 
 }).call(this,require('_process'))
-},{"_process":10,"fs":6,"path":9,"request":5}],3:[function(require,module,exports){
+},{"_process":11,"fs":7,"path":10,"request":6}],3:[function(require,module,exports){
+var css = "#login-form {\n  display: none;\n}\n"; (require("/Users/solojavier/dev/src/github.com/spark/sparkjs/node_modules/cssify"))(css); module.exports = css;
+},{"/Users/solojavier/dev/src/github.com/spark/sparkjs/node_modules/cssify":14}],4:[function(require,module,exports){
 var $ = require('jquery');
-var cssify = require('cssify')
-var jModal = require('../vendor/jquery.modal.min.js')
+var jModal = require('../vendor/jquery.modal.min.js');
+var cssify = require('cssify');
 
 cssify.byUrl('https://rawgit.com/kylefox/jquery-modal/master/jquery.modal.css');
+require('./spark-browser-style.css');
 
 window.sparkLogin = function(callback) {
-  addLoginForm('login-form');
-  addBehaviour('login-form', callback);
+  addLoginButton();
+  addLoginForm();
+  addBehaviour(callback);
 };
 
-function addLoginForm(formId) {
+function addLoginButton() {
+  var btn = document.createElement("button");
+  btn.id = 'spark-login-button';
+  btn.appendChild(document.createTextNode("Login to Spark"));
+  btn.onclick = function() {
+    $('#login-form').modal();
+  };
+
+  if( $('#spark-login').length ) {
+    $('#spark-login').append(btn);
+  } else {
+    document.body.appendChild(btn);
+  }
+};
+
+function addLoginForm() {
   var form = document.createElement('form');
-  form.id = formId;
+  form.id = 'login-form';
   form.class = 'modal';
 
-  form.appendChild(generateInput(formId, 'username', 'text'));
-  form.appendChild(generateInput(formId, 'password', 'password'));
-  form.appendChild(generateButton(formId));
+  form.appendChild(generateError());
+  form.appendChild(generateInput('username', 'text'));
+  form.appendChild(generateInput('password', 'password'));
+  form.appendChild(generateButton());
 
   document.body.appendChild(form);
 }
 
-function addBehaviour(formId, callback) {
-  $('#' + formId).modal();
-  $('#' + formId + '-button').click(function(e) {
+function addBehaviour(callback) {
+  $('#login-form-button').click(function(e) {
     e.preventDefault();
     var spark = require('./spark.js');
-    var user = $('#' + formId + '-username').val();
-    var pass = $('#' + formId + '-password').val();
+    var user = $('#login-form-username').val();
+    var pass = $('#login-form-password').val();
 
-    spark.login({username: user, password: pass}, callback);
+    var loginPromise = spark.login({ username: user, password: pass });
+
+    loginPromise.then(
+      function(data) {
+        callback(data);
+        $('#login-form-username').val('');
+        $('#login-form-password').val('');
+        displayErrorMessage('');
+        $.modal.close();
+      },
+      function(error) {
+        if (error.message === 'invalid_client') {
+          displayErrorMessage('Invalid credentials. Verify email and password.');
+        } else if (error.cors === 'rejected') {
+          displayErrorMessage('Request rejected. Check your internet connection.');
+        } else {
+          displayErrorMessage('Unknown error. Review console log for details.');
+          console.log(error);
+        }
+      }
+    );
   });
 }
 
-function generateInput(formId, name, type) {
+function generateError() {
+  var div = document.createElement("div");
+  div.id = 'login-form-error';
+
+  return div;
+}
+
+function generateInput(name, type) {
   var input = document.createElement("input");
-  input.id = formId + '-' + name;
+  input.id = 'login-form-' + name;
   input.type = type;
   input.class = 'login-input';
 
   return input;
 }
 
-function generateButton(formId) {
+function generateButton() {
   var btn = document.createElement("button");
-  btn.id = formId + '-button';
+  btn.id = 'login-form-button';
   btn.appendChild(document.createTextNode("LOGIN"));
 
   return btn;
 }
 
-},{"../vendor/jquery.modal.min.js":33,"./spark.js":4,"cssify":13,"jquery":14}],4:[function(require,module,exports){
+function displayErrorMessage(message) {
+  $('#login-form-error').text(message);
+}
+
+},{"../vendor/jquery.modal.min.js":34,"./spark-browser-style.css":3,"./spark.js":5,"cssify":14,"jquery":15}],5:[function(require,module,exports){
 /*
  ******************************************************************************
  * @file lib/spark-api.js
@@ -1257,7 +1307,7 @@ Spark.prototype.listWebhooks = function (callback) {
 
 module.exports = new Spark();
 
-},{"./device":1,"./spark-api":2,"events":7,"fs":6,"util":12,"when":32,"when/pipeline":31}],5:[function(require,module,exports){
+},{"./device":1,"./spark-api":2,"events":8,"fs":7,"util":13,"when":33,"when/pipeline":32}],6:[function(require,module,exports){
 // Browser Request
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -1733,9 +1783,9 @@ function b64_enc (data) {
 }
 module.exports = request;
 
-},{}],6:[function(require,module,exports){
-
 },{}],7:[function(require,module,exports){
+
+},{}],8:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -2038,7 +2088,7 @@ function isUndefined(arg) {
   return arg === void 0;
 }
 
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 if (typeof Object.create === 'function') {
   // implementation from standard node.js 'util' module
   module.exports = function inherits(ctor, superCtor) {
@@ -2063,7 +2113,7 @@ if (typeof Object.create === 'function') {
   }
 }
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -2291,7 +2341,7 @@ var substr = 'ab'.substr(-1) === 'b'
 ;
 
 }).call(this,require('_process'))
-},{"_process":10}],10:[function(require,module,exports){
+},{"_process":11}],11:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -2356,14 +2406,14 @@ process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
 };
 
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 module.exports = function isBuffer(arg) {
   return arg && typeof arg === 'object'
     && typeof arg.copy === 'function'
     && typeof arg.fill === 'function'
     && typeof arg.readUInt8 === 'function';
 }
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 (function (process,global){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -2953,7 +3003,7 @@ function hasOwnProperty(obj, prop) {
 }
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./support/isBuffer":11,"_process":10,"inherits":8}],13:[function(require,module,exports){
+},{"./support/isBuffer":12,"_process":11,"inherits":9}],14:[function(require,module,exports){
 module.exports = function (css, customDocument) {
   var doc = customDocument || document;
   if (doc.createStyleSheet) {
@@ -2992,7 +3042,7 @@ module.exports.byUrl = function(url) {
   }
 };
 
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v2.1.1
  * http://jquery.com/
@@ -12184,7 +12234,7 @@ return jQuery;
 
 }));
 
-},{}],15:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 /** @license MIT License (c) copyright 2010-2014 original author or authors */
 /** @author Brian Cavalier */
 /** @author John Hann */
@@ -12203,7 +12253,7 @@ define(function (require) {
 });
 })(typeof define === 'function' && define.amd ? define : function (factory) { module.exports = factory(require); });
 
-},{"./Scheduler":17,"./async":19,"./makePromise":29}],16:[function(require,module,exports){
+},{"./Scheduler":18,"./async":20,"./makePromise":30}],17:[function(require,module,exports){
 /** @license MIT License (c) copyright 2010-2014 original author or authors */
 /** @author Brian Cavalier */
 /** @author John Hann */
@@ -12275,7 +12325,7 @@ define(function() {
 });
 }(typeof define === 'function' && define.amd ? define : function(factory) { module.exports = factory(); }));
 
-},{}],17:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 /** @license MIT License (c) copyright 2010-2014 original author or authors */
 /** @author Brian Cavalier */
 /** @author John Hann */
@@ -12359,7 +12409,7 @@ define(function(require) {
 });
 }(typeof define === 'function' && define.amd ? define : function(factory) { module.exports = factory(require); }));
 
-},{"./Queue":16}],18:[function(require,module,exports){
+},{"./Queue":17}],19:[function(require,module,exports){
 /** @license MIT License (c) copyright 2010-2014 original author or authors */
 /** @author Brian Cavalier */
 /** @author John Hann */
@@ -12387,7 +12437,7 @@ define(function() {
 	return TimeoutError;
 });
 }(typeof define === 'function' && define.amd ? define : function(factory) { module.exports = factory(); }));
-},{}],19:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 (function (process){
 /** @license MIT License (c) copyright 2010-2014 original author or authors */
 /** @author Brian Cavalier */
@@ -12452,7 +12502,7 @@ define(function(require) {
 }(typeof define === 'function' && define.amd ? define : function(factory) { module.exports = factory(require); }));
 
 }).call(this,require('_process'))
-},{"_process":10}],20:[function(require,module,exports){
+},{"_process":11}],21:[function(require,module,exports){
 /** @license MIT License (c) copyright 2010-2014 original author or authors */
 /** @author Brian Cavalier */
 /** @author John Hann */
@@ -12711,7 +12761,7 @@ define(function() {
 });
 }(typeof define === 'function' && define.amd ? define : function(factory) { module.exports = factory(); }));
 
-},{}],21:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 /** @license MIT License (c) copyright 2010-2014 original author or authors */
 /** @author Brian Cavalier */
 /** @author John Hann */
@@ -12854,7 +12904,7 @@ define(function() {
 });
 }(typeof define === 'function' && define.amd ? define : function(factory) { module.exports = factory(); }));
 
-},{}],22:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 /** @license MIT License (c) copyright 2010-2014 original author or authors */
 /** @author Brian Cavalier */
 /** @author John Hann */
@@ -12883,7 +12933,7 @@ define(function() {
 });
 }(typeof define === 'function' && define.amd ? define : function(factory) { module.exports = factory(); }));
 
-},{}],23:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 /** @license MIT License (c) copyright 2010-2014 original author or authors */
 /** @author Brian Cavalier */
 /** @author John Hann */
@@ -12917,7 +12967,7 @@ define(function() {
 });
 }(typeof define === 'function' && define.amd ? define : function(factory) { module.exports = factory(); }));
 
-},{}],24:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 /** @license MIT License (c) copyright 2010-2014 original author or authors */
 /** @author Brian Cavalier */
 /** @author John Hann */
@@ -12982,7 +13032,7 @@ define(function() {
 });
 }(typeof define === 'function' && define.amd ? define : function(factory) { module.exports = factory(); }));
 
-},{}],25:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 /** @license MIT License (c) copyright 2010-2014 original author or authors */
 /** @author Brian Cavalier */
 /** @author John Hann */
@@ -13007,7 +13057,7 @@ define(function() {
 });
 }(typeof define === 'function' && define.amd ? define : function(factory) { module.exports = factory(); }));
 
-},{}],26:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 /** @license MIT License (c) copyright 2010-2014 original author or authors */
 /** @author Brian Cavalier */
 /** @author John Hann */
@@ -13087,7 +13137,7 @@ define(function(require) {
 });
 }(typeof define === 'function' && define.amd ? define : function(factory) { module.exports = factory(require); }));
 
-},{"../TimeoutError":18,"../timer":30}],27:[function(require,module,exports){
+},{"../TimeoutError":19,"../timer":31}],28:[function(require,module,exports){
 /** @license MIT License (c) copyright 2010-2014 original author or authors */
 /** @author Brian Cavalier */
 /** @author John Hann */
@@ -13191,7 +13241,7 @@ define(function(require) {
 });
 }(typeof define === 'function' && define.amd ? define : function(factory) { module.exports = factory(require); }));
 
-},{"../timer":30}],28:[function(require,module,exports){
+},{"../timer":31}],29:[function(require,module,exports){
 /** @license MIT License (c) copyright 2010-2014 original author or authors */
 /** @author Brian Cavalier */
 /** @author John Hann */
@@ -13231,7 +13281,7 @@ define(function() {
 }(typeof define === 'function' && define.amd ? define : function(factory) { module.exports = factory(); }));
 
 
-},{}],29:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 /** @license MIT License (c) copyright 2010-2014 original author or authors */
 /** @author Brian Cavalier */
 /** @author John Hann */
@@ -14004,7 +14054,7 @@ define(function() {
 });
 }(typeof define === 'function' && define.amd ? define : function(factory) { module.exports = factory(); }));
 
-},{}],30:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 /** @license MIT License (c) copyright 2010-2014 original author or authors */
 /** @author Brian Cavalier */
 /** @author John Hann */
@@ -14035,7 +14085,7 @@ define(function(require) {
 });
 }(typeof define === 'function' && define.amd ? define : function(factory) { module.exports = factory(require); }));
 
-},{}],31:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 /** @license MIT License (c) copyright 2011-2013 original author or authors */
 
 /**
@@ -14087,7 +14137,7 @@ define(function(require) {
 
 
 
-},{"./when":32}],32:[function(require,module,exports){
+},{"./when":33}],33:[function(require,module,exports){
 /** @license MIT License (c) copyright 2010-2014 original author or authors */
 
 /**
@@ -14362,7 +14412,7 @@ define(function (require) {
 });
 })(typeof define === 'function' && define.amd ? define : function (factory) { module.exports = factory(require); });
 
-},{"./lib/Promise":15,"./lib/TimeoutError":18,"./lib/decorators/array":20,"./lib/decorators/flow":21,"./lib/decorators/fold":22,"./lib/decorators/inspect":23,"./lib/decorators/iterate":24,"./lib/decorators/progress":25,"./lib/decorators/timed":26,"./lib/decorators/unhandledRejection":27,"./lib/decorators/with":28}],33:[function(require,module,exports){
+},{"./lib/Promise":16,"./lib/TimeoutError":19,"./lib/decorators/array":21,"./lib/decorators/flow":22,"./lib/decorators/fold":23,"./lib/decorators/inspect":24,"./lib/decorators/iterate":25,"./lib/decorators/progress":26,"./lib/decorators/timed":27,"./lib/decorators/unhandledRejection":28,"./lib/decorators/with":29}],34:[function(require,module,exports){
 /*
     A simple jQuery modal (http://github.com/kylefox/jquery-modal)
     Version 0.5.5
@@ -14370,4 +14420,4 @@ define(function (require) {
 var jQuery = require('jquery');
 !function(a){var b=null;a.modal=function(c,d){a.modal.close();var e,f;if(this.$body=a("body"),this.options=a.extend({},a.modal.defaults,d),this.options.doFade=!isNaN(parseInt(this.options.fadeDuration,10)),c.is("a"))if(f=c.attr("href"),/^#/.test(f)){if(this.$elm=a(f),1!==this.$elm.length)return null;this.open()}else this.$elm=a("<div>"),this.$body.append(this.$elm),e=function(a,b){b.elm.remove()},this.showSpinner(),c.trigger(a.modal.AJAX_SEND),a.get(f).done(function(d){b&&(c.trigger(a.modal.AJAX_SUCCESS),b.$elm.empty().append(d).on(a.modal.CLOSE,e),b.hideSpinner(),b.open(),c.trigger(a.modal.AJAX_COMPLETE))}).fail(function(){c.trigger(a.modal.AJAX_FAIL),b.hideSpinner(),c.trigger(a.modal.AJAX_COMPLETE)});else this.$elm=c,this.open()},a.modal.prototype={constructor:a.modal,open:function(){var b=this;this.options.doFade?(this.block(),setTimeout(function(){b.show()},this.options.fadeDuration*this.options.fadeDelay)):(this.block(),this.show()),this.options.escapeClose&&a(document).on("keydown.modal",function(b){27==b.which&&a.modal.close()}),this.options.clickClose&&this.blocker.click(a.modal.close)},close:function(){this.unblock(),this.hide(),a(document).off("keydown.modal")},block:function(){var b=this.options.doFade?0:this.options.opacity;this.$elm.trigger(a.modal.BEFORE_BLOCK,[this._ctx()]),this.blocker=a('<div class="jquery-modal blocker"></div>').css({top:0,right:0,bottom:0,left:0,width:"100%",height:"100%",position:"fixed",zIndex:this.options.zIndex,background:this.options.overlay,opacity:b}),this.$body.append(this.blocker),this.options.doFade&&this.blocker.animate({opacity:this.options.opacity},this.options.fadeDuration),this.$elm.trigger(a.modal.BLOCK,[this._ctx()])},unblock:function(){this.options.doFade?this.blocker.fadeOut(this.options.fadeDuration,function(){a(this).remove()}):this.blocker.remove()},show:function(){this.$elm.trigger(a.modal.BEFORE_OPEN,[this._ctx()]),this.options.showClose&&(this.closeButton=a('<a href="#close-modal" rel="modal:close" class="close-modal '+this.options.closeClass+'">'+this.options.closeText+"</a>"),this.$elm.append(this.closeButton)),this.$elm.addClass(this.options.modalClass+" current"),this.center(),this.options.doFade?this.$elm.fadeIn(this.options.fadeDuration):this.$elm.show(),this.$elm.trigger(a.modal.OPEN,[this._ctx()])},hide:function(){this.$elm.trigger(a.modal.BEFORE_CLOSE,[this._ctx()]),this.closeButton&&this.closeButton.remove(),this.$elm.removeClass("current"),this.options.doFade?this.$elm.fadeOut(this.options.fadeDuration):this.$elm.hide(),this.$elm.trigger(a.modal.CLOSE,[this._ctx()])},showSpinner:function(){this.options.showSpinner&&(this.spinner=this.spinner||a('<div class="'+this.options.modalClass+'-spinner"></div>').append(this.options.spinnerHtml),this.$body.append(this.spinner),this.spinner.show())},hideSpinner:function(){this.spinner&&this.spinner.remove()},center:function(){this.$elm.css({position:"fixed",top:"50%",left:"50%",marginTop:-(this.$elm.outerHeight()/2),marginLeft:-(this.$elm.outerWidth()/2),zIndex:this.options.zIndex+1})},_ctx:function(){return{elm:this.$elm,blocker:this.blocker,options:this.options}}},a.modal.prototype.resize=a.modal.prototype.center,a.modal.close=function(a){if(b){a&&a.preventDefault(),b.close();var c=b.$elm;return b=null,c}},a.modal.resize=function(){b&&b.resize()},a.modal.isActive=function(){return b?!0:!1},a.modal.defaults={overlay:"#000",opacity:.75,zIndex:1,escapeClose:!0,clickClose:!0,closeText:"Close",closeClass:"",modalClass:"modal",spinnerHtml:null,showSpinner:!0,showClose:!0,fadeDuration:null,fadeDelay:1},a.modal.BEFORE_BLOCK="modal:before-block",a.modal.BLOCK="modal:block",a.modal.BEFORE_OPEN="modal:before-open",a.modal.OPEN="modal:open",a.modal.BEFORE_CLOSE="modal:before-close",a.modal.CLOSE="modal:close",a.modal.AJAX_SEND="modal:ajax:send",a.modal.AJAX_SUCCESS="modal:ajax:success",a.modal.AJAX_FAIL="modal:ajax:fail",a.modal.AJAX_COMPLETE="modal:ajax:complete",a.fn.modal=function(c){return 1===this.length&&(b=new a.modal(this,c)),this},a(document).on("click.modal",'a[rel="modal:close"]',a.modal.close),a(document).on("click.modal",'a[rel="modal:open"]',function(b){b.preventDefault(),a(this).modal()})}(jQuery);
 
-},{"jquery":14}]},{},[3]);
+},{"jquery":15}]},{},[4]);
