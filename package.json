@@ -1,6 +1,7 @@
 {
   "author": "Spark",
   "name": "spark",
+  "filename": "spark-browser.min.js",
   "description": "Official Spark API library.",
   "version": "0.1.0",
   "homepage": "http://spark.io",
@@ -28,9 +29,18 @@
     "browserify": "5.11.x",
     "browser-request": "0.3.x",
     "jquery": "^2.1.1",
-    "cssify": "0.6.x"
+    "cssify": "0.6.x",
+    "uglify-js": "2.4.x"
   },
   "browser": {
     "request": "browser-request"
+  },
+  "jam": {
+    "main": "spark-browser.min.js",
+    "include": [
+      "dist/spark-browser.min.js",
+      "README.md"
+    ],
+    "dependencies": {}
   }
 }
