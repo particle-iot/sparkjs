@@ -1,3 +1,69 @@
-#login-form {
+.spark-login-button {
+  width: 150px;
+  border-radius: 0;
+  color: #fff;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 12px;
+  background: #00aced;
+  border: 0;
+  font-size: 11px;
+}
+
+.spark-login-input {
+  border-radius: 0;
+  border: 1px solid #f7f7f7;
+  height: 40px;
+  width: 248px;
+  margin-bottom: 20px;
+  padding-left: 20px;
+  font-size: 16px;
+  font-weight: 300;
+  font-family: 'Gotham SSm A', 'Gotham SSm B', proxima-nova, 'Helvetica Neue', helvetica, arial, sans-serif;
+  font-size: 16px;
+  outline: none;
+}
+
+.spark-login-modal {
+  box-sizing: border-box;
+  display: block;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  padding-bottom: 30px;
+  padding-left: 75px;
+  padding-right: 10px;
+  padding-top: 60px;
+  width: 400px;
+  z-index: 0;
+  background: rgba(0,0,0,0.8);
+  border-radius: 0;
+  border: 0;
+}
+
+.spark-login-error {
+  background-color: #f2dede;
+  background-image: linear-gradient(to bottom, #f2dede 0, #e7c3c3 100%);
+  background-repeat: repeat-x;
+  border: 1px solid transparent;
+  border-color: #dca7a7;
+  border-radius: 4px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.25),0 1px 2px rgba(0,0,0,0.05);
+  color: #b94a48;
+  padding: 15px;
+  margin-bottom: 20px;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.2);
+  -webkit-box-shadow: inset 0 1px 0 rgba(255,255,255,0.25),0 1px 2px rgba(0,0,0,0.05);
+  width: 216px;
   display: none;
+}
+
+#spark-login-form {
+  display: none;
+}
+
+#spark-login-form-button {
+  width: 248px;
+  margin: 20px auto;
+  background: #fad612;
+  font-size: 14px;
 }
