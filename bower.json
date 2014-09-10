@@ -2,6 +2,7 @@
   "author": "Spark",
   "name": "spark",
   "version": "0.1.0",
+  "main": "dist/spark.min.js",
   "homepage": "http://spark.io",
   "repository": {
     "type": "git",
@@ -12,7 +13,6 @@
     "solojavier"
   ],
   "description": "Official Spark cloud API library",
-  "main": "dist/spark.min.js",
   "keywords": [
     "spark",
     "sparkjs",
