@@ -1,7 +1,7 @@
 {
   "author": "Spark",
   "name": "spark",
-  "filename": "spark-browser.min.js",
+  "filename": "spark.min.js",
   "description": "Official Spark API library.",
   "version": "0.1.0",
   "homepage": "http://spark.io",
@@ -36,9 +36,9 @@
     "request": "browser-request"
   },
   "jam": {
-    "main": "dist/spark-browser.min.js",
+    "main": "dist/spark.min.js",
     "include": [
-      "dist/spark-browser.min.js",
+      "dist/spark.min.js",
       "README.md"
     ],
     "dependencies": {}
