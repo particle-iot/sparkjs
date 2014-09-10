@@ -18,12 +18,19 @@
     "when": ">= 3.4.4"
   },
   "devDependencies": {
-    "jshint":     ">= 2.5.4",
+    "jshint": ">= 2.5.4",
     "mocha": "1.21.x",
     "chai": "1.9.x",
     "sinon-chai": "2.5.x",
     "sinon": "1.10.x",
     "chai-as-promised": "4.1.x",
-    "istanbul": "0.3.0"
+    "istanbul": "0.3.x",
+    "browserify": "5.11.x",
+    "browser-request": "0.3.x",
+    "jquery": "^2.1.1",
+    "cssify": "0.6.x"
+  },
+  "browser": {
+    "request": "browser-request"
   }
 }
