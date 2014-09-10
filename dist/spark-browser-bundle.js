@@ -1,71 +1,121 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-Device = function (attributes, api) {
-  this._api = api;
+/*
+ ******************************************************************************
+ * @file lib/device.js
+ * @company Spark ( https://www.spark.io/ )
+ * @source https://github.com/spark/sparkjs
+ *
+ * @Contributors
+ *    David Middlecamp (david@spark.io)
+ *    Edgar Silva (https://github.com/edgarsilva)
+ *    Javier Cervantes (https://github.com/solojavier)
+ *
+ * @brief Basic Device class
+ ******************************************************************************
+  Copyright (c) 2014 Spark Labs, Inc.  All rights reserved.
 
-  for (var key in attributes) {
-    this[key] = attributes[key];
-  }
+  This program is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License as published by the Free Software Foundation, either
+  version 3 of the License, or (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public
+  License along with this program; if not, see <http://www.gnu.org/licenses/>.
+  ******************************************************************************
+ */
+
+/*jslint node: true */
+'use strict';
+
+var Device = function (attributes, spark) {
+  this._spark = spark;
+  this._updateAttrs(attributes);
+  this.requirePlugins();
 };
 
 Device.prototype.claim = function(callback) {
-  return this._api.claimCore(this.id, callback);
+  return this._spark.claimCore(this.id, callback);
 };
 
 Device.prototype.remove = function(callback) {
-  return this._api.removeCore(this.id, callback);
+  return this._spark.removeCore(this.id, callback);
 };
 
 Device.prototype.rename = function(name, callback) {
-  return this._api.renameCore(this.id, name, callback);
+  return this._spark.renameCore(this.id, name, callback);
 };
 
 Device.prototype.signal = function(callback) {
-  return this._api.signalCore(this.id, true, callback);
+  return this._spark.signalCore(this.id, true, callback);
 };
 
 Device.prototype.stopSignal = function(callback) {
-  return this._api.signalCore(this.id, false, callback);
+  return this._spark.signalCore(this.id, false, callback);
 };
 
 Device.prototype.flash = function(files, callback) {
-  return this._api.flashCore(this.id, files, callback);
+  return this._spark.flashCore(this.id, files, callback);
 };
 
 Device.prototype.sendPublicKey = function(buffer, callback) {
-  return this._api.sendPublicKey(this.id, buffer, callback);
+  return this._spark.sendPublicKey(this.id, buffer, callback);
 };
 
 Device.prototype.call = function(name, params, callback) {
-  return this._api.callFunction(this.id, name, params, callback);
+  return this._spark.callFunction(this.id, name, params, callback);
 };
 
 Device.prototype.subscribe = function(eventName, callback) {
-  return this._api.getEventStream(eventName, this.id, callback);
+  return this._spark.getEventStream(eventName, this.id, callback);
 };
 
 Device.prototype.createWebhook = function(eventName, url, callback) {
-  return this._api.createWebhook(eventName, url, this.id, callback);
+  return this._spark.createWebhook(eventName, url, this.id, callback);
 };
 
 Device.prototype.getVariable = function(name, callback) {
-  return this._api.getVariable(this.id, name, callback);
+  return this._spark.getVariable(this.id, name, callback);
 };
 
-Device.prototype.update = function() {
-  this._api.getAttributes(this.id).then(
-    function(attributes) {
-      this.name = attributes.name;
-      this.connected = !!attributes.connected;
-      this.variables = attributes.variables;
-      this.functions = attributes.functions;
-      this.version = attributes.cc3000_patch_version;
-      this.requiresUpdate = !!attributes.requires_deep_update;
-      console.log('Device updated succesfully');
-    }.bind(this),
-    function(err) {
-      console.log('Failed to get attributes for device ' + this.id + ':' + err);
-    }.bind(this)
-  );
+Device.prototype.update = function(callback) {
+  this._spark.getAttributes(this.id, function(err, data) {
+    if (!!err) {
+      this._updateAttrs(data);
+    }
+    callback(err, data);
+  }.bind(this));
+};
+
+Device.prototype._updateAttrs = function(attrs) {
+  var replacer = function(match){
+    return match.toUpperCase().replace('_','');
+  };
+
+  var tmpKey = '';
+
+  for (var key in attrs) {
+    tmpKey = key.replace(/(\_[a-z])/g, replacer);
+    this[tmpKey] =attrs[key];
+  }
+};
+
+Device.prototype.requirePlugins = function() {
+  var plugins = this._spark.plugins;
+  var Plugin = null;
+  var name = '';
+  var moduleName = '';
+
+  for (var i in plugins) {
+    name = plugins[i];
+    moduleName = 'spark-' + name;
+    Plugin = require(moduleName);
+    this[name] = new Plugin(this.id, this._spark);
+  }
 };
 
 module.exports = Device;
@@ -83,7 +133,7 @@ module.exports = Device;
  *    Edgar Silva (https://github.com/edgarsilva)
  *    Javier Cervantes (https://github.com/solojavier)
  *
- * @brief Basic API wrapper module
+ * @brief Basic API request handler
  ******************************************************************************
   Copyright (c) 2014 Spark Labs, Inc.  All rights reserved.
 
@@ -324,6 +374,26 @@ SparkApi.prototype.signalCore = function (coreId, beSignalling, accessToken, cal
 };
 
 /**
+ * Flash Tinker firmware to a Core
+ *
+ * @param {string} coreId - The id of the Spark core you wish to signal
+ * @param {function} callback
+ * @returns {Promise}
+ * @endpoint PUT /v1/devices/<core_id>
+ */
+SparkApi.prototype.flashTinker = function (coreId, accessToken, callback) {
+  this.request({
+    uri: this.baseUrl + '/v1/devices/' + coreId,
+    method: 'PUT',
+    form: {
+      access_token: accessToken,
+      app: 'tinker'
+    },
+    json: true
+  }, callback);
+};
+
+/**
  * Flash firmware to a Core
  *
  * @param {string} coreId - The id of the Spark core you wish to signal
@@ -436,7 +506,7 @@ SparkApi.prototype.callFunction = function (coreId, functionName, funcParam, acc
     uri: this.baseUrl + '/v1/devices/' + coreId + '/' + functionName,
     method: 'POST',
     form: {
-      arg: funcParam,
+      args: funcParam,
       access_token: accessToken
     },
     json: true
@@ -551,7 +621,7 @@ module.exports = SparkApi;
 
 }).call(this,require('_process'))
 },{"_process":11,"fs":7,"path":10,"request":6}],3:[function(require,module,exports){
-var css = "#login-form {\n  display: none;\n}\n"; (require("/Users/solojavier/dev/src/github.com/spark/sparkjs/node_modules/cssify"))(css); module.exports = css;
+var css = ".spark-login-button {\n  width: 150px;\n  border-radius: 0;\n  color: #fff;\n  font-weight: 700;\n  text-transform: uppercase;\n  padding: 12px;\n  background: #00aced;\n  border: 0;\n  font-size: 11px;\n}\n\n.spark-login-input {\n  border-radius: 0;\n  border: 1px solid #f7f7f7;\n  height: 40px;\n  width: 248px;\n  margin-bottom: 20px;\n  padding-left: 20px;\n  font-size: 16px;\n  font-weight: 300;\n  font-family: 'Gotham SSm A', 'Gotham SSm B', proxima-nova, 'Helvetica Neue', helvetica, arial, sans-serif;\n  font-size: 16px;\n  outline: none;\n}\n\n.spark-login-modal {\n  box-sizing: border-box;\n  display: block;\n  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;\n  font-size: 14px;\n  padding-bottom: 30px;\n  padding-left: 75px;\n  padding-right: 10px;\n  padding-top: 60px;\n  width: 400px;\n  z-index: 0;\n  background: rgba(0,0,0,0.8);\n  border-radius: 0;\n  border: 0;\n}\n\n.spark-login-error {\n  background-color: #f2dede;\n  background-image: linear-gradient(to bottom, #f2dede 0, #e7c3c3 100%);\n  background-repeat: repeat-x;\n  border: 1px solid transparent;\n  border-color: #dca7a7;\n  border-radius: 4px;\n  box-shadow: inset 0 1px 0 rgba(255,255,255,0.25),0 1px 2px rgba(0,0,0,0.05);\n  color: #b94a48;\n  padding: 15px;\n  margin-bottom: 20px;\n  text-shadow: 0 1px 0 rgba(255,255,255,0.2);\n  -webkit-box-shadow: inset 0 1px 0 rgba(255,255,255,0.25),0 1px 2px rgba(0,0,0,0.05);\n  width: 216px;\n  display: none;\n}\n\n\n#spark-login-form {\n  display: none;\n}\n\n#spark-login-form-button {\n  width: 248px;\n  margin: 20px auto;\n  background: #fad612;\n  font-size: 14px;\n}\n"; (require("/Users/solojavier/dev/src/github.com/spark/sparkjs/node_modules/cssify"))(css); module.exports = css;
 },{"/Users/solojavier/dev/src/github.com/spark/sparkjs/node_modules/cssify":14}],4:[function(require,module,exports){
 var $ = require('jquery');
 var jModal = require('../vendor/jquery.modal.min.js');
@@ -571,9 +641,10 @@ window.spark = require('./spark.js');
 function addLoginButton() {
   var btn = document.createElement("button");
   btn.id = 'spark-login-button';
+  btn.className = 'spark-login-button';
   btn.appendChild(document.createTextNode("Login to Spark"));
   btn.onclick = function() {
-    $('#login-form').modal();
+    $('#spark-login-form').modal();
   };
 
   if( $('#spark-login').length ) {
@@ -585,11 +656,11 @@ function addLoginButton() {
 
 function addLoginForm() {
   var form = document.createElement('form');
-  form.id = 'login-form';
-  form.class = 'modal';
+  form.id = 'spark-login-form';
+  form.className = 'spark-login-modal';
 
   form.appendChild(generateError());
-  form.appendChild(generateInput('username', 'text'));
+  form.appendChild(generateInput('email', 'text'));
   form.appendChild(generateInput('password', 'password'));
   form.appendChild(generateButton());
 
@@ -597,28 +668,29 @@ function addLoginForm() {
 }
 
 function addBehaviour(callback) {
-  $('#login-form-button').click(function(e) {
+  $('#spark-login-form-button').click(function(e) {
     e.preventDefault();
-    var user = $('#login-form-username').val();
-    var pass = $('#login-form-password').val();
+    var user = $('#spark-login-form-email').val();
+    var pass = $('#spark-login-form-password').val();
 
     var loginPromise = window.spark.login({ username: user, password: pass });
 
     loginPromise.then(
       function(data) {
         callback(data);
-        $('#login-form-username').val('');
-        $('#login-form-password').val('');
+        $('#spark-login-form-email').val('');
+        $('#spark-login-form-password').val('');
         displayErrorMessage('');
+        $('#spark-login-form-error').hide();
         $.modal.close();
       },
       function(error) {
         if (error.message === 'invalid_client') {
-          displayErrorMessage('Invalid credentials. Verify email and password.');
+          displayErrorMessage('Invalid username or password.');
         } else if (error.cors === 'rejected') {
-          displayErrorMessage('Request rejected. Check your internet connection.');
+          displayErrorMessage('Request rejected.');
         } else {
-          displayErrorMessage('Unknown error. Review console log for details.');
+          displayErrorMessage('Unknown error.');
           console.log(error);
         }
       }
@@ -628,36 +700,40 @@ function addBehaviour(callback) {
 
 function generateError() {
   var div = document.createElement("div");
-  div.id = 'login-form-error';
+  div.id = 'spark-login-form-error';
+  div.className = 'spark-login-error';
 
   return div;
 }
 
 function generateInput(name, type) {
   var input = document.createElement("input");
-  input.id = 'login-form-' + name;
+  input.id = 'spark-login-form-' + name;
   input.type = type;
-  input.class = 'login-input';
+  input.className = 'spark-login-input';
+  input.placeholder = name;
 
   return input;
 }
 
 function generateButton() {
   var btn = document.createElement("button");
-  btn.id = 'login-form-button';
-  btn.appendChild(document.createTextNode("LOGIN"));
+  btn.id = 'spark-login-form-button';
+  btn.className = 'spark-login-button';
+  btn.appendChild(document.createTextNode("log in"));
 
   return btn;
 }
 
 function displayErrorMessage(message) {
-  $('#login-form-error').text(message);
+  $('#spark-login-form-error').show();
+  $('#spark-login-form-error').text(message);
 }
 
 },{"../vendor/jquery.modal.min.js":34,"./spark-browser-style.css":3,"./spark.js":5,"cssify":14,"jquery":15}],5:[function(require,module,exports){
 /*
  ******************************************************************************
- * @file lib/spark-api.js
+ * @file lib/spark.js
  * @company Spark ( https://www.spark.io/ )
  * @source https://github.com/spark/sparkjs
  *
@@ -666,7 +742,7 @@ function displayErrorMessage(message) {
  *    Edgar Silva (https://github.com/edgarsilva)
  *    Javier Cervantes (https://github.com/solojavier)
  *
- * @brief Basic API wrapper module
+ * @brief Main Spark Api class
  ******************************************************************************
   Copyright (c) 2014 Spark Labs, Inc.  All rights reserved.
 
@@ -697,7 +773,6 @@ var fs = require('fs'),
     Device = require('./device'),
     SparkApi = require('./spark-api');
 
-
 /**
  * Creates a new Spark obj
  * @constructor {Spark}
@@ -707,6 +782,8 @@ var Spark = function() {
   this.clientSecret = 'Spark';
   this.baseUrl = 'https://api.spark.io';
   this.accessToken = null;
+  this.plugins = [];
+  this.devices = [];
   this.api = new SparkApi({
     clientId: this.clientId,
     clientSecret: this.clientSecret,
@@ -808,6 +885,17 @@ Spark.prototype.defaultHandler = function(eventName, defer, userCb, sparkCb) {
   return handler;
 };
 
+Spark.prototype.include = function(plugins) {
+  plugins = (Array.isArray(plugins) ? plugins : [plugins]);
+
+  for (var i in plugins) {
+    if (this.plugins.indexOf(plugins[i]) == -1) {
+      this.plugins.push(plugins[i]);
+    }
+  }
+
+};
+
 /**
  * Login to the Spark Cloud
  *
@@ -843,20 +931,18 @@ Spark.prototype.login = function (params, callback) {
  * @endpoint GET /v1/devices
  */
 Spark.prototype.listDevices = function (callback) {
-  var defer = this.createDefer('listDevices', callback),
-      attributes = null;
+  var defer = this.createDefer('listDevices', callback);
 
   var handler = function(err, response, data) {
     err = this.normalizeErr(err, data);
     this.devices = [];
-    attributes = data;
     if (Array.isArray(data)) {
       for (var i in data) {
         this.devices.push(new Device(data[i], this));
       }
     }
-    this.resolveDefer(defer, err, attributes);
-    this.emitAndCallback('listDevices', err, attributes, callback);
+    this.resolveDefer(defer, err, this.devices);
+    this.emitAndCallback('listDevices', err, this.devices, callback);
   }.bind(this);
 
   this.api.listDevices({ accessToken: this.accessToken }, handler);
@@ -1035,6 +1121,24 @@ Spark.prototype.signalCore = function (coreId, beSignalling, callback) {
       handler = this.defaultHandler('signalCore', defer, callback).bind(this);
 
   this.api.signalCore(coreId, beSignalling, this.accessToken, handler);
+
+  var promise = (!!defer) ? defer.promise : null;
+  return promise;
+};
+
+/**
+ * Flash Tinker firmware to a Core
+ *
+ * @param {string} coreId - The id of the Spark core you wish to signal
+ * @param {function} callback
+ * @returns {Promise}
+ * @endpoint PUT /v1/devices/<core_id>
+ */
+Spark.prototype.flashTinker = function (coreId, callback) {
+  var defer = this.createDefer('flashTinker', callback),
+      handler = this.defaultHandler('flashTinker', defer, callback).bind(this);
+
+  this.api.flashTinker(coreId, this.accessToken, handler);
 
   var promise = (!!defer) ? defer.promise : null;
   return promise;
