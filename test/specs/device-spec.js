@@ -1,5 +1,5 @@
 describe('Device', function() {
-  var device, api,
+  var device,
       callback = function() {},
       newAttributes = when.defer(),
       api = {
@@ -13,7 +13,7 @@ describe('Device', function() {
         getEventStream: sinon.spy(),
         createWebhook: sinon.spy(),
         getVariable: sinon.spy(),
-        getAttributes: function() { return newAttributes.promise }
+        getAttributes: function() { return newAttributes.promise; }
       };
 
   beforeEach(function() {

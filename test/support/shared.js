@@ -1,7 +1,7 @@
 exports.stubRequest = function(err, data, args) {
   var request, clock;
   beforeEach(function() {
-    request = sinon.stub(Spark.api, 'request')
+    request = sinon.stub(Spark.api, 'request');
     clock = sinon.useFakeTimers(0, 'Date');
 
     request.yields(err, null, data).returns({
