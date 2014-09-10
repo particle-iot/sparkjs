@@ -1,6 +1,7 @@
 {
   "author": "Spark",
   "name": "spark",
+  "filename": "spark-browser.min.js",
   "description": "Official Spark API library.",
   "version": "0.1.0",
   "homepage": "http://spark.io",
