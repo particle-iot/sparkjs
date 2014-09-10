@@ -36,7 +36,7 @@
     "request": "browser-request"
   },
   "jam": {
-    "main": "spark-browser.min.js",
+    "main": "dist/spark-browser.min.js",
     "include": [
       "dist/spark-browser.min.js",
       "README.md"
