@@ -17,6 +17,6 @@ install:
 
 script:
   - make test
-  - make coverage
+  - make cover
   - make bundle
-  - bower install ./
+  - ./node_modules/.bin/bower install ./
