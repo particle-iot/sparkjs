@@ -74,7 +74,7 @@ describe('Device', function() {
   });
 
   it('can call a function', function() {
-    device.call('setTemp', '10', callback);
+    device.callFunction('setTemp', '10', callback);
     expect(api.callFunction.withArgs('id', 'setTemp', '10', callback)).to.be.calledOnce;
   });
 
@@ -93,8 +93,8 @@ describe('Device', function() {
     expect(api.getVariable.withArgs('id', 'name', callback)).to.be.calledOnce;
   });
 
-  it('updates attributes successfuly', function() {
-    device.update();
+  it('updates attributes successfuly calling getAttributes', function() {
+    device.getAttributes();
 
     newAttributes.resolve({
       name: 'name',
