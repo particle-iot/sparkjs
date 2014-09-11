@@ -19,4 +19,4 @@ script:
   - make test
   - make cover
   - make bundle
-  - ./node_modules/.bin/bower install ./
+  - ./node_modules/.bin/bower install ./#$TRAVIS_BRANCH
