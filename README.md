@@ -40,6 +40,54 @@ It's important that you login before executing any command.
 Every function returns a [promise](http://promisesaplus.com/) for you to handle the async result, or you can pass a callback function.
 (Please note that if a callback function is passed, the function will return null instead of a promise)
 
+More examples on how to use promises/callbacks visit: https://github.com/spark/sparkjs/tree/master/examples
+
+###Supported commands
+
+compileCode
+createUser
+callFunction
+claimCore
+downloadBinary
+flashCore
+getAttributes
+getAttributesForAll
+getEventStream
+getVariable
+listDevices
+login
+publishEvent
+removeCore
+removeToken
+renameCore
+signalCore
+Device object
+
+You can get a list of devices by calling: Spark.devices
+
+Each device has the following parameters:
+
+name
+connected
+variables
+functions
+version
+requiresUpgrade
+
+And you can call the following commands on it:
+
+callFunction
+claim
+flash
+subscribe
+getVariable
+remove
+rename
+sendPublicKey
+signal
+stopSignal
+getAttributes
+
 **Complete documentation can be found in [Spark Docs](http://docs.spark.io/javascript/)**
 
 ## Setup your dev environment
