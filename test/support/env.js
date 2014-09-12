@@ -34,3 +34,4 @@ global.source = function(module) {
 
 global.Spark = source('spark');
 global.Device = source('device');
+global.SparkApi = source('spark-api');

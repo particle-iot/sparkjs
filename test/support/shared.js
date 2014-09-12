@@ -1,34 +1,58 @@
-exports.stubRequest = function(err, data, args) {
+exports.stubRequest = function(eventName, err, data) {
   var request, clock;
   beforeEach(function() {
-    request = sinon.stub(Spark.api, 'request');
+    request = sinon.stub(Spark.api, eventName);
     clock = sinon.useFakeTimers(0, 'Date');
 
     request.yields(err, null, data).returns({
-      form: function() {},
       pipe: function() {}
     });
   });
 
   afterEach(function() {
-    if (!!args) {
-      expect(request.withArgs(args)).to.be.calledOnce;
-    }
     clock.restore();
-    Spark.api.request.restore();
+    request.restore();
   });
 };
 
-exports.behavesLikeAPI = function(eventName, subject, data, args) {
-  shared.behavesLikeSuccess(eventName, subject, data, args);
+exports.behavesLikeAPI = function(eventName, subject, data) {
+  shared.behavesLikeSuccess(eventName, subject, data);
   shared.behavesLikeError(eventName, subject, 'invalid_grant');
   shared.behavesLikeRequestError(eventName, subject);
+};
+
+exports.behavesLikeEndpoint = function(subject, args) {
+  var request, clock;
+  var api = new SparkApi({
+    clientId: 'Spark',
+    clientSecret: 'Spark',
+    baseUrl: 'https://api.spark.io'
+  });
+
+  beforeEach(function() {
+    clock = sinon.useFakeTimers(0, 'Date');
+    request = sinon.stub(api, 'request').returns({
+      form: function() {}
+    });
+  });
+
+  afterEach(function() {
+    api.request.restore();
+    clock.restore();
+  });
+
+  describe('request', function() {
+    it('is called with correct params', function() {
+      subject(api);
+      return expect(request.withArgs(args)).to.be.calledOnce;
+    });
+  });
 };
 
 exports.behavesLikeError = function(eventName, subject, error) {
   describe('data error', function() {
 
-    shared.stubRequest(null, {error: error});
+    shared.stubRequest(eventName, null, {error: error});
 
     it('promise rejected with error', function() {
       return expect(subject()).to.be.rejectedWith(error);
@@ -49,7 +73,7 @@ exports.behavesLikeError = function(eventName, subject, error) {
 exports.behavesLikeRequestError = function(eventName, subject) {
   describe('request error', function() {
 
-    shared.stubRequest(new Error('err'), null);
+    shared.stubRequest(eventName, new Error('err'), null);
 
     it('promise rejected with error', function() {
       return expect(subject()).to.be.rejectedWith('err');
@@ -67,9 +91,9 @@ exports.behavesLikeRequestError = function(eventName, subject) {
   });
 };
 
-exports.behavesLikeSuccess = function (eventName, subject, data, args) {
+exports.behavesLikeSuccess = function (eventName, subject, data) {
   describe('success', function() {
-    shared.stubRequest(null, data, args);
+    shared.stubRequest(eventName, null, data);
 
     describe('handles fulfilled promises', function() {
       it('is fulfilled', function() {

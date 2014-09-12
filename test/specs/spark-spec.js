@@ -21,20 +21,8 @@ describe('Spark', function() {
         return Spark.login({username: 'spark', password: 'spark'}, callback);
       };
       var data = {accessToken: 'access_token'};
-      var args = {
-        uri: 'https://api.spark.io/oauth/token',
-        method: 'POST',
-        json: true,
-        form: {
-          username: 'spark',
-          password: 'spark',
-          grant_type: 'password',
-          client_id: 'Spark',
-          client_secret: 'Spark'
-        }
-      };
 
-      shared.behavesLikeAPI('login', subject, data, args);
+      shared.behavesLikeAPI('login', subject, data);
 
       it('sets accessToken correctly');
 
@@ -48,38 +36,25 @@ describe('Spark', function() {
       return Spark.listDevices(callback);
     };
     var data = [{id: 'id', name: 'sparky'}];
-    var args = {
-      uri: 'https://api.spark.io/v1/devices?access_token=token',
-      method: 'GET',
-      json: true
-    };
 
-    shared.behavesLikeAPI('listDevices', subject, data, args);
+    shared.behavesLikeAPI('listDevices', subject, data);
 
     it('sets devices correctly');
   });
+
 
   describe('createUser', function() {
     var subject = function(callback) {
       return Spark.createUser('user@gmail.com', 'pass', callback);
     };
     var data = {ok: true};
-    var args = {
-      uri: 'https://api.spark.io/v1/users',
-      method: 'POST',
-      form: {
-        username: 'user@gmail.com',
-        password: 'pass'
-      },
-      json: true
-    };
 
     it('promise', function() {
       promise = Spark.login({accessToken: 'access_token'});
       return expect(promise).to.be.fulfilled;
     });
 
-    shared.behavesLikeAPI('createUser', subject, data, args);
+    shared.behavesLikeAPI('createUser', subject, data);
 
     describe('with invalid username', function() {
       it('returns correct error message', function() {
@@ -97,20 +72,8 @@ describe('Spark', function() {
       return Spark.removeAccessToken('user@gmail.com', 'pass', 'access_token', callback);
     };
     var data = {ok: true};
-    var args = {
-      uri: 'https://api.spark.io/v1/access_tokens/access_token',
-      method: 'DELETE',
-      auth: {
-        username: 'user@gmail.com',
-        password: 'pass'
-      },
-      form: {
-        access_token: 'access_token'
-      },
-      json: true
-    };
 
-    shared.behavesLikeAPI('removeAccessToken', subject, data, args);
+    shared.behavesLikeAPI('removeAccessToken', subject, data);
   });
 
   describe('claimCore', function() {
@@ -123,17 +86,8 @@ describe('Spark', function() {
       token_type: 'bearer',
       expires_in: 7776000
     };
-    var args = {
-      uri: 'https://api.spark.io/v1/devices',
-      method: 'POST',
-      form: {
-        id: 'core_id',
-        access_token: 'token'
-      },
-      json: true
-    };
 
-    shared.behavesLikeAPI('claimCore', subject, data, args);
+    shared.behavesLikeAPI('claimCore', subject, data);
   });
 
   describe('removeCore', function() {
@@ -142,17 +96,8 @@ describe('Spark', function() {
       return Spark.removeCore('core_id', callback);
     };
     var data = {ok: true};
-    var args = {
-      uri: 'https://api.spark.io/v1/devices/core_id',
-      method: 'DELETE',
-      form: {
-        id: 'core_id',
-        access_token: 'token'
-      },
-      json: true
-    };
 
-    shared.behavesLikeAPI('removeCore', subject, data, args);
+    shared.behavesLikeAPI('removeCore', subject, data);
   });
 
   describe('renameCore', function() {
@@ -161,17 +106,8 @@ describe('Spark', function() {
       return Spark.renameCore('core_id', 'new_name', callback);
     };
     var data = {ok: true};
-    var args = {
-      uri: 'https://api.spark.io/v1/devices/core_id',
-      method: 'PUT',
-      form: {
-        name: 'new_name',
-        access_token: 'token'
-      },
-      json: true
-    };
 
-    shared.behavesLikeAPI('renameCore', subject, data, args);
+    shared.behavesLikeAPI('renameCore', subject, data);
   });
 
   describe('getAttributes', function() {
@@ -188,13 +124,8 @@ describe('Spark', function() {
       cc3000_patch_version: '1.24',
       requires_deep_update: true
     };
-    var args = {
-      uri: 'https://api.spark.io/v1/devices/core_id?access_token=token',
-      method: 'GET',
-      json: true
-    };
 
-    shared.behavesLikeAPI('getAttributes', subject, data, args);
+    shared.behavesLikeAPI('getAttributes', subject, data);
   });
 
   describe('getVariable', function() {
@@ -213,13 +144,8 @@ describe('Spark', function() {
         'deviceID': 'core_id'
       }
     };
-    var args = {
-      uri: 'https://api.spark.io/v1/devices/core_id/var?access_token=token',
-      method: 'GET',
-      json: true
-    };
 
-    shared.behavesLikeAPI('getVariable', subject, data, args);
+    shared.behavesLikeAPI('getVariable', subject, data);
   });
 
   describe('signalCore', function() {
@@ -232,17 +158,8 @@ describe('Spark', function() {
       connected: true,
       signaling: true
     };
-    var args = {
-      uri: 'https://api.spark.io/v1/devices/core_id',
-      method: 'PUT',
-      form: {
-        signal: 1,
-        access_token: 'token'
-      },
-      json: true
-    };
 
-    shared.behavesLikeAPI('signalCore', subject, data, args);
+    shared.behavesLikeAPI('signalCore', subject, data);
   });
 
   describe('flashCore', function() {
@@ -254,15 +171,8 @@ describe('Spark', function() {
       id: 'core_id',
       status: 'Update started'
     };
-    var args ={
-      uri: 'https://api.spark.io/v1/devices/core_id?access_token=token',
-      method: 'PUT',
-      json: true
-    };
 
-    shared.behavesLikeAPI('flashCore', subject, data, args);
-
-    it('appends files correctly')
+    shared.behavesLikeAPI('flashCore', subject, data);
   });
 
   describe('compileCode', function() {
@@ -273,14 +183,8 @@ describe('Spark', function() {
     var data = {
       ok: true
     };
-    var args ={
-      uri: 'https://api.spark.io/v1/binaries?access_token=token',
-      method: 'POST',
-      json: true
-    };
 
-    shared.behavesLikeAPI('compileCode', subject, data, args);
-    it('appends files correctly')
+    shared.behavesLikeAPI('compileCode', subject, data);
   });
 
   describe('downloadBinary', function() {
@@ -291,12 +195,8 @@ describe('Spark', function() {
     var data = {
       ok: true
     };
-    var args = {
-      uri: 'https://api.spark.io/v1/algo/123456789?access_token=token',
-      method: 'GET'
-    };
 
-    shared.behavesLikeAPI('downloadBinary', subject, data, args);
+    shared.behavesLikeAPI('downloadBinary', subject, data);
     it('writes file correctly')
   });
 
@@ -308,20 +208,8 @@ describe('Spark', function() {
     var data = {
       ok: true
     };
-    var args = {
-      uri: 'https://api.spark.io/v1/provisioning/core_id',
-      method: 'POST',
-      form: {
-        deviceID: 'core_id',
-        publicKey: 'buffer',
-        order: 'manual_0',
-        filename: 'cli',
-        access_token: 'token'
-      },
-      json: true
-    };
 
-    shared.behavesLikeAPI('sendPublicKey', subject, data, args);
+    shared.behavesLikeAPI('sendPublicKey', subject, data);
     it('writes file correctly')
   });
 
@@ -337,17 +225,8 @@ describe('Spark', function() {
       connected: true,
       return_value: 42
     };
-    var args = {
-      uri: 'https://api.spark.io/v1/devices/core_id/function',
-      method: 'POST',
-      form: {
-        args: 'arg',
-        access_token: 'token'
-      },
-      json: true
-    };
 
-    shared.behavesLikeAPI('callFunction', subject, data, args);
+    shared.behavesLikeAPI('callFunction', subject, data);
   });
 
   describe('getEventStream', function() {
@@ -357,66 +236,23 @@ describe('Spark', function() {
       request.restore();
     });
 
-    it('retrieves all events url', function() {
-      request = sinon.stub(Spark.api, 'request')
-      var args = {
-        uri: 'https://api.spark.io/v1/events?access_token=token',
-        method: 'GET'
-      };
+    it('executes call to spark api', function() {
+      request = sinon.stub(Spark.api, 'getEventStream')
 
       Spark.getEventStream(false);
-      return expect(request.withArgs(args)).to.be.calledOnce;
-    });
-
-    it('retrieves event url', function() {
-      request = sinon.stub(Spark.api, 'request')
-      var args = {
-        uri: 'https://api.spark.io/v1/events/event_name?access_token=token',
-        method: 'GET'
-      };
-
-      Spark.getEventStream('event_name');
-      return expect(request.withArgs(args)).to.be.calledOnce;
-    });
-
-    it('retrieves mine events url', function() {
-      request = sinon.stub(Spark.api, 'request')
-      var args = {
-        uri: 'https://api.spark.io/v1/devices/events?access_token=token',
-        method: 'GET'
-      };
-
-      Spark.getEventStream(false, 'mine');
-      return expect(request.withArgs(args)).to.be.calledOnce;
-    });
-
-    it('retrieves coreId events url', function() {
-      request = sinon.stub(Spark.api, 'request')
-      var args = {
-        uri: 'https://api.spark.io/v1/devices/coreId/events?access_token=token',
-        method: 'GET'
-      };
-
-      Spark.getEventStream(false, 'coreId');
-      return expect(request.withArgs(args)).to.be.calledOnce;
+      return expect(request).to.be.calledOnce;
     });
   });
 
   describe('getAttributesForAll', function() {
-
     var data = [ {id: '1', name: 'sparki'} ];
     var device = new Device(data[0], Spark);
-    var args = {
-      uri: 'https://api.spark.io/v1/devices?access_token=token',
-      method: 'GET',
-      json: true
-    };
 
-    shared.stubRequest(null, data, args);
+    shared.stubRequest('listDevices', null, data);
 
     it('returns devices attributes', function() {
       subject = function() {
-       return Spark.getAttributesForAll();
+        return Spark.getAttributesForAll();
       }
       return expect(subject()).to.eventually.become([device]);
     });
@@ -430,18 +266,8 @@ describe('Spark', function() {
     var data = {
       ok: true,
     };
-    var args = {
-      uri: 'https://api.spark.io/v1/devices/events',
-      method: 'POST',
-      form: {
-        name: 'event_name',
-        data: 'data',
-        access_token: 'token'
-      },
-      json: true
-    };
 
-    shared.behavesLikeAPI('publishEvent', subject, data, args);
+    shared.behavesLikeAPI('publishEvent', subject, data);
   });
 
   describe('createWebhook', function() {
@@ -452,19 +278,8 @@ describe('Spark', function() {
     var data = {
       ok: true,
     };
-    var args = {
-      uri: 'https://api.spark.io/v1/webhooks',
-      method: 'POST',
-      form: {
-        event: 'event_name',
-        url: 'url',
-        deviceid: 'core_id',
-        access_token: 'token'
-      },
-      json: true
-    };
 
-    shared.behavesLikeAPI('createWebhook', subject, data, args);
+    shared.behavesLikeAPI('createWebhook', subject, data);
   });
 
   describe('deleteWebhook', function() {
@@ -475,13 +290,8 @@ describe('Spark', function() {
     var data = {
       ok: true,
     };
-    var args = {
-      uri: 'https://api.spark.io/v1/webhooks/hook_id?access_token=token',
-      method: 'DELETE',
-      json: true
-    };
 
-    shared.behavesLikeAPI('deleteWebhook', subject, data, args);
+    shared.behavesLikeAPI('deleteWebhook', subject, data);
   });
 
   describe('listWebhooks', function() {
@@ -490,12 +300,7 @@ describe('Spark', function() {
       return Spark.listWebhooks(callback);
     };
     var data = [];
-    var args = {
-      uri: 'https://api.spark.io/v1/webhooks/?access_token=token',
-      method: 'GET',
-      json: true
-    };
 
-    shared.behavesLikeAPI('listWebhooks', subject, data, args);
+    shared.behavesLikeAPI('listWebhooks', subject, data);
   });
 });
