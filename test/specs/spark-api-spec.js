@@ -1,69 +1,42 @@
-describe('Spark', function() {
+describe('SparkApi', function() {
+
   describe('login', function() {
+    var subject = function(api) {
+      return api.login({username: 'spark', password: 'spark'});
+    };
+    var args = {
+      uri: 'https://api.spark.io/oauth/token',
+      method: 'POST',
+      json: true,
+      form: {
+        username: 'spark',
+        password: 'spark',
+        grant_type: 'password',
+        client_id: 'Spark',
+        client_secret: 'Spark'
+      }
+    };
 
-    describe('with access token', function() {
-      it('callback', function() {
-        Spark.login({accessToken: 'access_token'}, function(err, data) {
-          expect(err).to.eq(null);
-          expect(data.accessToken).to.eq('access_token');
-          expect(Spark.ready()).to.eq(true);
-        });
-      });
-
-      it('promise', function() {
-        promise = Spark.login({accessToken: 'access_token'});
-        return expect(promise).to.be.fulfilled;
-      });
-    });
-
-    describe('with username/password', function() {
-      var subject = function(callback) {
-        return Spark.login({username: 'spark', password: 'spark'}, callback);
-      };
-      var data = {accessToken: 'access_token'};
-      var args = {
-        uri: 'https://api.spark.io/oauth/token',
-        method: 'POST',
-        json: true,
-        form: {
-          username: 'spark',
-          password: 'spark',
-          grant_type: 'password',
-          client_id: 'Spark',
-          client_secret: 'Spark'
-        }
-      };
-
-      shared.behavesLikeAPI('login', subject, data, args);
-
-      it('sets accessToken correctly');
-
-      it('is ready');
-    });
+    shared.behavesLikeEndpoint(subject, args);
   });
 
   describe('listDevices', function() {
-    var subject = function(callback) {
-      Spark.accessToken = 'token';
-      return Spark.listDevices(callback);
+    var subject = function(api) {
+      return api.listDevices({accessToken: 'token'});
     };
-    var data = [{id: 'id', name: 'sparky'}];
     var args = {
       uri: 'https://api.spark.io/v1/devices?access_token=token',
       method: 'GET',
       json: true
     };
 
-    shared.behavesLikeAPI('listDevices', subject, data, args);
-
-    it('sets devices correctly');
+    shared.behavesLikeEndpoint(subject, args);
   });
 
   describe('createUser', function() {
-    var subject = function(callback) {
-      return Spark.createUser('user@gmail.com', 'pass', callback);
+    var subject = function(api) {
+      return api.createUser('user@gmail.com', 'pass');
     };
-    var data = {ok: true};
     var args = {
       uri: 'https://api.spark.io/v1/users',
       method: 'POST',
@@ -74,29 +47,13 @@ describe('Spark', function() {
       json: true
     };
 
-    it('promise', function() {
-      promise = Spark.login({accessToken: 'access_token'});
-      return expect(promise).to.be.fulfilled;
-    });
-
-    shared.behavesLikeAPI('createUser', subject, data, args);
-
-    describe('with invalid username', function() {
-      it('returns correct error message', function() {
-        subject = function(callback) {
-          return Spark.createUser('', 'pass', callback);
-        };
-
-        shared.behavesLikeError('createUser', subject, 'Username must be an email address.');
-      });
-    });
+    shared.behavesLikeEndpoint(subject, args);
   });
 
   describe('removeAccessToken', function() {
-    var subject = function(callback) {
-      return Spark.removeAccessToken('user@gmail.com', 'pass', 'access_token', callback);
+    var subject = function(api) {
+      return api.removeAccessToken('user@gmail.com', 'pass', 'access_token');
     };
-    var data = {ok: true};
     var args = {
       uri: 'https://api.spark.io/v1/access_tokens/access_token',
       method: 'DELETE',
@@ -110,18 +67,12 @@ describe('Spark', function() {
       json: true
     };
 
-    shared.behavesLikeAPI('removeAccessToken', subject, data, args);
+    shared.behavesLikeEndpoint(subject, args);
   });
 
   describe('claimCore', function() {
-    var subject = function(callback) {
-      Spark.accessToken = 'token';
-      return Spark.claimCore('core_id', callback);
-    };
-    var data = {
-      access_token: 'access_token',
-      token_type: 'bearer',
-      expires_in: 7776000
+    var subject = function(api) {
+      return api.claimCore('core_id', 'token');
     };
     var args = {
       uri: 'https://api.spark.io/v1/devices',
@@ -133,15 +84,13 @@ describe('Spark', function() {
       json: true
     };
 
-    shared.behavesLikeAPI('claimCore', subject, data, args);
+    shared.behavesLikeEndpoint(subject, args);
   });
 
   describe('removeCore', function() {
-    var subject = function(callback) {
-      Spark.accessToken = 'token';
-      return Spark.removeCore('core_id', callback);
+    var subject = function(api) {
+      return api.removeCore('core_id', 'token');
     };
-    var data = {ok: true};
     var args = {
       uri: 'https://api.spark.io/v1/devices/core_id',
       method: 'DELETE',
@@ -152,15 +101,13 @@ describe('Spark', function() {
       json: true
     };
 
-    shared.behavesLikeAPI('removeCore', subject, data, args);
+    shared.behavesLikeEndpoint(subject, args);
   });
 
   describe('renameCore', function() {
-    var subject = function(callback) {
-      Spark.accessToken = 'token';
-      return Spark.renameCore('core_id', 'new_name', callback);
+    var subject = function(api) {
+      return api.renameCore('core_id', 'new_name', 'token');
     };
-    var data = {ok: true};
     var args = {
       uri: 'https://api.spark.io/v1/devices/core_id',
       method: 'PUT',
@@ -171,22 +118,12 @@ describe('Spark', function() {
       json: true
     };
 
-    shared.behavesLikeAPI('renameCore', subject, data, args);
+    shared.behavesLikeEndpoint(subject, args);
   });
 
   describe('getAttributes', function() {
-    var subject = function(callback) {
-      Spark.accessToken = 'token';
-      return Spark.getAttributes('core_id', callback);
-    };
-    var data = {
-      id: 'core_id',
-      name: 'name',
-      connected: false,
-      variables: null,
-      functions: null,
-      cc3000_patch_version: '1.24',
-      requires_deep_update: true
+    var subject = function(api) {
+      return api.getAttributes('core_id', 'token');
     };
     var args = {
       uri: 'https://api.spark.io/v1/devices/core_id?access_token=token',
@@ -194,24 +131,12 @@ describe('Spark', function() {
       json: true
     };
 
-    shared.behavesLikeAPI('getAttributes', subject, data, args);
+    shared.behavesLikeEndpoint(subject, args);
   });
 
   describe('getVariable', function() {
-    var subject = function(callback) {
-      Spark.accessToken = 'token';
-      return Spark.getVariable('core_id', 'var', callback);
-    };
-    var data = {
-      'cmd': 'VarReturn',
-      'name': 'var',
-      'result': 10,
-      'coreInfo': {
-        'last_app': '',
-        'last_heard': '2014-08-25T16:18:42.534Z',
-        'connected': true,
-        'deviceID': 'core_id'
-      }
+    var subject = function(api) {
+      return api.getVariable('core_id', 'var', 'token');
     };
     var args = {
       uri: 'https://api.spark.io/v1/devices/core_id/var?access_token=token',
@@ -219,18 +144,12 @@ describe('Spark', function() {
       json: true
     };
 
-    shared.behavesLikeAPI('getVariable', subject, data, args);
+    shared.behavesLikeEndpoint(subject, args);
   });
 
   describe('signalCore', function() {
-    var subject = function(callback) {
-      Spark.accessToken = 'token';
-      return Spark.signalCore('core_id', true, callback);
-    };
-    var data = {
-      id: 'core_id',
-      connected: true,
-      signaling: true
+    var subject = function(api) {
+      return api.signalCore('core_id', true, 'token');
     };
     var args = {
       uri: 'https://api.spark.io/v1/devices/core_id',
@@ -242,17 +161,29 @@ describe('Spark', function() {
       json: true
     };
 
-    shared.behavesLikeAPI('signalCore', subject, data, args);
+    shared.behavesLikeEndpoint(subject, args);
+  });
+
+  describe('flashTinker', function() {
+    var subject = function(api) {
+      return api.flashTinker('core_id', 'token');
+    };
+    var args = {
+      uri: 'https://api.spark.io/v1/devices/core_id',
+      method: 'PUT',
+      form: {
+        access_token: 'token',
+        app: 'tinker'
+      },
+      json: true
+    };
+
+    shared.behavesLikeEndpoint(subject, args);
   });
 
   describe('flashCore', function() {
-    var subject = function(callback) {
-      Spark.accessToken = 'token';
-      return Spark.flashCore('core_id', [], callback);
-    };
-    var data = {
-      id: 'core_id',
-      status: 'Update started'
+    var subject = function(api) {
+      return api.flashCore('core_id', [], 'token');
     };
     var args ={
       uri: 'https://api.spark.io/v1/devices/core_id?access_token=token',
@@ -260,18 +191,13 @@ describe('Spark', function() {
       json: true
     };
 
-    shared.behavesLikeAPI('flashCore', subject, data, args);
-
-    it('appends files correctly')
+    shared.behavesLikeEndpoint(subject, args);
+    it('appends files correctly');
   });
 
   describe('compileCode', function() {
-    var subject = function(callback) {
-      Spark.accessToken = 'token';
-      return Spark.compileCode([], callback);
-    };
-    var data = {
-      ok: true
+    var subject = function(api) {
+      return api.compileCode([], 'token');
     };
     var args ={
       uri: 'https://api.spark.io/v1/binaries?access_token=token',
@@ -279,34 +205,26 @@ describe('Spark', function() {
       json: true
     };
 
-    shared.behavesLikeAPI('compileCode', subject, data, args);
-    it('appends files correctly')
+    shared.behavesLikeEndpoint(subject, args);
+    it('appends files correctly');
   });
 
   describe('downloadBinary', function() {
-    var subject = function(callback) {
-      Spark.accessToken = 'token';
-      return Spark.downloadBinary('/v1/algo/123456789', 'file', callback);
-    };
-    var data = {
-      ok: true
+    var subject = function(api) {
+      return api.downloadBinary('/v1/algo/123456789', 'file', 'token');
     };
     var args = {
       uri: 'https://api.spark.io/v1/algo/123456789?access_token=token',
       method: 'GET'
     };
 
-    shared.behavesLikeAPI('downloadBinary', subject, data, args);
+    shared.behavesLikeEndpoint(subject, args);
     it('writes file correctly')
   });
 
   describe('sendPublicKey', function() {
-    var subject = function(callback) {
-      Spark.accessToken = 'token';
-      return Spark.sendPublicKey('core_id', 'buffer', callback);
-    };
-    var data = {
-      ok: true
+    var subject = function(api) {
+      return api.sendPublicKey('core_id', 'buffer', 'token');
     };
     var args = {
       uri: 'https://api.spark.io/v1/provisioning/core_id',
@@ -321,21 +239,13 @@ describe('Spark', function() {
       json: true
     };
 
-    shared.behavesLikeAPI('sendPublicKey', subject, data, args);
+    shared.behavesLikeEndpoint(subject, args);
     it('writes file correctly')
   });
 
   describe('callFunction', function() {
-    var subject = function(callback) {
-      Spark.accessToken = 'token';
-      return Spark.callFunction('core_id', 'function', 'arg', callback);
-    };
-    var data = {
-      id: 'core_id',
-      name: 'core_name',
-      last_app: 'last_app',
-      connected: true,
-      return_value: 42
+    var subject = function(api) {
+      return api.callFunction('core_id', 'function', 'arg', 'token');
     };
     var args = {
       uri: 'https://api.spark.io/v1/devices/core_id/function',
@@ -347,88 +257,62 @@ describe('Spark', function() {
       json: true
     };
 
-    shared.behavesLikeAPI('callFunction', subject, data, args);
+    shared.behavesLikeEndpoint(subject, args);
   });
 
   describe('getEventStream', function() {
-    var request;
 
-    afterEach(function() {
-      request.restore();
-    });
-
-    it('retrieves all events url', function() {
-      request = sinon.stub(Spark.api, 'request')
+    describe('all events', function() {
+      var subject = function(api) {
+        api.getEventStream(null, false, 'token');
+      };
       var args = {
         uri: 'https://api.spark.io/v1/events?access_token=token',
         method: 'GET'
       };
-
-      Spark.getEventStream(false);
-      return expect(request.withArgs(args)).to.be.calledOnce;
+      shared.behavesLikeEndpoint(subject, args);
     });
 
-    it('retrieves event url', function() {
-      request = sinon.stub(Spark.api, 'request')
+    describe('single event', function() {
+      var subject = function(api) {
+        api.getEventStream('event_name', false, 'token');
+      };
       var args = {
         uri: 'https://api.spark.io/v1/events/event_name?access_token=token',
         method: 'GET'
       };
 
-      Spark.getEventStream('event_name');
-      return expect(request.withArgs(args)).to.be.calledOnce;
+      shared.behavesLikeEndpoint(subject, args);
     });
 
-    it('retrieves mine events url', function() {
-      request = sinon.stub(Spark.api, 'request')
+    describe('mine events', function() {
+      var subject = function(api) {
+        api.getEventStream(null, 'mine', 'token');
+      };
       var args = {
         uri: 'https://api.spark.io/v1/devices/events?access_token=token',
         method: 'GET'
       };
 
-      Spark.getEventStream(false, 'mine');
-      return expect(request.withArgs(args)).to.be.calledOnce;
+      shared.behavesLikeEndpoint(subject, args);
     });
 
-    it('retrieves coreId events url', function() {
-      request = sinon.stub(Spark.api, 'request')
+    describe('core events', function() {
+      var subject = function(api) {
+        api.getEventStream(null, 'coreId', 'token');
+      };
       var args = {
         uri: 'https://api.spark.io/v1/devices/coreId/events?access_token=token',
         method: 'GET'
       };
 
-      Spark.getEventStream(false, 'coreId');
-      return expect(request.withArgs(args)).to.be.calledOnce;
-    });
-  });
-
-  describe('getAttributesForAll', function() {
-
-    var data = [ {id: '1', name: 'sparki'} ];
-    var device = new Device(data[0], Spark);
-    var args = {
-      uri: 'https://api.spark.io/v1/devices?access_token=token',
-      method: 'GET',
-      json: true
-    };
-
-    shared.stubRequest(null, data, args);
-
-    it('returns devices attributes', function() {
-      subject = function() {
-       return Spark.getAttributesForAll();
-      }
-      return expect(subject()).to.eventually.become([device]);
+      shared.behavesLikeEndpoint(subject, args);
     });
   });
 
   describe('publishEvent', function() {
-    var subject = function(callback) {
-      Spark.accessToken = 'token';
-      return Spark.publishEvent('event_name', 'data', callback);
-    };
-    var data = {
-      ok: true,
+    var subject = function(api) {
+      return api.publishEvent('event_name', 'data', 'token');
     };
     var args = {
       uri: 'https://api.spark.io/v1/devices/events',
@@ -441,16 +325,12 @@ describe('Spark', function() {
       json: true
     };
 
-    shared.behavesLikeAPI('publishEvent', subject, data, args);
+    shared.behavesLikeEndpoint(subject, args);
   });
 
   describe('createWebhook', function() {
-    var subject = function(callback) {
-      Spark.accessToken = 'token';
-      return Spark.createWebhook('event_name', 'url', 'core_id', callback);
-    };
-    var data = {
-      ok: true,
+    var subject = function(api) {
+      return api.createWebhook('event_name', 'url', 'core_id', 'token');
     };
     var args = {
       uri: 'https://api.spark.io/v1/webhooks',
@@ -464,16 +344,12 @@ describe('Spark', function() {
       json: true
     };
 
-    shared.behavesLikeAPI('createWebhook', subject, data, args);
+    shared.behavesLikeEndpoint(subject, args);
   });
 
   describe('deleteWebhook', function() {
-    var subject = function(callback) {
-      Spark.accessToken = 'token';
-      return Spark.deleteWebhook('hook_id', callback);
-    };
-    var data = {
-      ok: true,
+    var subject = function(api) {
+      return api.deleteWebhook('hook_id', 'token');
     };
     var args = {
       uri: 'https://api.spark.io/v1/webhooks/hook_id?access_token=token',
@@ -481,21 +357,21 @@ describe('Spark', function() {
       json: true
     };
 
-    shared.behavesLikeAPI('deleteWebhook', subject, data, args);
+    shared.behavesLikeEndpoint(subject, args);
   });
 
   describe('listWebhooks', function() {
-    var subject = function(callback) {
-      Spark.accessToken = 'token';
-      return Spark.listWebhooks(callback);
+    var subject = function(api) {
+      return api.listWebhooks('token');
     };
-    var data = [];
     var args = {
       uri: 'https://api.spark.io/v1/webhooks/?access_token=token',
       method: 'GET',
       json: true
     };
 
-    shared.behavesLikeAPI('listWebhooks', subject, data, args);
+    shared.behavesLikeEndpoint(subject, args);
   });
+
+
 });

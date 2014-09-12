@@ -1,7 +1,6 @@
 describe('Device', function() {
   var device,
       callback = function() {},
-      newAttributes = when.defer(),
       api = {
         claimCore: sinon.spy(),
         removeCore: sinon.spy(),
@@ -12,8 +11,7 @@ describe('Device', function() {
         callFunction: sinon.spy(),
         getEventStream: sinon.spy(),
         createWebhook: sinon.spy(),
-        getVariable: sinon.spy(),
-        getAttributes: function() { return newAttributes.promise; }
+        getVariable: sinon.spy()
       };
 
   beforeEach(function() {
@@ -91,22 +89,5 @@ describe('Device', function() {
   it('can get a variable', function() {
     device.getVariable('name', callback);
     expect(api.getVariable.withArgs('id', 'name', callback)).to.be.calledOnce;
-  });
-
-  it('updates attributes successfuly calling getAttributes', function() {
-    device.getAttributes();
-
-    newAttributes.resolve({
-      name: 'name',
-      connected: false,
-      cc3000_patch_version: '2.1',
-      requires_deep_update: false
-    });
-
-    setTimeout(function() {
-       expect(device.connected).to.eq(false);
-       expect(device.requiresUpdate).to.eq(false);
-       expect(device.version).to.eq('2.1')
-    }, 100);
   });
 });
