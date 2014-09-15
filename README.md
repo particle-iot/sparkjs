@@ -57,6 +57,7 @@ getVariable
 listDevices
 login
 publishEvent
+on
 removeCore
 removeToken
 renameCore
@@ -81,6 +82,7 @@ claim
 flash
 subscribe
 getVariable
+on
 remove
 rename
 sendPublicKey
