@@ -6,13 +6,13 @@ var spark = require('spark');
 spark.on('login', function() {
 
   //Get updates for global test event
-  spark.on('event', function(data) {
+  spark.onEvent('event', function(data) {
     console.log("Event: " + data);
   });
 
   //Get test event for specific core
   spark.listDevices().then(function(devices){
-    devices[0].on('test', function(data) {
+    devices[0].onEvent('test', function(data) {
       console.log("Event: " + data);
     });
   });
