@@ -42,53 +42,54 @@ Every function returns a [promise](http://promisesaplus.com/) for you to handle 
 
 More examples on how to use promises/callbacks visit: https://github.com/spark/sparkjs/tree/master/examples
 
-###Supported commands
+### Supported commands
 
-compileCode
-createUser
-callFunction
-claimCore
-downloadBinary
-flashCore
-getAttributes
-getAttributesForAll
-getEventStream
-getVariable
-listDevices
-login
-publishEvent
-onEvent
-removeCore
-removeToken
-renameCore
-signalCore
-Device object
+* compileCode
+* createUser
+* callFunction
+* claimCore
+* downloadBinary
+* flashCore
+* getAttributes
+* getAttributesForAll
+* getEventStream
+* getVariable
+* listDevices
+* login
+* onEvent
+* publishEvent
+* removeCore
+* removeToken
+* renameCore
+* signalCore
+
+### Device object
 
 You can get a list of devices by calling: Spark.devices
 
 Each device has the following parameters:
 
-name
-connected
-variables
-functions
-version
-requiresUpgrade
+* name
+* connected
+* variables
+* functions
+* version
+* requiresUpgrade
 
 And you can call the following commands on it:
 
-callFunction
-claim
-flash
-subscribe
-getVariable
-onEvent
-remove
-rename
-sendPublicKey
-signal
-stopSignal
-getAttributes
+* callFunction
+* claim
+* flash
+* subscribe
+* getVariable
+* onEvent
+* remove
+* rename
+* sendPublicKey
+* signal
+* stopSignal
+* getAttributes
 
 **Complete documentation can be found in [Spark Docs](http://docs.spark.io/javascript/)**
 
