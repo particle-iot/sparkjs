@@ -118,3 +118,7 @@ $ npm install -g jshint
 ### Coverage report
 
 `make cover`
+
+## Release History
+
+Version 0.1.0 Initial release
