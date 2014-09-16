@@ -24,6 +24,11 @@ spark.on('login', function() {
 
       // Send a signal to the core to start playing rainbow in the LED.
       // Send a 0 if you want the rainbow animation to stop.
+      var core = devices[0];
+      core.signal(devices[0].id, 1, signalCb);
+
+      // You also have the option to call it direclty on the spark instance
+      // by passing the device.id
       spark.signalCore(devices[0].id, 1, signalCb);
     },
     function(err) {
