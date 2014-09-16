@@ -20,6 +20,7 @@ bundle:
 release:
 	@git tag -m "$(VERSION)" v$(VERSION)
 	@git push --tags
+	@$(BIN)/browserify lib/spark-browser.js -t cssify | uglifyjs > dist/spark.min.js
 
 publish:
 	@npm publish ./
