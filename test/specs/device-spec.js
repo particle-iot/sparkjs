@@ -2,7 +2,6 @@ describe('Device', function() {
   var device,
       callback = function() {},
       api = {
-        claimCore: sinon.spy(),
         removeCore: sinon.spy(),
         renameCore: sinon.spy(),
         signalCore: sinon.spy(),
@@ -36,14 +35,9 @@ describe('Device', function() {
     expect(device.requiresUpdate).to.eq(true);
   });
 
-  it('can be claimed', function() {
-    device.claim(callback);
-    expect(api.claimCore.withArgs('id', callback)).to.be.calledOnce;
-  });
-
   it('can be removed', function() {
     device.remove(callback);
-    expect(api.claimCore.withArgs('id', callback)).to.be.calledOnce;
+    expect(api.removeCore.withArgs('id', callback)).to.be.calledOnce;
   });
 
   it('can be renamed', function() {
