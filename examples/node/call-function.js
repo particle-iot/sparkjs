@@ -26,6 +26,12 @@ spark.on('login', function() {
       // the Spark core and registered to the Spark cloud, same thing we do
       // with variables. You pass along the name of the function and the params.
       spark.callFunction(devices[0].id, 'brew', 'D0:HIGH', callback);
+
+      // Once you hvae a device/core instance you can use that to call functions on it.
+      // The main difference between this and directly using the main `spark` instance is
+      // that you no longer need to pass the id.
+      var core = devices[0];
+      core.callFunction('brew', 'D0:HIGH', callback);
     },
     function(err) {
       console.log('API call failed: ', err);

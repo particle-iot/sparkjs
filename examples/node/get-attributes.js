@@ -22,6 +22,21 @@ spark.on('login', function() {
         }
       };
 
+      // When you get the list of devices each of them has all retrieved attributes
+      // inside an object with the same name `core.attributes`, also the attributes
+      // are aliased to the device main object like so `core.attributes.id === core.id`
+      var core = devices[0];
+      console.log('core own attributes:', core);
+      console.log('core.attributes:', core.attributes);
+
+      // You can also get a set of extra attributes and force an update by calling
+      // `core.getAttributes`.
+      core.getAttributes(function(err, data) {
+        console.log('core.getAttributes():', core);
+      });
+
+      // You also have the option of calling getAttributes directly on the spark
+      // instance by passing the deviceId
       spark.getAttributes(devices[0].id, attrsCb);
     },
     function(err) {

@@ -24,7 +24,11 @@ spark.on('login', function() {
 
       // We pass the firmware.ino file we want to flash to the core, we'll use the first
       // core retrieved in devices array.
-      spark.flashCore(devices[0].id, ['./path/to/your/file1', './path/to/your/file2'], signalCb);
+      var core = devices[0];
+      core.flash('./path/to/your/file1.ino', signalCb);
+
+      // You can also call the sparj instance passing the device id.
+      // spark.flashCore(devices[0].id, ['./path/to/your/file1', './path/to/your/file2'], signalCb);
     },
     function(err) {
       console.log('API call failed: ', err);
