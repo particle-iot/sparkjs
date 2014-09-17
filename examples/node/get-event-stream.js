@@ -1,7 +1,7 @@
 /*jslint node: true */
 "use strict";
 
-var spark =require('spark');
+var spark = require('spark');
 
 spark.on('login', function() {
 

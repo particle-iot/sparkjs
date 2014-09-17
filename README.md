@@ -56,6 +56,7 @@ More examples on how to use promises/callbacks visit: https://github.com/spark/s
 * getVariable
 * listDevices
 * login
+* onEvent
 * publishEvent
 * removeCore
 * removeToken
@@ -82,6 +83,7 @@ And you can call the following commands on it:
 * flash
 * subscribe
 * getVariable
+* onEvent
 * remove
 * rename
 * sendPublicKey
