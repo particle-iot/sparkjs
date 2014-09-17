@@ -25,3 +25,4 @@ release:
 publish:
 	@npm publish ./
 	@$(BIN)/bower register spark git@github.com:spark/sparkjs.git
+	@$(BIN)/jam publish
