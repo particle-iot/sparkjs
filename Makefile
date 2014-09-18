@@ -15,12 +15,12 @@ lint:
 	@$(BIN)/jshint ./lib
 
 bundle:
-	@$(BIN)/browserify lib/spark-browser.js -t cssify | uglifyjs > dist/spark.min.js
+	@$(BIN)/browserify lib/spark-browser.js -t cssify | $(BIN)/uglifyjs > dist/spark.min.js
 
 release:
+	@$(BIN)/browserify lib/spark-browser.js -t cssify | $(BIN)/uglifyjs > dist/spark.min.js
 	@git tag -m "$(VERSION)" v$(VERSION)
 	@git push --tags
-	@$(BIN)/browserify lib/spark-browser.js -t cssify | uglifyjs > dist/spark.min.js
 
 publish:
 	@npm publish ./
