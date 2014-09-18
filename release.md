@@ -1,4 +1,4 @@
-sparkjs release and publish instructions
+Spark API library, release and publish instructions
 =======
 
 ## Prepare a release
