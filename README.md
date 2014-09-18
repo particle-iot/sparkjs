@@ -101,11 +101,12 @@ And you can call the following commands on it:
 $ npm install
 ```
 
-* Install globally mocha, istanbul and jshint
+* Install globally mocha, istanbul uglify-js and jshint
 
 ```shell
 $ npm install -g mocha
 $ npm install -g istanbul
+$ npm install -g uglify-js
 $ npm install -g jshint
 ```
 
