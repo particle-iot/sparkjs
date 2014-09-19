@@ -1,7 +1,7 @@
 {
   "author": "Spark",
   "name": "spark",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "main": "dist/spark.min.js",
   "homepage": "http://spark.io",
   "repository": {

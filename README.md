@@ -125,3 +125,4 @@ $ npm install -g jshint
 ## Release History
 
 Version 0.1.0 Initial release
+Version 0.2.1 Publishing, test release
