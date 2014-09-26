@@ -1,8 +1,8 @@
-sparkjs
+SparkJS: A Javascript library for Spark devices
 =======
 
 SparkJS is a library for interacting with your cores and the Spark Cloud.
-It uses node.js and can run on Windows, Mac OS X, and Linux fairly easily.
+It uses node.js and can run on Windows, Mac OS X, and Linux fairly easily. It can also run in the browser without node.js.
 It's also open source so you can edit, change or even send in pull requests if you want to share!
 
 ## Documentation
@@ -22,9 +22,9 @@ $ npm install -g spark
 ## Usage
 
 ```javascript
-var Sparkjs = require('spark');
+var Spark = require('spark');
 
-Sparkjs.login({ username: 'email@example.com', password: 'password' }, function(err, body) {
+Spark.login({ username: 'email@example.com', password: 'password' }, function(err, body) {
   console.log('API call login completed on callback:', body);
 });
 ```
@@ -95,13 +95,13 @@ And you can call the following commands on it:
 
 ## Setup your dev environment
 
-* Install your local dependencies:
+Install your local dependencies:
 
 ```shell
 $ npm install
 ```
 
-* Install globally mocha, istanbul uglify-js and jshint
+Install globally mocha, istanbul uglify-js and jshint
 
 ```shell
 $ npm install -g mocha
