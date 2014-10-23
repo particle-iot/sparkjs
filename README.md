@@ -126,3 +126,4 @@ $ npm install -g jshint
 
 Version 0.1.0 Initial release
 Version 0.2.1 Publishing, test release
+Version 0.2.2 Pulling in getDevice
