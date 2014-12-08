@@ -20,4 +20,5 @@ spark.on('login', function() {
 });
 
 // Login as usual
-spark.login('email@example.com', 'password');
+spark.login({ username: 'email@example.com', password: 'password'});
+//spark.login({ accessToken: '012345' });

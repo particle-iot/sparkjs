@@ -11,7 +11,8 @@ spark.createUser('example@email.com', 'password', function(err, data) {
 
   if (!err) {
     // We try to login and get back an accessToken to verify user creation
-    var loginPromise = spark.login('example@email.com', 'password');
+    var loginPromise = spark.login({ username: 'email@example.com', password: 'password'});
+
 
     // We'll use promises to check the result of the login process
     loginPromise.then(
