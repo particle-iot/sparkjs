@@ -127,3 +127,4 @@ $ npm install -g jshint
 Version 0.1.0 Initial release
 Version 0.2.1 Publishing, test release
 Version 0.2.2 Pulling in getDevice
+Version 0.2.4 adding some basic parsing to the getEventStream function, now returns an object
