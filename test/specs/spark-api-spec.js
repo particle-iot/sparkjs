@@ -1,8 +1,8 @@
 describe('SparkApi', function() {
 
   describe('login', function() {
-    var subject = function(api) {
-      return api.login({username: 'spark', password: 'spark'});
+    var subject = function(api, callback) {
+      return api.login({username: 'spark', password: 'spark'}, callback);
     };
     var args = {
       uri: 'https://api.spark.io/oauth/token',
@@ -21,8 +21,8 @@ describe('SparkApi', function() {
   });
 
   describe('listDevices', function() {
-    var subject = function(api) {
-      return api.listDevices({accessToken: 'token'});
+    var subject = function(api, callback) {
+      return api.listDevices({accessToken: 'token'}, callback);
     };
     var args = {
       uri: 'https://api.spark.io/v1/devices?access_token=token',
@@ -34,8 +34,8 @@ describe('SparkApi', function() {
   });
 
   describe('createUser', function() {
-    var subject = function(api) {
-      return api.createUser('user@gmail.com', 'pass');
+    var subject = function(api, callback) {
+      return api.createUser('user@gmail.com', 'pass', callback);
     };
     var args = {
       uri: 'https://api.spark.io/v1/users',
@@ -51,8 +51,8 @@ describe('SparkApi', function() {
   });
 
   describe('removeAccessToken', function() {
-    var subject = function(api) {
-      return api.removeAccessToken('user@gmail.com', 'pass', 'access_token');
+    var subject = function(api, callback) {
+      return api.removeAccessToken('user@gmail.com', 'pass', 'access_token', callback);
     };
     var args = {
       uri: 'https://api.spark.io/v1/access_tokens/access_token',
@@ -71,8 +71,8 @@ describe('SparkApi', function() {
   });
 
   describe('claimCore', function() {
-    var subject = function(api) {
-      return api.claimCore('core_id', 'token');
+    var subject = function(api, callback) {
+      return api.claimCore('core_id', 'token', callback);
     };
     var args = {
       uri: 'https://api.spark.io/v1/devices',
@@ -88,8 +88,8 @@ describe('SparkApi', function() {
   });
 
   describe('removeCore', function() {
-    var subject = function(api) {
-      return api.removeCore('core_id', 'token');
+    var subject = function(api, callback) {
+      return api.removeCore('core_id', 'token', callback);
     };
     var args = {
       uri: 'https://api.spark.io/v1/devices/core_id',
@@ -105,8 +105,8 @@ describe('SparkApi', function() {
   });
 
   describe('renameCore', function() {
-    var subject = function(api) {
-      return api.renameCore('core_id', 'new_name', 'token');
+    var subject = function(api, callback) {
+      return api.renameCore('core_id', 'new_name', 'token', callback);
     };
     var args = {
       uri: 'https://api.spark.io/v1/devices/core_id',
@@ -122,8 +122,8 @@ describe('SparkApi', function() {
   });
 
   describe('getAttributes', function() {
-    var subject = function(api) {
-      return api.getAttributes('core_id', 'token');
+    var subject = function(api, callback) {
+      return api.getAttributes('core_id', 'token', callback);
     };
     var args = {
       uri: 'https://api.spark.io/v1/devices/core_id?access_token=token',
@@ -135,8 +135,8 @@ describe('SparkApi', function() {
   });
 
   describe('getVariable', function() {
-    var subject = function(api) {
-      return api.getVariable('core_id', 'var', 'token');
+    var subject = function(api, callback) {
+      return api.getVariable('core_id', 'var', 'token', callback);
     };
     var args = {
       uri: 'https://api.spark.io/v1/devices/core_id/var?access_token=token',
@@ -148,8 +148,8 @@ describe('SparkApi', function() {
   });
 
   describe('signalCore', function() {
-    var subject = function(api) {
-      return api.signalCore('core_id', true, 'token');
+    var subject = function(api, callback) {
+      return api.signalCore('core_id', true, 'token', callback);
     };
     var args = {
       uri: 'https://api.spark.io/v1/devices/core_id',
@@ -165,8 +165,8 @@ describe('SparkApi', function() {
   });
 
   describe('flashTinker', function() {
-    var subject = function(api) {
-      return api.flashTinker('core_id', 'token');
+    var subject = function(api, callback) {
+      return api.flashTinker('core_id', 'token', callback);
     };
     var args = {
       uri: 'https://api.spark.io/v1/devices/core_id',
@@ -182,8 +182,8 @@ describe('SparkApi', function() {
   });
 
   describe('flashCore', function() {
-    var subject = function(api) {
-      return api.flashCore('core_id', [], 'token');
+    var subject = function(api, callback) {
+      return api.flashCore('core_id', [], 'token', callback);
     };
     var args ={
       uri: 'https://api.spark.io/v1/devices/core_id?access_token=token',
@@ -196,8 +196,8 @@ describe('SparkApi', function() {
   });
 
   describe('compileCode', function() {
-    var subject = function(api) {
-      return api.compileCode([], 'token');
+    var subject = function(api, callback) {
+      return api.compileCode([], 'token', callback);
     };
     var args ={
       uri: 'https://api.spark.io/v1/binaries?access_token=token',
@@ -210,8 +210,8 @@ describe('SparkApi', function() {
   });
 
   describe('downloadBinary', function() {
-    var subject = function(api) {
-      return api.downloadBinary('/v1/algo/123456789', 'file', 'token');
+    var subject = function(api, callback) {
+      return api.downloadBinary('/v1/algo/123456789', 'file', 'token', callback);
     };
     var args = {
       uri: 'https://api.spark.io/v1/algo/123456789?access_token=token',
@@ -223,8 +223,8 @@ describe('SparkApi', function() {
   });
 
   describe('sendPublicKey', function() {
-    var subject = function(api) {
-      return api.sendPublicKey('core_id', 'buffer', 'token');
+    var subject = function(api, callback) {
+      return api.sendPublicKey('core_id', 'buffer', 'token', callback);
     };
     var args = {
       uri: 'https://api.spark.io/v1/provisioning/core_id',
@@ -244,8 +244,8 @@ describe('SparkApi', function() {
   });
 
   describe('callFunction', function() {
-    var subject = function(api) {
-      return api.callFunction('core_id', 'function', 'arg', 'token');
+    var subject = function(api, callback) {
+      return api.callFunction('core_id', 'function', 'arg', 'token', callback);
     };
     var args = {
       uri: 'https://api.spark.io/v1/devices/core_id/function',
@@ -261,10 +261,9 @@ describe('SparkApi', function() {
   });
 
   describe('getEventStream', function() {
-
     describe('all events', function() {
-      var subject = function(api) {
-        api.getEventStream(null, false, 'token');
+      var subject = function(api, callback) {
+        api.getEventStream(null, false, 'token', callback);
       };
       var args = {
         uri: 'https://api.spark.io/v1/events?access_token=token',
@@ -274,8 +273,8 @@ describe('SparkApi', function() {
     });
 
     describe('single event', function() {
-      var subject = function(api) {
-        api.getEventStream('event_name', false, 'token');
+      var subject = function(api, callback) {
+        api.getEventStream('event_name', false, 'token', callback);
       };
       var args = {
         uri: 'https://api.spark.io/v1/events/event_name?access_token=token',
@@ -286,8 +285,8 @@ describe('SparkApi', function() {
     });
 
     describe('mine events', function() {
-      var subject = function(api) {
-        api.getEventStream(null, 'mine', 'token');
+      var subject = function(api, callback) {
+        api.getEventStream(null, 'mine', 'token', callback);
       };
       var args = {
         uri: 'https://api.spark.io/v1/devices/events?access_token=token',
@@ -298,8 +297,8 @@ describe('SparkApi', function() {
     });
 
     describe('core events', function() {
-      var subject = function(api) {
-        api.getEventStream(null, 'coreId', 'token');
+      var subject = function(api, callback) {
+        api.getEventStream(null, 'coreId', 'token', callback);
       };
       var args = {
         uri: 'https://api.spark.io/v1/devices/coreId/events?access_token=token',
@@ -311,8 +310,8 @@ describe('SparkApi', function() {
   });
 
   describe('publishEvent', function() {
-    var subject = function(api) {
-      return api.publishEvent('event_name', 'data', 'token');
+    var subject = function(api, callback) {
+      return api.publishEvent('event_name', 'data', 'token', callback);
     };
     var args = {
       uri: 'https://api.spark.io/v1/devices/events',
@@ -329,8 +328,8 @@ describe('SparkApi', function() {
   });
 
   describe('createWebhook', function() {
-    var subject = function(api) {
-      return api.createWebhook('event_name', 'url', 'core_id', 'token');
+    var subject = function(api, callback) {
+      return api.createWebhook('event_name', 'url', 'core_id', 'token', callback);
     };
     var args = {
       uri: 'https://api.spark.io/v1/webhooks',
@@ -348,8 +347,8 @@ describe('SparkApi', function() {
   });
 
   describe('deleteWebhook', function() {
-    var subject = function(api) {
-      return api.deleteWebhook('hook_id', 'token');
+    var subject = function(api, callback) {
+      return api.deleteWebhook('hook_id', 'token', callback);
     };
     var args = {
       uri: 'https://api.spark.io/v1/webhooks/hook_id?access_token=token',
@@ -361,8 +360,8 @@ describe('SparkApi', function() {
   });
 
   describe('listWebhooks', function() {
-    var subject = function(api) {
-      return api.listWebhooks('token');
+    var subject = function(api, callback) {
+      return api.listWebhooks('token', callback);
     };
     var args = {
       uri: 'https://api.spark.io/v1/webhooks/?access_token=token',

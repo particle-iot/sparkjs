@@ -22,7 +22,7 @@ exports.behavesLikeAPI = function(eventName, subject, data) {
 };
 
 exports.behavesLikeEndpoint = function(subject, args) {
-  var request, clock;
+  var request, clock, callback;
   var api = new SparkApi({
     clientId: 'Spark',
     clientSecret: 'Spark',
@@ -31,9 +31,10 @@ exports.behavesLikeEndpoint = function(subject, args) {
 
   beforeEach(function() {
     clock = sinon.useFakeTimers(0, 'Date');
+    callback = sinon.spy();
     request = sinon.stub(api, 'request').returns({
       form: function() {}
-    });
+    }).callsArg(1);
   });
 
   afterEach(function() {
@@ -43,8 +44,13 @@ exports.behavesLikeEndpoint = function(subject, args) {
 
   describe('request', function() {
     it('is called with correct params', function() {
-      subject(api);
-      return expect(request.withArgs(args)).to.be.calledOnce;
+      subject(api, callback);
+      expect(request.withArgs(args)).to.be.calledOnce;
+    });
+
+    it('accepts and calls a callback', function() {
+      subject(api, callback);
+      expect(callback).to.be.called;
     });
   });
 };
