@@ -242,6 +242,13 @@ describe('Spark', function() {
       Spark.getEventStream(false);
       return expect(request).to.be.calledOnce;
     });
+
+    it('passes the callback to the spark API', function() {
+      request = sinon.stub(Spark.api, 'getEventStream');
+
+      Spark.getEventStream();
+      expect(request).to.be.calledWith(sinon.match.any, sinon.match.any, sinon.match.string, sinon.match.func);
+    });
   });
 
   describe('getAttributesForAll', function() {
