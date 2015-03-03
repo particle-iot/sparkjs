@@ -1,4 +1,4 @@
-.modal {
+.spark-modal {
   display: none;
   width: 400px;
   background: #fff;
@@ -15,7 +15,7 @@
   box-shadow: 0 0 10px #000;
 }
 
-.modal a.close-modal {
+.spark-modal a.close-modal {
   position: absolute;
   top: -12.5px;
   right: -12.5px;
