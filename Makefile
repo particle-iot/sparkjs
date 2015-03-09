@@ -17,7 +17,7 @@ lint:
 bundle:
 	@$(BIN)/browserify lib/spark-browser.js -t cssify | $(BIN)/uglifyjs > dist/spark.min.js
 
-bundle-nomin:
+bundle-dev:
 	@$(BIN)/browserify lib/spark-browser.js -t cssify > dist/spark.js
 
 release:
