@@ -20,8 +20,6 @@ spark.on('login', function() {
   spark.getEventStream('test', 'CORE_ID', function(data) {
     console.log("Event: " + JSON.stringify(data));
   });
-
-
 });
 
 // Login as usual

@@ -17,6 +17,9 @@ lint:
 bundle:
 	@$(BIN)/browserify lib/spark-browser.js -t cssify | $(BIN)/uglifyjs > dist/spark.min.js
 
+bundle-nomin:
+	@$(BIN)/browserify lib/spark-browser.js -t cssify > dist/spark.js
+
 release:
 	@$(BIN)/browserify lib/spark-browser.js -t cssify | $(BIN)/uglifyjs > dist/spark.min.js
 	@git tag -m "$(VERSION)" v$(VERSION)
