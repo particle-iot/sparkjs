@@ -25,7 +25,7 @@ release:
 	@git tag -m "$(VERSION)" v$(VERSION)
 	@git push --tags
 
-# When publishing cdnjs, bower,jsdelivr will pick up the new package version
+# When publishing; cdnjs, bower, jsdelivr will pick up the new package version
 # from either npm registry or github.
 # There is no need to run bower register again, this is a one time process,
 # command left here just for future reference.
