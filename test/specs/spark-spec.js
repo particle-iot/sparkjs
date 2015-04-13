@@ -268,7 +268,7 @@ describe('Spark', function() {
   describe('publishEvent', function() {
     var subject = function(callback) {
       Spark.accessToken = 'token';
-      return Spark.publishEvent('event_name', 'data', callback);
+      return Spark.publishEvent('event_name', 'data', null, callback);
     };
     var data = {
       ok: true,

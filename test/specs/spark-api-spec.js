@@ -311,7 +311,7 @@ describe('SparkApi', function() {
 
   describe('publishEvent', function() {
     var subject = function(api, callback) {
-      return api.publishEvent('event_name', 'data', 'token', callback);
+      return api.publishEvent('event_name', 'data', 'token', null, callback);
     };
     var args = {
       uri: 'https://api.spark.io/v1/devices/events',
@@ -320,6 +320,26 @@ describe('SparkApi', function() {
         name: 'event_name',
         data: 'data',
         access_token: 'token'
+      },
+      json: true
+    };
+
+    shared.behavesLikeEndpoint(subject, args);
+  });
+
+  describe('publishEvent with optional argument', function() {
+    var subject = function(api, callback) {
+      return api.publishEvent('event_name', 'data', 'token', {private: false, ttl:123}, callback);
+    };
+    var args = {
+      uri: 'https://api.spark.io/v1/devices/events',
+      method: 'POST',
+      form: {
+        name: 'event_name',
+        data: 'data',
+        access_token: 'token',
+        private: false,
+        ttl: 123
       },
       json: true
     };
