@@ -202,11 +202,30 @@ describe('SparkApi', function() {
     var args ={
       uri: 'https://api.spark.io/v1/binaries?access_token=token',
       method: 'POST',
-      json: true
+      json: true,
+      formData: {}
     };
 
     shared.behavesLikeEndpoint(subject, args);
     it('appends files correctly');
+
+    describe('handles options in signature', function() {
+      subject = function(api, callback) {
+        return api.compileCode([], { coreID: 'cid', productID: 'prid', platformID: 'plid' }, 'token', callback);
+      };
+      args = {
+        uri: 'https://api.spark.io/v1/binaries?access_token=token',
+        method: 'POST',
+        json: true,
+        formData: {
+          coreID: 'cid',
+          product_id: 'prid',
+          platform_id: 'plid'
+        }
+      };
+
+      shared.behavesLikeEndpoint(subject, args);
+    });
   });
 
   describe('downloadBinary', function() {
