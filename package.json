@@ -34,6 +34,9 @@
     "bower": ">=1.3.9",
     "jamjs": ">=0.2.17"
   },
+  "scripts": {
+    "test": "make test"
+  },
   "browser": {
     "request": "browser-request"
   },
