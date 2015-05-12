@@ -211,14 +211,14 @@ describe('SparkApi', function() {
 
     describe('handles options in signature', function() {
       subject = function(api, callback) {
-        return api.compileCode([], { coreID: 'cid', productID: 'prid', platformID: 'plid' }, 'token', callback);
+        return api.compileCode([], { deviceID: 'did', productID: 'prid', platformID: 'plid' }, 'token', callback);
       };
       args = {
         uri: 'https://api.spark.io/v1/binaries?access_token=token',
         method: 'POST',
         json: true,
         formData: {
-          coreID: 'cid',
+          device_id: 'did',
           product_id: 'prid',
           platform_id: 'plid'
         }
