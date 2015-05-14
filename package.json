@@ -3,7 +3,7 @@
   "name": "spark",
   "filename": "spark.min.js",
   "description": "Official Spark cloud API library.",
-  "version": "0.5.7",
+  "version": "0.5.9",
   "homepage": "http://spark.io",
   "bugs": "https://github.com/spark/sparkjs/issues",
   "repository": {
@@ -15,7 +15,7 @@
   },
   "main": "./lib/spark",
   "dependencies": {
-    "request": ">= 2.40.0",
+    "request": ">= 2.55.0",
     "when": ">= 3.4.4"
   },
   "devDependencies": {
