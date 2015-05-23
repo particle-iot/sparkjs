@@ -42,6 +42,17 @@ describe('Spark', function() {
     it('sets devices correctly');
   });
 
+  describe.skip('getDevice', function() {
+    var subject = function(callback) {
+      Spark.accessToken = 'token';
+      return Spark.getDevice(callback);
+    };
+    var data = {id: 'id', name: 'sparky'};
+
+    shared.behavesLikeAPI('getDevice', subject, data);
+
+    it('gets a device correctly');
+  });
 
   describe('createUser', function() {
     var subject = function(callback) {
