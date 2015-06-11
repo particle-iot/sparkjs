@@ -42,12 +42,26 @@ describe('Spark', function() {
     it('sets devices correctly');
   });
 
-  describe.skip('getDevice', function() {
+  describe('getDevice with the id', function() {
+    var data = { id: 'id', name: 'sparky' };
     var subject = function(callback) {
       Spark.accessToken = 'token';
-      return Spark.getDevice(callback);
+      // Not testing the cache, make sure it's not used
+      return Spark.getDevice(data.id, callback, false);
     };
-    var data = {id: 'id', name: 'sparky'};
+
+    shared.behavesLikeAPI('getDevice', subject, data);
+
+    it('gets a device correctly');
+  });
+
+  describe('getDevice with the name', function() {
+    var data = { id: 'id', name: 'sparky' };
+    var subject = function(callback) {
+      Spark.accessToken = 'token';
+      // Not testing the cache, make sure it's not used
+      return Spark.getDevice(data.name, callback, false);
+    };
 
     shared.behavesLikeAPI('getDevice', subject, data);
 

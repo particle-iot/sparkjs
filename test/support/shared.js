@@ -82,6 +82,7 @@ exports.behavesLikeRequestError = function(eventName, subject) {
     shared.stubRequest(eventName, new Error('err'), null);
 
     it('promise rejected with error', function() {
+      subject();
       return expect(subject()).to.be.rejectedWith('err');
     });
 
@@ -107,29 +108,41 @@ exports.behavesLikeSuccess = function (eventName, subject, data) {
       });
 
       it('returns expected data', function() {
-        if (eventName === 'listDevices') {
-          return expect(subject()).to.eventually.become([new Device(data[0], Spark)]);
-        } else {
-          return expect(subject()).to.eventually.equal(data);
+        switch (eventName) {
+          case 'listDevices':
+            return expect(subject()).to.become([new Device(data[0], Spark)]);
+          case 'getDevice':
+            return expect(subject()).to.become(new Device(data, Spark));
+          default:
+            return expect(subject()).to.become(data);
         }
       });
     });
 
     it('executes callback with data', function(done) {
-      if (eventName === 'listDevices') {
-        callback = shared.verifiedCallback(null, [new Device(data[0], Spark)], done);
-      } else {
-        callback = shared.verifiedCallback(null, data, done);
+      var callback;
+      switch (eventName) {
+        case 'listDevices':
+          callback = shared.verifiedCallback(null, [new Device(data[0], Spark)], done);
+          break;
+        case 'getDevice':
+          callback = shared.verifiedCallback(null, new Device(data, Spark), done);
+          break;
+        default:
+          callback = shared.verifiedCallback(null, data, done);
       }
-
       subject(callback);
     });
 
     it('emits event', function(done) {
-      if (eventName === 'listDevices' ) {
-        shared.validateEvent(eventName, subject, null, [new Device(data[0], Spark)], done);
-      } else {
-        shared.validateEvent(eventName, subject, null, data, done);
+      switch (eventName) {
+        case 'listDevices':
+          return shared.validateEvent(eventName, subject, null, [new Device(data[0], Spark)], done);
+        case 'getDevice':
+          return shared.validateEvent(eventName, subject, null, new Device(data, Spark), done);
+        default:
+          return shared.validateEvent(eventName, subject, null, data, done);
+
       }
     });
   });
@@ -142,7 +155,7 @@ exports.verifiedCallback = function(e, d, done) {
       expect(err.message).to.eq(e);
     }
     done();
-  }.bind(done);
+  };
 };
 
 exports.validateEvent = function(eventName, subject, err, data, done) {
