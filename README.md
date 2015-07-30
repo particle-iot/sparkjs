@@ -7,7 +7,7 @@ It's also open source so you can edit, change or even send in pull requests if y
 
 ## Documentation
 
-Complete documentation can be found in [Spark Docs](http://docs.spark.io/javascript/)
+Complete documentation can be found in [ParticleJS Docs](http://docs.particle.io/core/javascript/)
 
 ## Installation
 
