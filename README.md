@@ -31,7 +31,7 @@ Spark.login({ username: 'email@example.com', password: 'password' }, function(er
 
 For further examples visit /examples directory: https://github.com/spark/sparkjs/tree/master/examples
 
-**Complete documentation can be found in [Spark Docs](http://docs.spark.io/javascript/)**
+**Complete documentation can be found in [ParticleJS Docs](http://docs.particle.io/core/javascript/)**
 
 ## Getting Started
 
@@ -91,7 +91,7 @@ And you can call the following commands on it:
 * stopSignal
 * getAttributes
 
-**Complete documentation can be found in [Spark Docs](http://docs.spark.io/javascript/)**
+**Complete documentation can be found in [ParticleJS Docs](http://docs.particle.io/core/javascript/)**
 
 ## Setup your dev environment
 
