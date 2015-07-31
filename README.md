@@ -124,9 +124,9 @@ $ npm install -g jshint
 
 ## Release History
 
-Version 0.1.0 Initial release
-Version 0.2.1 Publishing, test release
-Version 0.2.2 Pulling in getDevice
-Version 0.2.4 adding some basic parsing to the getEventStream function, now returns an object
-Version 0.2.5 fixing a callback param bug in getEventStream
-Version 0.2.6 fixing minified js
+- Version 0.1.0 Initial release
+- Version 0.2.1 Publishing, test release
+- Version 0.2.2 Pulling in getDevice
+- Version 0.2.4 adding some basic parsing to the getEventStream function, now returns an object
+- Version 0.2.5 fixing a callback param bug in getEventStream
+- Version 0.2.6 fixing minified js
