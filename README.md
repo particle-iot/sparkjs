@@ -7,7 +7,7 @@ It's also open source so you can edit, change or even send in pull requests if y
 
 ## Documentation
 
-Complete documentation can be found in [Spark Docs](http://docs.spark.io/javascript/)
+Complete documentation can be found in [ParticleJS Docs](http://docs.particle.io/core/javascript/)
 
 ## Installation
 
@@ -31,7 +31,7 @@ Spark.login({ username: 'email@example.com', password: 'password' }, function(er
 
 For further examples visit /examples directory: https://github.com/spark/sparkjs/tree/master/examples
 
-**Complete documentation can be found in [Spark Docs](http://docs.spark.io/javascript/)**
+**Complete documentation can be found in [ParticleJS Docs](http://docs.particle.io/core/javascript/)**
 
 ## Getting Started
 
@@ -91,7 +91,7 @@ And you can call the following commands on it:
 * stopSignal
 * getAttributes
 
-**Complete documentation can be found in [Spark Docs](http://docs.spark.io/javascript/)**
+**Complete documentation can be found in [ParticleJS Docs](http://docs.particle.io/core/javascript/)**
 
 ## Setup your dev environment
 
@@ -124,9 +124,9 @@ $ npm install -g jshint
 
 ## Release History
 
-Version 0.1.0 Initial release
-Version 0.2.1 Publishing, test release
-Version 0.2.2 Pulling in getDevice
-Version 0.2.4 adding some basic parsing to the getEventStream function, now returns an object
-Version 0.2.5 fixing a callback param bug in getEventStream
-Version 0.2.6 fixing minified js
+- Version 0.1.0 Initial release
+- Version 0.2.1 Publishing, test release
+- Version 0.2.2 Pulling in getDevice
+- Version 0.2.4 adding some basic parsing to the getEventStream function, now returns an object
+- Version 0.2.5 fixing a callback param bug in getEventStream
+- Version 0.2.6 fixing minified js
