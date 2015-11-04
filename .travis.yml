@@ -20,3 +20,6 @@ script:
   - make cover
   - make bundle
   - ./node_modules/.bin/bower install ./#$TRAVIS_BRANCH
+
+after_success:
+  - npm run coveralls
