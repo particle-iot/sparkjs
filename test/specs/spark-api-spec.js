@@ -50,6 +50,23 @@ describe('SparkApi', function() {
     shared.behavesLikeEndpoint(subject, args);
   });
 
+  describe('listAccessTokens', function() {
+    var subject = function(api, callback) {
+      return api.listAccessTokens('user@gmail.com', 'pass', callback);
+    };
+    var args = {
+      uri: 'https://api.spark.io/v1/access_tokens',
+      method: 'GET',
+      auth: {
+        username: 'user@gmail.com',
+        password: 'pass'
+      },
+      json: true
+    };
+
+    shared.behavesLikeEndpoint(subject, args);
+  });
+
   describe('removeAccessToken', function() {
     var subject = function(api, callback) {
       return api.removeAccessToken('user@gmail.com', 'pass', 'access_token', callback);

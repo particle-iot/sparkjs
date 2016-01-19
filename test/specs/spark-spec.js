@@ -92,6 +92,15 @@ describe('Spark', function() {
     });
   });
 
+  describe('listAccessTokens', function() {
+    var subject = function(callback) {
+      return Spark.listAccessTokens('user@gmail.com', 'pass', callback);
+    };
+    var data = [{client:'client', expires_at:'2015-08-24T22:58:13.072Z', token:'token'}];
+
+    shared.behavesLikeAPI('listAccessTokens', subject, data);
+  });
+
   describe('removeAccessToken', function() {
     var subject = function(callback) {
       return Spark.removeAccessToken('user@gmail.com', 'pass', 'access_token', callback);
