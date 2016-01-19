@@ -1,0 +1,30 @@
+<html>
+<head>
+  <title>Spark Promise Login Example</title>
+</head>
+
+<body>
+  <script src="http://cdn.jsdelivr.net/sparkjs/0.4.2/spark.min.js"></script>
+  <script>
+    // Login to spark
+    var loginPromise = spark.login({
+      username: 'name@example.com',
+      password: 'password'
+    });
+
+    loginPromise.then(function(loginData) {
+
+      // You can store this to re-authenticate later
+      var accessToken = loginData.access_token;
+      console.log("Your access token:", accessToken);
+
+      // List your devices
+      spark.listDevices().then(function(devices) {
+        devices.forEach(function(device) {
+          console.log(device.name, device.id);
+        });
+      });
+    });
+  </script>
+</body>
+</html>
