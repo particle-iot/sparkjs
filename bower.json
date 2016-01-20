@@ -1,7 +1,7 @@
 {
   "author": "Particle",
   "name": "spark",
-  "version": "0.5.10",
+  "version": "1.0.0",
   "main": "dist/spark.min.js",
   "homepage": "http://particle.io",
   "repository": {
