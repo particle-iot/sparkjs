@@ -130,3 +130,4 @@ $ npm install -g jshint
 - Version 0.2.4 adding some basic parsing to the getEventStream function, now returns an object
 - Version 0.2.5 fixing a callback param bug in getEventStream
 - Version 0.2.6 fixing minified js
+- Version 1.1.0 Fix [#77](https://github.com/spark/sparkjs/issues/77), [#75](https://github.com/spark/sparkjs/issues/75). Add `listAccessTokens`.
