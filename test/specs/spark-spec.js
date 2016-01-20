@@ -283,6 +283,86 @@ describe('Spark', function() {
       Spark.getEventStream();
       expect(request).to.be.calledWith(sinon.match.any, sinon.match.any, sinon.match.string, sinon.match.func);
     });
+
+    describe('Processor', function() {
+      it('processes data sent in multiple chunks', function(done) {
+        var data = [
+          'event: test\n',
+          'data: {"data":"1,-50.0","ttl":',
+          '60,"published_at":"2016-01-20T00:20:15.241Z","coreid":"001"}\n'
+        ];
+        var processor = Spark._createStreamProcessor();
+
+        processor.onDataReady = function(e) {
+          try {
+            expect(e).to.deep.equal({ name: 'test', data: '1,-50.0', ttl: 60, published_at: '2016-01-20T00:20:15.241Z', coreid: '001' });
+            done();
+          } catch (ex) {
+            done(ex);
+          }
+        };
+
+        data.forEach(function(d) {
+          processor.onData(d);
+        });
+      });
+
+      it('processes multiple events sent in the same chunk', function(done) {
+        var data = [
+          'event: abcd\ndata: {"data":"woo","ttl":60,"published_at":"2016-01-20T00:20:13.241Z","coreid":"001"}\nevent: test\ndata: {"data":"1,-50.0","ttl":60,"published_at":"2016-01-20T00:20:15.241Z","coreid":"001"}\n'
+        ];
+        var processor = Spark._createStreamProcessor();
+
+        var eventCount = 0;
+        processor.onDataReady = function(e) {
+          try {
+            if (eventCount === 0) {
+              expect(e).to.deep.equal({ name: 'abcd', data: 'woo', ttl: 60, published_at: '2016-01-20T00:20:13.241Z', coreid: '001' });
+            } else if (eventCount === 1) {
+              expect(e).to.deep.equal({ name: 'test', data: '1,-50.0', ttl: 60, published_at: '2016-01-20T00:20:15.241Z', coreid: '001' });
+              done();
+            }
+            eventCount++;
+          } catch (ex) {
+            done(ex);
+          }
+        };
+
+        data.forEach(function(d) {
+          processor.onData(d);
+        });
+      });
+
+      it('processes data sent in multiple chunks after a single line event', function(done) {
+        var data = [
+          'event: abcd\n',
+          'data: {"data":"woo","ttl":60,"published_at":"2016-01-20T00:20:13.241Z","coreid":"001"}\n',
+          'event: test\n',
+          'data: {"data":"1,-50.0","ttl":',
+          '60,"published_at":"2016-01-20T00:20:15.241Z","coreid":"001"}\n'
+        ];
+        var processor = Spark._createStreamProcessor();
+
+        var eventCount = 0;
+        processor.onDataReady = function(e) {
+          try {
+            if (eventCount === 0) {
+              expect(e).to.deep.equal({ name: 'abcd', data: 'woo', ttl: 60, published_at: '2016-01-20T00:20:13.241Z', coreid: '001' });
+            } else if (eventCount === 1) {
+              expect(e).to.deep.equal({ name: 'test', data: '1,-50.0', ttl: 60, published_at: '2016-01-20T00:20:15.241Z', coreid: '001' });
+              done();
+            }
+            eventCount++;
+          } catch (ex) {
+            done(ex);
+          }
+        };
+
+        data.forEach(function(d) {
+          processor.onData(d);
+        });
+      });
+    });
   });
 
   describe('getAttributesForAll', function() {
