@@ -5,7 +5,7 @@ describe('SparkApi', function() {
       return api.login({username: 'spark', password: 'spark'}, callback);
     };
     var args = {
-      uri: 'https://api.spark.io/oauth/token',
+      uri: 'https://api.particle.io/oauth/token',
       method: 'POST',
       json: true,
       form: {
@@ -25,7 +25,7 @@ describe('SparkApi', function() {
       return api.listDevices({accessToken: 'token'}, callback);
     };
     var args = {
-      uri: 'https://api.spark.io/v1/devices?access_token=token',
+      uri: 'https://api.particle.io/v1/devices?access_token=token',
       method: 'GET',
       json: true
     };
@@ -38,7 +38,7 @@ describe('SparkApi', function() {
       return api.createUser('user@gmail.com', 'pass', callback);
     };
     var args = {
-      uri: 'https://api.spark.io/v1/users',
+      uri: 'https://api.particle.io/v1/users',
       method: 'POST',
       form: {
         username: 'user@gmail.com',
@@ -55,7 +55,7 @@ describe('SparkApi', function() {
       return api.listAccessTokens('user@gmail.com', 'pass', callback);
     };
     var args = {
-      uri: 'https://api.spark.io/v1/access_tokens',
+      uri: 'https://api.particle.io/v1/access_tokens',
       method: 'GET',
       auth: {
         username: 'user@gmail.com',
@@ -72,7 +72,7 @@ describe('SparkApi', function() {
       return api.removeAccessToken('user@gmail.com', 'pass', 'access_token', callback);
     };
     var args = {
-      uri: 'https://api.spark.io/v1/access_tokens/access_token',
+      uri: 'https://api.particle.io/v1/access_tokens/access_token',
       method: 'DELETE',
       auth: {
         username: 'user@gmail.com',
@@ -92,7 +92,7 @@ describe('SparkApi', function() {
       return api.claimCore('core_id', 'token', callback);
     };
     var args = {
-      uri: 'https://api.spark.io/v1/devices',
+      uri: 'https://api.particle.io/v1/devices',
       method: 'POST',
       form: {
         id: 'core_id',
@@ -109,7 +109,7 @@ describe('SparkApi', function() {
       return api.removeCore('core_id', 'token', callback);
     };
     var args = {
-      uri: 'https://api.spark.io/v1/devices/core_id',
+      uri: 'https://api.particle.io/v1/devices/core_id',
       method: 'DELETE',
       form: {
         id: 'core_id',
@@ -126,7 +126,7 @@ describe('SparkApi', function() {
       return api.renameCore('core_id', 'new_name', 'token', callback);
     };
     var args = {
-      uri: 'https://api.spark.io/v1/devices/core_id',
+      uri: 'https://api.particle.io/v1/devices/core_id',
       method: 'PUT',
       form: {
         name: 'new_name',
@@ -143,7 +143,7 @@ describe('SparkApi', function() {
       return api.getAttributes('core_id', 'token', callback);
     };
     var args = {
-      uri: 'https://api.spark.io/v1/devices/core_id?access_token=token',
+      uri: 'https://api.particle.io/v1/devices/core_id?access_token=token',
       method: 'GET',
       json: true
     };
@@ -156,7 +156,7 @@ describe('SparkApi', function() {
       return api.getVariable('core_id', 'var', 'token', callback);
     };
     var args = {
-      uri: 'https://api.spark.io/v1/devices/core_id/var?access_token=token',
+      uri: 'https://api.particle.io/v1/devices/core_id/var?access_token=token',
       method: 'GET',
       json: true
     };
@@ -169,7 +169,7 @@ describe('SparkApi', function() {
       return api.signalCore('core_id', true, 'token', callback);
     };
     var args = {
-      uri: 'https://api.spark.io/v1/devices/core_id',
+      uri: 'https://api.particle.io/v1/devices/core_id',
       method: 'PUT',
       form: {
         signal: 1,
@@ -186,7 +186,7 @@ describe('SparkApi', function() {
       return api.flashTinker('core_id', 'token', callback);
     };
     var args = {
-      uri: 'https://api.spark.io/v1/devices/core_id',
+      uri: 'https://api.particle.io/v1/devices/core_id',
       method: 'PUT',
       form: {
         access_token: 'token',
@@ -203,7 +203,7 @@ describe('SparkApi', function() {
       return api.flashCore('core_id', [], 'token', callback);
     };
     var args ={
-      uri: 'https://api.spark.io/v1/devices/core_id?access_token=token',
+      uri: 'https://api.particle.io/v1/devices/core_id?access_token=token',
       method: 'PUT',
       json: true
     };
@@ -217,7 +217,7 @@ describe('SparkApi', function() {
       return api.compileCode([], 'token', callback);
     };
     var args ={
-      uri: 'https://api.spark.io/v1/binaries?access_token=token',
+      uri: 'https://api.particle.io/v1/binaries?access_token=token',
       method: 'POST',
       json: true,
       formData: {}
@@ -231,7 +231,7 @@ describe('SparkApi', function() {
         return api.compileCode([], { deviceID: 'did', productID: 'prid', platformID: 'plid' }, 'token', callback);
       };
       args = {
-        uri: 'https://api.spark.io/v1/binaries?access_token=token',
+        uri: 'https://api.particle.io/v1/binaries?access_token=token',
         method: 'POST',
         json: true,
         formData: {
@@ -250,7 +250,7 @@ describe('SparkApi', function() {
       return api.downloadBinary('/v1/algo/123456789', 'file', 'token', callback);
     };
     var args = {
-      uri: 'https://api.spark.io/v1/algo/123456789?access_token=token',
+      uri: 'https://api.particle.io/v1/algo/123456789?access_token=token',
       method: 'GET'
     };
 
@@ -263,7 +263,7 @@ describe('SparkApi', function() {
       return api.sendPublicKey('core_id', 'buffer', 'token', callback);
     };
     var args = {
-      uri: 'https://api.spark.io/v1/provisioning/core_id',
+      uri: 'https://api.particle.io/v1/provisioning/core_id',
       method: 'POST',
       form: {
         deviceID: 'core_id',
@@ -284,7 +284,7 @@ describe('SparkApi', function() {
       return api.callFunction('core_id', 'function', 'arg', 'token', callback);
     };
     var args = {
-      uri: 'https://api.spark.io/v1/devices/core_id/function',
+      uri: 'https://api.particle.io/v1/devices/core_id/function',
       method: 'POST',
       form: {
         args: 'arg',
@@ -302,7 +302,7 @@ describe('SparkApi', function() {
         api.getEventStream(null, false, 'token', callback);
       };
       var args = {
-        uri: 'https://api.spark.io/v1/events?access_token=token',
+        uri: 'https://api.particle.io/v1/events?access_token=token',
         method: 'GET'
       };
       shared.behavesLikeEndpoint(subject, args);
@@ -313,7 +313,7 @@ describe('SparkApi', function() {
         api.getEventStream('event_name', false, 'token', callback);
       };
       var args = {
-        uri: 'https://api.spark.io/v1/events/event_name?access_token=token',
+        uri: 'https://api.particle.io/v1/events/event_name?access_token=token',
         method: 'GET'
       };
 
@@ -325,7 +325,7 @@ describe('SparkApi', function() {
         api.getEventStream(null, 'mine', 'token', callback);
       };
       var args = {
-        uri: 'https://api.spark.io/v1/devices/events?access_token=token',
+        uri: 'https://api.particle.io/v1/devices/events?access_token=token',
         method: 'GET'
       };
 
@@ -337,7 +337,7 @@ describe('SparkApi', function() {
         api.getEventStream(null, 'coreId', 'token', callback);
       };
       var args = {
-        uri: 'https://api.spark.io/v1/devices/coreId/events?access_token=token',
+        uri: 'https://api.particle.io/v1/devices/coreId/events?access_token=token',
         method: 'GET'
       };
 
@@ -350,7 +350,7 @@ describe('SparkApi', function() {
       return api.publishEvent('event_name', 'data', 'token', callback);
     };
     var args = {
-      uri: 'https://api.spark.io/v1/devices/events',
+      uri: 'https://api.particle.io/v1/devices/events',
       method: 'POST',
       form: {
         name: 'event_name',
@@ -368,7 +368,7 @@ describe('SparkApi', function() {
       return api.createWebhook('event_name', 'url', 'core_id', 'token', callback);
     };
     var args = {
-      uri: 'https://api.spark.io/v1/webhooks',
+      uri: 'https://api.particle.io/v1/webhooks',
       method: 'POST',
       form: {
         event: 'event_name',
@@ -387,7 +387,7 @@ describe('SparkApi', function() {
       return api.deleteWebhook('hook_id', 'token', callback);
     };
     var args = {
-      uri: 'https://api.spark.io/v1/webhooks/hook_id?access_token=token',
+      uri: 'https://api.particle.io/v1/webhooks/hook_id?access_token=token',
       method: 'DELETE',
       json: true
     };
@@ -400,7 +400,7 @@ describe('SparkApi', function() {
       return api.listWebhooks('token', callback);
     };
     var args = {
-      uri: 'https://api.spark.io/v1/webhooks/?access_token=token',
+      uri: 'https://api.particle.io/v1/webhooks/?access_token=token',
       method: 'GET',
       json: true
     };

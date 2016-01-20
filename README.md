@@ -1,7 +1,7 @@
-SparkJS: A Javascript library for Spark devices
+ParticleJS: A Javascript library for Particle devices
 =======
 
-SparkJS is a library for interacting with your cores and the Spark Cloud.
+ParticleJS is a library for interacting with your cores and the Particle Cloud.
 It uses node.js and can run on Windows, Mac OS X, and Linux fairly easily. It can also run in the browser without node.js.
 It's also open source so you can edit, change or even send in pull requests if you want to share!
 

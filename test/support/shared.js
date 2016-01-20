@@ -26,7 +26,7 @@ exports.behavesLikeEndpoint = function(subject, args) {
   var api = new SparkApi({
     clientId: 'Spark',
     clientSecret: 'Spark',
-    baseUrl: 'https://api.spark.io'
+    baseUrl: 'https://api.particle.io'
   });
 
   beforeEach(function() {

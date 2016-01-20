@@ -1,10 +1,10 @@
 {
-  "author": "Spark",
+  "author": "Particle",
   "name": "spark",
   "filename": "spark.min.js",
-  "description": "Official Spark cloud API library.",
+  "description": "Official Particle cloud API library.",
   "version": "1.0.0",
-  "homepage": "http://spark.io",
+  "homepage": "http://particle.io",
   "bugs": "https://github.com/spark/sparkjs/issues",
   "repository": {
     "type": "git",

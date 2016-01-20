@@ -1,9 +1,9 @@
 {
-  "author": "Spark",
+  "author": "Particle",
   "name": "spark",
   "version": "0.5.10",
   "main": "dist/spark.min.js",
-  "homepage": "http://spark.io",
+  "homepage": "http://particle.io",
   "repository": {
     "type": "git",
     "url": "https://github.com/spark/sparkjs"
@@ -12,7 +12,7 @@
     "edgarsilva <edgar.osc@gmail.com>",
     "solojavier"
   ],
-  "description": "Official Spark cloud API library",
+  "description": "Official Particle cloud API library",
   "keywords": [
     "spark",
     "sparkjs",

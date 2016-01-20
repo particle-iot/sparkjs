@@ -1,4 +1,4 @@
-Spark API library, release and publish instructions
+Particle API library, release and publish instructions
 =======
 
 ## Prepare a release
