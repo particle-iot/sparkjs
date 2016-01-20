@@ -22,6 +22,8 @@ bundle-dev:
 
 release:
 	@$(BIN)/browserify lib/spark-browser.js -t cssify | $(BIN)/uglifyjs > dist/spark.min.js
+	@git add dist/spark.min.js
+	@git commit -m "v$(VERSION)"
 	@git tag -m "$(VERSION)" v$(VERSION)
 	@git push --tags
 
