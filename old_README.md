@@ -29,7 +29,7 @@ Spark.login({ username: 'email@example.com', password: 'password' }, function(er
 });
 ```
 
-For further examples visit /examples directory: https://github.com/spark/sparkjs/tree/master/examples
+For further examples visit /examples directory: https://github.com/particle-iot/sparkjs/tree/master/examples
 
 **Complete documentation can be found in [ParticleJS Docs](http://docs.particle.io/core/javascript/)**
 
@@ -40,7 +40,7 @@ It's important that you login before executing any command.
 Every function returns a [promise](http://promisesaplus.com/) for you to handle the async result, or you can pass a callback function.
 (Please note that if a callback function is passed, the function will return null instead of a promise)
 
-More examples on how to use promises/callbacks visit: https://github.com/spark/sparkjs/tree/master/examples
+More examples on how to use promises/callbacks visit: https://github.com/particle-iot/sparkjs/tree/master/examples
 
 ### Supported commands
 
@@ -130,4 +130,4 @@ $ npm install -g jshint
 - Version 0.2.4 adding some basic parsing to the getEventStream function, now returns an object
 - Version 0.2.5 fixing a callback param bug in getEventStream
 - Version 0.2.6 fixing minified js
-- Version 1.1.0 Fix [#77](https://github.com/spark/sparkjs/issues/77), [#75](https://github.com/spark/sparkjs/issues/75). Add `listAccessTokens`.
+- Version 1.1.0 Fix [#77](https://github.com/particle-iot/sparkjs/issues/77), [#75](https://github.com/particle-iot/sparkjs/issues/75). Add `listAccessTokens`.

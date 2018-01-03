@@ -6,7 +6,7 @@
   "homepage": "http://particle.io",
   "repository": {
     "type": "git",
-    "url": "https://github.com/spark/sparkjs"
+    "url": "https://github.com/particle-iot/sparkjs"
   },
   "contributors": [
     "edgarsilva <edgar.osc@gmail.com>",

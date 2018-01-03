@@ -5,10 +5,10 @@
   "description": "Official Particle cloud API library.",
   "version": "1.1.0",
   "homepage": "http://particle.io",
-  "bugs": "https://github.com/spark/sparkjs/issues",
+  "bugs": "https://github.com/particle-iot/sparkjs/issues",
   "repository": {
     "type": "git",
-    "url": "https://github.com/spark/sparkjs"
+    "url": "https://github.com/particle-iot/sparkjs"
   },
   "engines": {
     "node": "^0.10.26"
